@@ -1,0 +1,7 @@
+/node_modules/
+/environment/
+/out/
+/upload.sh
+/key.pem
+/.vscode/
+/files/

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.1/firebase-auth.js"></script>
+    <script src="/js/firebase-config.js"></script>
+    <script src="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://cdn.firebase.com/libs/firebaseui/3.1.1/firebaseui.css">
+    <style>
+      #login {
+        text-align: center;
+        top: 50%;
+        left: 50%;
+        position: absolute;
+        -webkit-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+      }
+
+      @media only screen and (min-width: 1920px) {
+        #login {
+          width: 50%;
+        }
+
+        body {
+          font-size: 2em;
+        }
+      }
+    </style>
+    <title>Sisene</title>
+  </head>
+  <body>
+    <div id="login">
+      <h1>Sisene veebikeskkonda</h1>
+      <div id="firebaseui-auth-container"></div>
+      <div id="loader">Laadimine...</div>
+    </div>
+    <script>
+      firebase.initializeApp(firebaseConfig);
+
+      var ui = new firebaseui.auth.AuthUI(firebase.auth());
+      const config = {
+        /* callbacks: {
+          signInSuccessWithAuthResult: (authResult, redirectUrl) => {
+            return true;
+          },
+          uiShown: () => {
+            document.getElementById('loader').style.display = 'none';
+          }
+        }, */
+        signInFlow: 'popup',
+        signInSuccessUrl: '/',
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID
+        ],
+        tosUrl: '/tos.html',
+        privacyPolicyUrl: '/pp.html'
+      };
+
+      ui.start('#firebaseui-auth-container', config);
+
+      firebase.auth().onAuthStateChanged(user => {
+        if (user)
+          window.location = '/user/post-login?uid=' + user.uid + '&displayName=' + user.displayName + '&photoUrl=' + user.photoURL + '&email=' + user.email;
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "mehaanika",
+    "title": "Mehaanika",
+    "link_prefix": "mehaanika/",
+    "fields": [
+      {
+        "id": "mehaanika-1",
+        "title": "Mehaanika",
+        "link": "mehaanika-1"
+      }
+    ]
+  },
+  {
+    "id": "yldine",
+    "title": "Üldine",
+    "link_prefix": "yldine/",
+    "fields": [
+      {
+        "id": "kymneastmed",
+        "title": "Kümneastmed",
+        "link": "astmed"
+      }
+    ]
+  }
+]
