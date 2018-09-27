@@ -1,51 +1,63 @@
-<ul id="sidenav" class="sidenav">
-  <% if(loggedIn) { %>
-  <li>
-    <div class="user-view">
-      <div class="background">
-        <img src="https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/Taiwan_16x9.jpg?itok=uXcThZKL">
-      </div>
-      <a href="/user"><img class="circle" src="<%= user.photoUrl %>"></a>
-      <!-- TODO: Make this go to the user's profile -->
-      <a href="/user">
-        <span class="white-text name">
-          <%= user.displayName %>
-        </span>
-      </a>
-      <a href="void(0);">
+<%
+function isSelected(topic) {
+  if(locals.selectedTopic)
+    if(selectedTopic.id === topic.id)
+      return 'active';
+  return '';
+}
+%>
+<div>
+  <ul id="sidenav" class="sidenav">
+    <li>
+      <% if(user !== null) { %>
+      <div class="user-view">
+        <div class="background">
+          <img src="https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/Taiwan_16x9.jpg?itok=uXcThZKL">
+        </div>
+        <a href="/#user"><img class="circle" src="<%= user !== null ? user.photoURL : '/img/default_profile.png'; %>"></a>
+        <!-- TODO: Make this go to the user's profile -->
+        <!-- TODO: Implement users profile and settings -->
+        <a href="/#user">
+          <span class="white-text name">
+            <%= user.displayName %>
+          </span>
+        </a>
         <span class="white-text email">
           <%= user.email %>
         </span>
-      </a>
-    </div>
-  </li>
-  <li><a href="/user/settings"><i class="material-icons">settings</i>Sätted</a></li>
-  <li><a href="/user/logout"><i class="material-icons">meeting_room</i>Välju</a></li>
-  <% } else { %>
-  <li><a href="/user/login"><i class="material-icons"></i>Sisene</a></li>
-  <% } %>
-  <li>
-    <div class="divider"></div>
-  </li>
+      </div>
+    </li>
+    <li><a href="/user/settings"><i class="material-icons">settings</i>Sätted</a></li>
+    <li><a href="/user/logout"><i class="material-icons">meeting_room</i>Välju</a></li>
+    <% } else { %>
+    <li><a href="/user/login"><i class="material-icons"></i>Sisene</a></li>
+    <% } %>
+    <li>
+      <div class="divider"></div>
+    </li>
 
-  <li class="no-padding">
-    <ul class="collapsible collapsible-accordion" class="collapsible">
-      <% for(i in teemad) { teema = teemad[i]; %>
-      <li>
-        <a href="#!" class="collapsible-header">
-          <%= teema.title %>
-          <i class="material-icons">arrow_drop_down</i>
-        </a>
-        <div class="collapsible-body">
-          <ul>
-            <% for(j in teema.fields) { obj = teema.fields[j]; %>
-            <li><a href="<%= obj.link %>">
-                <%= obj.title %></a></li>
-            <% } %>
-          </ul>
-        </div>
-      </li>
-      <% } %>
-    </ul>
-  </li>
-</ul>
+    <li class="no-padding">
+      <ul class="collapsible collapsible-accordion" class="collapsible">
+        <% for(i in topics) { topic = topics[i]; %>
+        <li class="<%= isSelected(topic) %>">
+          <a href="#!" class="collapsible-header">
+            <%= topic.title %>
+            <i class="material-icons">arrow_drop_down</i>
+          </a>
+          <div class="collapsible-body">
+            <ol>
+              <% for(j in topic.fields) { field = topic.fields[j]; %>
+              <li>
+                <a href="/teemad/<%= topic.link_prefix + field.link %>">
+                  <%= field.title %>
+                </a>
+              </li>
+              <% } %>
+            </ol>
+          </div>
+        </li>
+        <% } %>
+      </ul>
+    </li>
+  </ul>
+</div>

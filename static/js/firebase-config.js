@@ -6,3 +6,4 @@ const firebaseConfig = {
   storageBucket: 'kerdoupt.appspot.com',
   messagingSenderId: '177350205015'
 };
+firebase.initializeApp(firebaseConfig);

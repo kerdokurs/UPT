@@ -64,64 +64,26 @@ const kymneastmed = {
   }
 };
 
-const fetchUser = (req, db) => {
-  if (isUserLoggedIn(req)) {
-    const { uid } = req.cookies;
-
-    db.doc(`users/${uid}`)
-      .get()
-      .then(doc => {
-        if (doc && doc.exists) {
-          const data = doc.data();
-          return data;
-        } else {
-          console.log('error');
-          return 'Unknown error has occurred.';
-        }
-      })
-      .catch(err => {
-        return err;
-      });
-  } else return null;
-};
-
-function getCurrentUser(req, db) {
-  return new Promise((res, rej) => {
-    if (isUserLoggedIn(req)) {
-      const { uid } = req.cookies;
-
-      db.doc(`users/${uid}`)
-        .get()
-        .then(doc => {
-          if (doc && doc.exists) {
-            const data = doc.data();
-            res(data);
-          } else {
-            rej('No document');
-          }
-        })
-        .catch(err => {
-          rej(err);
-        });
-    } else {
-      res({});
-    }
-  });
-}
-
-const isUserLoggedIn = req => {
-  return req.cookies['logged_in'] != null && req.cookies['uid'] != null;
-};
-
 const getTopics = () => {
   return JSON.parse(fs.readFileSync(__dirname + '/../data/teemad.json'));
+};
+
+const getTopic = topicId => {
+  const topics = getTopics();
+  for (i in topics) if (topics[i].id === topicId) return topics[i];
+};
+
+const getField = (topic, fieldId) => {
+  if (topic)
+    for (i in topic.fields)
+      if (topic.fields[i].id === fieldId) return topic.fields[i];
 };
 
 module.exports = {
   currentTime,
   kymneastmed,
-  getCurrentUser,
+  randomString,
   getTopics,
-  isUserLoggedIn,
-  randomString
+  getTopic,
+  getField
 };

@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <% include ../imports/head.ejs %>
     <title>
-      <%= username %>
+      <%= (selectedField ? selectedField.title + ' - ' : '') + (selectedTopic ? selectedTopic.title + ' - ' : '') + pageTitle %>
     </title>
   </head>
   <body>
-
+    <% include ../imports/sidenav.ejs %>
+    <% include ../imports/navbar.ejs %>
   </body>
 </html>

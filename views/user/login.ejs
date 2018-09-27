@@ -40,18 +40,16 @@
       <div id="loader">Laadimine...</div>
     </div>
     <script>
-      firebase.initializeApp(firebaseConfig);
-
       var ui = new firebaseui.auth.AuthUI(firebase.auth());
       const config = {
-        /* callbacks: {
+        callbacks: {
           signInSuccessWithAuthResult: (authResult, redirectUrl) => {
             return true;
           },
           uiShown: () => {
             document.getElementById('loader').style.display = 'none';
           }
-        }, */
+        },
         signInFlow: 'popup',
         signInSuccessUrl: '/',
         signInOptions: [
@@ -65,7 +63,7 @@
 
       firebase.auth().onAuthStateChanged(user => {
         if (user)
-          window.location = '/user/post-login?uid=' + user.uid + '&displayName=' + user.displayName + '&photoUrl=' + user.photoURL + '&email=' + user.email;
+          window.location = '/user/post-login?uid=' + user.uid;
       })
     </script>
   </body>

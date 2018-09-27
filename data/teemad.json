@@ -5,19 +5,66 @@
     "link_prefix": "mehaanika/",
     "fields": [
       {
-        "id": "mehaanika-1",
-        "title": "Mehaanika",
-        "link": "mehaanika-1"
+        "id": "sissejuhatus",
+        "title": "Sissejuhatus mehaanikasse",
+        "link": "sissejuhatus"
+      },
+      {
+        "id": "kinemaatika",
+        "title": "Kinemaatika",
+        "link": "kinemaatika"
+      },
+      {
+        "id": "dunaamika",
+        "title": "Dünaamika",
+        "link": "dunaamika"
+      },
+      {
+        "id": "vonkumisedjalained",
+        "title": "Võnkumised ja lained",
+        "link": "vonkumisedjalained"
+      },
+      {
+        "id": "jaadvusseadus",
+        "title": "Jäädvusseadus mehaanikas",
+        "link": "jaadvusseadus"
       }
     ]
   },
   {
-    "id": "yldine",
-    "title": "Üldine",
-    "link_prefix": "yldine/",
+    "id": "elektromagnetism",
+    "title": "Elektromagnetism",
+    "link_prefix": "elektromagnetism/",
     "fields": [
       {
-        "id": "kymneastmed",
+        "id": "elektrijamagnetvali",
+        "title": "Elektri- ja magnetväli",
+        "link": "elektrijamagnetvali"
+      },
+      {
+        "id": "elektromagnetvali",
+        "title": "Elektromagnetväli",
+        "link": "elektromagnetvali"
+      },
+      {
+        "id": "elektromagnetlained",
+        "title": "Elektromagnetlained",
+        "link": "elektromagnetlained"
+      },
+      {
+        "id": "valgus",
+        "title": "Valgus",
+        "link": "valgus"
+      }
+    ]
+  },
+  {
+    "id": "uldine",
+    "title": "Üldine",
+    "link_prefix": "uldine/",
+    "fields": [
+      {
+        "id": "astmed",
         "title": "Kümneastmed",
         "link": "astmed"
       }

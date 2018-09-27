@@ -1,10 +1,24 @@
-<nav>
+<nav class="green">
   <div class="nav-wrapper">
-    <a href="void(0);" data-target="sidenav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+    <a href="#!" data-target="sidenav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
+    <div class="left">
+      <a href="/" class="breadcrumb">
+        <%= pageTitle %>
+      </a>
+      <% if(locals.selectedTopic) { %>
+      <a href="/teemad/<%= selectedTopic.link_prefix %>" class="breadcrumb">
+        <%= selectedTopic.title %>
+      </a>
+      <% } %>
+      <% if(locals.selectedField) { %>
+      <a href="/teemad/<%= selectedTopic.link_prefix + selectedField.link %>" class="breadcrumb">
+        <%= selectedField.title %>
+      </a>
+      <% } %>
+    </div>
     <ul id="nav-mobile" class="right hide-on-med-and-low">
-      <li><a href="#!">SIIA LÄHEB MUU INFO</a></li>
-      <li><a href="#!">SIIA LÄHEB MUU INFO</a></li>
-      <li><a href="#!">SIIA LÄHEB MUU INFO</a></li>
+      <li><a href="/info">Lisainfo</a></li>
     </ul>
   </div>
 </nav>
+<br>

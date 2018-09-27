@@ -11,7 +11,6 @@
   </head>
   <body>
     <script>
-      firebase.initializeApp(firebaseConfig);
       firebase.auth().signOut().then(() => {
         window.location = '/';
       });
