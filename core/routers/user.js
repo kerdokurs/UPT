@@ -10,8 +10,10 @@ const router = require('express').Router();
 
 const functions = require('../functions');
 const admin = require('../modules/firebase/admin');
-const database = require('../modules/firebase/database');
 const auth = require('../modules/authModule');
+
+require('../database/database');
+const User = require('../database/models/User');
 
 router.route('/login').get(async (req, res) => {
   if (auth.isUserLoggedIn(req)) res.redirect('/user');
@@ -24,49 +26,40 @@ router.route('/post-login').get(async (req, res) => {
   if (auth.isUserLoggedIn(req)) res.redirect('/');
   const { uid } = req.query;
   if (uid) {
-    const users = await database
-      .collection('users')
-      .where('authUid', '==', uid)
-      .limit(1)
-      .get()
-      .then(snap => {
-        let users = [];
-        snap.forEach(doc => {
-          if (doc && doc.exists) users.push(doc.data());
-        });
-        return users;
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    const users = await User.find({ uid }, (err, data) => data);
 
     if (users.length > 0) {
+      //User exists.
+      const user = users[0];
+      const { uid } = user;
+
       res
         .cookie('logged_in', true)
-        .cookie('uid', users[0].uid)
-        .cookie('authUid', uid)
+        .cookie('uid', uid)
         .redirect('/');
     } else {
-      const nUid = functions.randomString(24);
-      const user = await admin.auth().getUser(uid);
+      //User doesn't exist.
+      const user = await admin
+        .auth()
+        .getUser(uid)
+        .then(data => data);
 
-      database
-        .doc(`users/${nUid}`)
-        .set({
-          uid: nUid,
-          authUid: uid,
-          displayName: user.displayName,
-          photoURL: user.photoURL,
-          email: user.email
-        })
-        .then(() => {
+      const { email, displayName, photoURL } = user;
+
+      User.create(
+        {
+          uid,
+          displayName,
+          photoURL,
+          email
+        },
+        () => {
           res
             .cookie('logged_in', true)
-            .cookie('uid', nUid)
-            .cookie('authUid', uid)
+            .cookie('uid', uid)
             .redirect('/');
-        })
-        .catch(err => console.error(err));
+        }
+      );
     }
   } else {
     res.redirect('/user/login');
@@ -78,17 +71,15 @@ router.route('/logout').get((req, res) => {
   res
     .cookie('logged_in', '', { expires: new Date() })
     .cookie('uid', '', { expires: new Date() })
-    .cookie('authUid', '', { expires: new Date() })
     .render('user/logout');
 });
 
-router.route('/settings').get(async (req, res) => {
+router.route('/').get(async (req, res) => {
   if (!auth.isUserLoggedIn(req)) res.redirect('/user/login');
-  res.send(
-    '<pre>' +
-      JSON.stringify(await auth.getUser(req.cookies['authUid']), null, 2) +
-      '</pre>'
-  );
+  const { uid } = req.cookies;
+  const users = await User.find({ uid }).then(data => data);
+
+  res.send('<pre>' + JSON.stringify(users[0], null, 2) + '</pre>');
 });
 
 module.exports = router;

@@ -14,10 +14,8 @@ function isSelected(topic) {
         <div class="background">
           <img src="https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/Taiwan_16x9.jpg?itok=uXcThZKL">
         </div>
-        <a href="/#user"><img class="circle" src="<%= user !== null ? user.photoURL : '/img/default_profile.png'; %>"></a>
-        <!-- TODO: Make this go to the user's profile -->
-        <!-- TODO: Implement users profile and settings -->
-        <a href="/#user">
+        <a href="/user"><img class="circle" src="<%= user !== null ? user.photoURL : '/img/default_profile.png'; %>"></a>
+        <a href="/user">
           <span class="white-text name">
             <%= user.displayName %>
           </span>
@@ -59,5 +57,15 @@ function isSelected(topic) {
         <% } %>
       </ul>
     </li>
+  </ul>
+</div>
+<div class="fixed-action-btn">
+  <a class="btn-floating btn-large red">
+    <i class="large material-icons">menu</i>
+  </a>
+  <ul>
+    <li><a href="/feedback" class="btn-floating green"><i class="material-icons">feedback</i></a></li>
+    <li><a href="/info" class="btn-floating orange"><i class="material-icons">info</i></a></li>
+    <li><a href="/report" class="btn-floating red"><i class="material-icons">bug_report</i></a></li>
   </ul>
 </div>

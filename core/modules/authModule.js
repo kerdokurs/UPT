@@ -7,7 +7,7 @@ function getUser(uid) {
 
 function isUserLoggedIn(req) {
   const cookies = req.cookies;
-  return cookies['uid'] && cookies['authUid'];
+  return cookies['logged_in'] && cookies['uid'];
 }
 
 module.exports = {

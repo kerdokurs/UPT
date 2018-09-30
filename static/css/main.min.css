@@ -1,0 +1,5 @@
+body { background-color: #dedede; }
+
+.container { background-color: #fff; padding: 20px; }
+
+@media only screen and (max-width: 992px) { .breadcrumb { font-size: 0.8em; } }

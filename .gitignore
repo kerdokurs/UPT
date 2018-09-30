@@ -2,3 +2,5 @@
 /environment/
 /.vscode/
 /files/
+/mongo/
+.env

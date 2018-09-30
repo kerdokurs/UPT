@@ -1,13 +1,13 @@
 const fs = require('fs');
 
-function randomString(length) {
+const randomString = length => {
   let text = '';
   const possible =
     'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < length; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
-}
+};
 
 const currentTime = () => {
   const now = new Date();
@@ -79,11 +79,23 @@ const getField = (topic, fieldId) => {
       if (topic.fields[i].id === fieldId) return topic.fields[i];
 };
 
+const getStatus = id => {
+  const status = JSON.parse(
+    fs.readFileSync(__dirname + '/../data/status.json')
+  );
+  return status[id]
+    ? status[id]
+    : { id: -01, code: 404, message: 'Invalid status code id', colour: '#fff' };
+};
+
 module.exports = {
   currentTime,
   kymneastmed,
   randomString,
+
   getTopics,
   getTopic,
-  getField
+  getField,
+
+  getStatus
 };

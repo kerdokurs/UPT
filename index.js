@@ -5,9 +5,9 @@ const bodyParser = require('body-parser');
 
 const index = require('./core/routers/app');
 const user = require('./core/routers/user');
-const teemad = require('./core/routers/teemad');
+const topics = require('./core/routers/topics');
 
-const authModule = require('./core/modules/authModule');
+require('dotenv').config();
 
 const locals = require('./core/locals');
 
@@ -28,7 +28,7 @@ app.use(index.log);
 
 app.use('/', index.router);
 app.use('/user', user);
-app.use('/teemad', teemad);
+app.use('/teemad', topics);
 
 app.get('**', async (req, res) => {
   res.render('404', {

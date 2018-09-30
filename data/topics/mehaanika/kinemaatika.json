@@ -1,0 +1,12 @@
+{
+  "mathjax": [
+    {
+      "id": "math1",
+      "exp": "s = v_0t + \\frac{at^2}{2}"
+    },
+    {
+      "id": "math2",
+      "exp": "s = \\frac{v^2-v_0^2}{2a}"
+    }
+  ]
+}

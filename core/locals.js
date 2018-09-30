@@ -3,13 +3,13 @@ const authModule = require('./modules/authModule');
 
 module.exports = {
   get: async req => {
-    const { authUid } = req.cookies;
-    const user = await authModule.getUser(authUid);
+    const { uid } = req.cookies;
+    const user = await authModule.getUser(uid);
 
     const topics = functions.getTopics();
 
     return {
-      pageTitle: 'Kerdo UPT 0.01',
+      pageTitle: 'Kerdo UPT 0.4',
 
       topics,
       user

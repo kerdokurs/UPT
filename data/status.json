@@ -1,0 +1,8 @@
+{
+  "00": {
+    "id": 0,
+    "code": 404,
+    "message": "Database not found",
+    "colour": "#fff"
+  }
+}
