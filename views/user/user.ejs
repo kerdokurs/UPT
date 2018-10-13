@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <% include ../imports/head.ejs %>
+    <title>
+      <%= pageTitle %>
+    </title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %>
+    <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <div class="section">
+        <h4>Bookmarks:</h4>
+        <ul>
+          <% for(i in bookmarks) { bookmark = bookmarks[i]; %>
+          <li>
+            <a href="/teemad<%= bookmark.url %>">
+              <%= bookmark.title %>
+            </a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

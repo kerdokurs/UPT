@@ -1,5 +1,6 @@
 /node_modules/
-/environment/
+/environment/creds.json
+/environment/key.pem
 /.vscode/
 /files/
 /mongo/

@@ -12,7 +12,7 @@ const randomString = length => {
 const currentTime = () => {
   const now = new Date();
 
-  let hours = now.getHours();
+  let hours = parseInt(now.getHours()) + parseInt(process.env.TIME_HOUR_OFFSET);
   if (parseInt(hours) < 10) hours = '0' + hours;
 
   let minutes = now.getMinutes();
@@ -22,9 +22,10 @@ const currentTime = () => {
   if (parseInt(seconds) < 10) seconds = '0' + seconds;
 
   let day = now.getDate();
-  if (parseInt(day) < 10) day = '0' + secodaynds;
+  if (parseInt(day) < 10) day = '0' + day;
 
-  let month = now.getMonth();
+  let month =
+    parseInt(now.getMonth()) + parseInt(process.env.TIME_MONTH_OFFSET);
   if (parseInt(month) < 10) month = '0' + month;
 
   let year = now

@@ -13,6 +13,12 @@
     <% include ../imports/sidenav.ejs %>
     <% include ../imports/navbar.ejs %>
     <div class="container">
+      <% if(bookmarked) { %>
+      <a href="/bookmarks/del?id=<%= selectedTopic.id %>-<%= selectedField.id %>"><i class="material-icons">bookmark</i></a>
+      <% } else { %>
+      <a href="/bookmarks/set?id=<%= selectedTopic.id %>-<%= selectedField.id %>&title=<%= escape((selectedField ? selectedField.title + ' - ' : '') + (selectedTopic ? selectedTopic.title: '')) %>&url=<%= escape(pathname) %>"><i
+          class="material-icons">bookmark_border</i></a>
+      <% } %>
       <%- data %>
     </div>
   </body>

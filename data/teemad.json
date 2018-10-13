@@ -1,5 +1,27 @@
 [
   {
+    "id": "uldine",
+    "title": "Üldine",
+    "link_prefix": "uldine/",
+    "fields": [
+      {
+        "id": "ulesanne",
+        "title": "Ülesande lahenduskäik",
+        "link": "ulesanne"
+      },
+      {
+        "id": "astmed",
+        "title": "Kümneastmed",
+        "link": "astmed"
+      },
+      {
+        "id": "si-susteem",
+        "title": "SI-süsteem",
+        "link": "si-susteem"
+      }
+    ]
+  },
+  {
     "id": "mehaanika",
     "title": "Mehaanika",
     "link_prefix": "mehaanika/",
@@ -55,18 +77,6 @@
         "id": "valgus",
         "title": "Valgus",
         "link": "valgus"
-      }
-    ]
-  },
-  {
-    "id": "uldine",
-    "title": "Üldine",
-    "link_prefix": "uldine/",
-    "fields": [
-      {
-        "id": "astmed",
-        "title": "Kümneastmed",
-        "link": "astmed"
       }
     ]
   }

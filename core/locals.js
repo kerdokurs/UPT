@@ -9,7 +9,7 @@ module.exports = {
     const topics = functions.getTopics();
 
     return {
-      pageTitle: 'Kerdo UPT 0.4',
+      pageTitle: 'Kerdo UPT 0.1',
 
       topics,
       user

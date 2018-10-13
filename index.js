@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const express = require('express');
 
 const cookieParser = require('cookie-parser');
@@ -6,6 +8,7 @@ const bodyParser = require('body-parser');
 const index = require('./core/routers/app');
 const user = require('./core/routers/user');
 const topics = require('./core/routers/topics');
+const bookmarks = require('./core/routers/bookmarks');
 
 require('dotenv').config();
 
@@ -29,6 +32,7 @@ app.use(index.log);
 app.use('/', index.router);
 app.use('/user', user);
 app.use('/teemad', topics);
+app.use('/bookmarks', bookmarks);
 
 app.get('**', async (req, res) => {
   res.render('404', {
