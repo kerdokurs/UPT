@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <% include ../imports/head.ejs %>
     <title>
+      Info -
       <%= pageTitle %>
     </title>
   </head>
@@ -13,18 +14,12 @@
     <% include ../imports/sidenav.ejs %>
     <% include ../imports/navbar.ejs %>
     <div class="container">
-      <div class="section">
-        <h4>Bookmarks:</h4>
-        <ul>
-          <% for(i in bookmarks) { bookmark = bookmarks[i]; %>
-          <li>
-            <a href="/teemad/<%= bookmark.url %>">
-              <%= bookmark.title %>
-            </a>
-          </li>
-          <% } %>
-        </ul>
-      </div>
+      <h4>
+        <%= pageTitle %>
+      </h4>
+      <p>
+        on interaktiivne füüsika õpikeskkond.
+      </p>
     </div>
   </body>
 </html>

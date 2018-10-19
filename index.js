@@ -9,6 +9,7 @@ const index = require('./core/routers/app');
 const user = require('./core/routers/user');
 const topics = require('./core/routers/topics');
 const bookmarks = require('./core/routers/bookmarks');
+const misc = require('./core/routers/misc');
 
 require('dotenv').config();
 
@@ -33,6 +34,7 @@ app.use('/', index.router);
 app.use('/user', user);
 app.use('/teemad', topics);
 app.use('/bookmarks', bookmarks);
+app.use(misc);
 
 app.get('**', async (req, res) => {
   res.render('404', {

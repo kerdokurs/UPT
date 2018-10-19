@@ -1,9 +1,3 @@
-/**
- * @author Kerdo
- * Website https://ktch.tk/
- * Contact kerdo@ktch.tk
- * Copyright (c) Kerdo 2018
- */
 'use strict';
 
 const router = require('express').Router();

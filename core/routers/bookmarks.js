@@ -5,10 +5,10 @@ const functions = require('../functions');
 
 const Bookmark = require('../database/models/Bookmark');
 
-router.route('/set').get(async (req, res) => {
+router.route('/set').post(async (req, res) => {
   if (!authModule.isUserLoggedIn(req)) res.redirect('/user/login');
 
-  const { id, title, url } = req.query;
+  const { id, title, url } = req.body;
   const { uid } = req.cookies;
 
   if (uid && title && id) {
@@ -18,10 +18,9 @@ router.route('/set').get(async (req, res) => {
     );
 
     if (existingBookmarks.length > 0) {
-      res.status(403).send(
+      res.status(200).send(
         JSON.stringify({
-          status: 403,
-          message: 'Bookmark already exists'
+          status: -1
         })
       );
     } else {
@@ -35,40 +34,34 @@ router.route('/set').get(async (req, res) => {
         () => {
           res.status(200).send(
             JSON.stringify({
-              status: 200,
-              message: 'Bookmark saved!'
+              status: 0
             })
           );
         }
       );
     }
   } else {
-    res.status(400).send(
+    res.status(200).send(
       JSON.stringify({
-        status: 400,
-        message: 'Invalid parameters'
+        status: -2
       })
     );
   }
 });
 
-router.route('/del').get(async (req, res) => {
+router.route('/del').post(async (req, res) => {
   if (!authModule.isUserLoggedIn(req)) res.redirect('/user/login');
 
-  const { id } = req.query;
+  const { id } = req.body;
   const { uid } = req.cookies;
 
   Bookmark.find({ id, uid }, (err, data) => {
     if (data.length > 0) {
       Bookmark.deleteOne({ uid, id }, () =>
-        res
-          .status(200)
-          .send(JSON.stringify({ status: 200, message: 'Bookmark deleted!' }))
+        res.status(200).send(JSON.stringify({ status: 1 }))
       );
     } else {
-      res
-        .status(404)
-        .send(JSON.stringify({ status: 404, message: 'Bookmark not found!' }));
+      res.status(200).send(JSON.stringify({ status: -3 }));
     }
   });
 });

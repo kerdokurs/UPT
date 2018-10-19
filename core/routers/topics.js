@@ -78,7 +78,9 @@ function generateMarkdown(topic, field) {
     const converter = new showdown.Converter({
       optionKey: 'value',
       customizedHeaderId: true,
-      tables: true
+      tables: true,
+      openLinksInNewWindow: true,
+      headerLevelStart: 3
     });
     markdown = converter.makeHtml(markdown);
 
