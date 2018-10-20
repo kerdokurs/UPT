@@ -12,7 +12,8 @@ const userModel = new Schema(
     },
     displayName: { type: String, required: true },
     photoURL: { type: String, required: true },
-    email: { type: String, required: true }
+    email: { type: String, required: true },
+    admin: { type: Boolean, default: false }
   },
   { collection: 'users' }
 );

@@ -10,8 +10,13 @@ const user = require('./core/routers/user');
 const topics = require('./core/routers/topics');
 const bookmarks = require('./core/routers/bookmarks');
 const misc = require('./core/routers/misc');
+const admin = require('./core/routers/admin');
+
+const functions = require('./core/functions');
 
 require('dotenv').config();
+
+const port = process.env.PORT || 80;
 
 const locals = require('./core/locals');
 
@@ -28,13 +33,26 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use(index.log);
+app.use((req, res, next) => {
+  console.log(
+    functions.currentTime() +
+      ' [WEB, ' +
+      req.method +
+      '] ' +
+      req.protocol +
+      '://' +
+      req.hostname +
+      req.url
+  );
+  next();
+});
 
-app.use('/', index.router);
+app.use('/', index);
 app.use('/user', user);
 app.use('/teemad', topics);
 app.use('/bookmarks', bookmarks);
 app.use(misc);
+app.use('/admin', admin);
 
 app.get('**', async (req, res) => {
   res.render('404', {
@@ -43,6 +61,6 @@ app.get('**', async (req, res) => {
   });
 });
 
-app.listen(index.port, () => {
-  console.log('[WEB] Running on port %s!', index.port);
+app.listen(port, () => {
+  console.log('[WEB] Running on port %s!', port);
 });

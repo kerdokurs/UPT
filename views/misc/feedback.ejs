@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <% include ../imports/head.ejs %>
+    <script src="/js/feedback.js"></script>
     <title>
       Tagasiside -
       <%= pageTitle %>
@@ -14,20 +15,20 @@
     <% include ../imports/sidenav.ejs %>
     <% include ../imports/navbar.ejs %>
     <div class="container">
-      <form action="feedback-submit" method="post">
+      <form onsubmit="feedback(this); return false;">
         <div class="row">
           <div class="col s12">
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">account_circle</i>
-                <input type="text" id="form-name" name="form-name" required>
+                <input type="text" id="form-name" name="name" required>
                 <label for="form-name">Nimi</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">textsms</i>
-                <textarea name="form-text" id="form-text" cols="30" rows="10" class="materialize-textarea" required></textarea>
+                <textarea name="text" id="form-text" cols="30" rows="10" class="materialize-textarea" required></textarea>
                 <label for="form-text">Sõnum</label>
               </div>
             </div>
