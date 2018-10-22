@@ -6,8 +6,6 @@ const functions = require('../functions');
 const Bookmark = require('../database/models/Bookmark');
 
 router.route('/set').post(async (req, res) => {
-  if (!authModule.isUserLoggedIn(req)) res.redirect('/user/login');
-
   const { id, title, url } = req.body;
   const { uid } = req.cookies;
 
@@ -50,20 +48,22 @@ router.route('/set').post(async (req, res) => {
 });
 
 router.route('/del').post(async (req, res) => {
-  if (!authModule.isUserLoggedIn(req)) res.redirect('/user/login');
-
   const { id } = req.body;
   const { uid } = req.cookies;
 
-  Bookmark.find({ id, uid }, (err, data) => {
-    if (data.length > 0) {
-      Bookmark.deleteOne({ uid, id }, () =>
-        res.status(200).send(JSON.stringify({ status: 1 }))
-      );
-    } else {
-      res.status(200).send(JSON.stringify({ status: -3 }));
-    }
-  });
+  if (id && uid) {
+    Bookmark.find({ id, uid }, (err, data) => {
+      if (data.length > 0) {
+        Bookmark.deleteOne({ uid, id }, () =>
+          res.status(200).send(JSON.stringify({ status: 1 }))
+        );
+      } else {
+        res.status(200).send(JSON.stringify({ status: -3 }));
+      }
+    });
+  } else {
+    res.status(200).send(JSON.stringify({ status: -2 }));
+  }
 });
 
 module.exports = router;

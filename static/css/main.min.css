@@ -7,6 +7,8 @@ body { background-color: #dedede; font-family: 'Google Sans'; }
 
 .user-profile div { padding: 10px; }
 
+.table { overflow-x: auto; }
+
 table thead { font-family: 'Bai Jamjuree', sans-serif; }
 
 table tbody { font-size: 0.8em; font-family: 'Roboto Mono', monospace; }

@@ -4,6 +4,8 @@ SI-süsteemi ühikud on rahvusvahelised kokkuleppelised ühikud, mida kasutataks
 
 ### SI põhiühikud
 
+<div class="table" markdown="1">
+
 | Ühiku nimetus | Ühiku tähis |      Füüsikaline suurus      |         Definitsioon          |
 | :-----------: | :---------: | :--------------------------: | :---------------------------: |
 |    meeter     |      m      |            pikkus            |
@@ -13,5 +15,7 @@ SI-süsteemi ühikud on rahvusvahelised kokkuleppelised ühikud, mida kasutataks
 |    kelvin     |      K      | termodünaamiline temperatuur |
 |     mool      |     mol     |           ainehulk           |
 |    kandela    |     cd      |        valgustugevus         |
+
+</div>
 
 Loe SI-süsteemist täpsemalt [Vikipeediast](https://et.wikipedia.org/wiki/SI-s%C3%BCsteemi_%C3%BChikud)

@@ -27,6 +27,7 @@ const bookmark = type => {
     url,
     data,
     success: data => {
+      console.log(data);
       data = JSON.parse(data);
 
       switch (data.status) {

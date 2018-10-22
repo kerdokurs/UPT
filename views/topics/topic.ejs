@@ -15,10 +15,12 @@
     <% include ../imports/sidenav.ejs %>
     <% include ../imports/navbar.ejs %>
     <div class="container">
+      <% if(user != null) { %>
       <% if(bookmarked) { %>
       <a href="#!" onclick="bookmark(0)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark</i></a>
       <% } else { %>
       <a href="#!" onclick="bookmark(1)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark_border</i></a>
+      <% } %>
       <% } %>
       <%- data %>
     </div>

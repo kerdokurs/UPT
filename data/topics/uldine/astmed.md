@@ -1,6 +1,8 @@
 # Kümneastmed
 
-Kümneastmed ehk ühikute detsimaaleesliited ...
+Kümneastmed ehk ühikute detsimaaleesliited on ...
+
+<div class="table" markdown="1">
 
 | Tähis |          Arvkordaja           | Eesliide |
 | :---: | :---------------------------: | :------: |
@@ -16,3 +18,5 @@ Kümneastmed ehk ühikute detsimaaleesliited ...
 | $\mu$ |     $10^{-6} = 0.000001$      |  mikro-  |
 |   n   |    $10^{-9} = 0.000000001$    |  nano-   |
 |   p   |  $10^{-12} = 0.000000000001$  |  piko-   |
+
+</div>
