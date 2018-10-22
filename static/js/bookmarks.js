@@ -32,14 +32,12 @@ const bookmark = type => {
       switch (data.status) {
         case 0:
           alert('Järjehoidja lisatud!');
-          $('#add-bookmark').attr('onclick', 'bookmark(0)');
-          $('#add-bookmark').attr('id', 'remove-bookmark');
+          $('#bookmark-action').attr('onclick', 'bookmark(0)');
           $('#bookmark-icon').text('bookmark');
           break;
         case 1:
           alert('Järjehoidja eemaldatud!');
-          $('#remove-bookmark').attr('onclick', 'bookmark(1)');
-          $('#remove-bookmark').attr('id', 'add-bookmark');
+          $('#bookmark-action').attr('onclick', 'bookmark(1)');
           $('#bookmark-icon').text('bookmark_border');
           break;
         case -1:

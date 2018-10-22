@@ -2,19 +2,9 @@
   <div class="nav-wrapper">
     <a href="#!" data-target="sidenav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
     <div class="left">
-      <a href="/" class="breadcrumb">
+      <a href="/">
         <%= pageTitle %>
       </a>
-      <% if(locals.selectedTopic) { %>
-      <a href="/teemad/<%= selectedTopic.link_prefix %>" class="breadcrumb">
-        <%= selectedTopic.title %>
-      </a>
-      <% } %>
-      <% if(locals.selectedField) { %>
-      <a href="/teemad/<%= selectedTopic.link_prefix + selectedField.link %>" class="breadcrumb">
-        <%= selectedField.title %>
-      </a>
-      <% } %>
     </div>
   </div>
 </nav>

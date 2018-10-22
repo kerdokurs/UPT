@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="<%= (selectedField ? selectedField.title + ' - ' : '') + (selectedTopic ? selectedTopic.title + ' - ' : '') %>">
     <% include ../imports/head.ejs %>
     <script src="/js/bookmarks.js"></script>
     <title>
@@ -15,9 +16,9 @@
     <% include ../imports/navbar.ejs %>
     <div class="container">
       <% if(bookmarked) { %>
-      <a href="#!" onclick="bookmark(0)" id="remove-bookmark"><i class="material-icons" id="bookmark-icon">bookmark</i></a>
+      <a href="#!" onclick="bookmark(0)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark</i></a>
       <% } else { %>
-      <a href="#!" onclick="bookmark(1)" id="add-bookmark"><i class="material-icons" id="bookmark-icon">bookmark_border</i></a>
+      <a href="#!" onclick="bookmark(1)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark_border</i></a>
       <% } %>
       <%- data %>
     </div>
