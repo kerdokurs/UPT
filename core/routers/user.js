@@ -72,12 +72,21 @@ router.route('/logout').get((req, res) => {
 });
 
 router.route('/').get(async (req, res) => {
-  if (!auth.isUserLoggedIn(req)) res.redirect('/user/login');
-  const { uid } = req.cookies;
+  if (!auth.isUserLoggedIn(req)) res.redirect('/user/login?next=/user');
   const users = await User.find({ uid }).then(data => data);
-  const bookmarks = await Bookmark.find({ uid }, data => data);
 
-  res.render('user/user', { data: users[0], bookmarks });
+  res.render('user/user', { data: users[0] });
+});
+
+router.route('/achievements').get(async (req, res) => {
+  const achievements = [];
+  res.render('user/achievements', { achievements });
+});
+
+router.route('/bookmarks').get(async (req, res) => {
+  const { uid } = req.cookies;
+  const bookmarks = await Bookmark.find({ uid }, data => data);
+  res.render('user/bookmarks', { bookmarks });
 });
 
 module.exports = router;
