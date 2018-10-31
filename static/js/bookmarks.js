@@ -55,4 +55,36 @@ const bookmark = type => {
   });
 };
 
-// /bookmarks/set?id=<%= selectedTopic.id %>-<%= selectedField.id %>&title=<%= escape((selectedField ? selectedField.title + ' - ' : '') + (selectedTopic ? selectedTopic.title: '')) %>&url=<%= escape(pathname) %>
+const removeFromList = (url, title, id) => {
+  const accept = confirm(`Kindel, et kustutada ${title}?`);
+  if (!accept) return;
+
+  const ids = url.split('/');
+
+  const data = {
+    id: ids[0] + '-' + ids[1]
+  };
+
+  $.ajax({
+    type: 'POST',
+    url: '/bookmarks/del',
+    data,
+    success: data => {
+      console.log(data);
+      data = JSON.parse(data);
+
+      switch (data.status) {
+        case 1:
+          alert('Järjehoidja eemaldatud!');
+          $('#bookmark-' + id).remove();
+          break;
+        case -2:
+          alert('Parameetrid puuduvad!');
+          break;
+        case -3:
+          alert('Järjehoidjat ei leitud!');
+          break;
+      }
+    }
+  });
+};

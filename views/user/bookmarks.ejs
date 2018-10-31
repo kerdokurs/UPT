@@ -5,8 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <% include ../imports/head.ejs %>
+    <script src="/js/bookmarks.js"></script>
     <title>
-      Järjehoidjad-
+      Järjehoidjad -
       <%= pageTitle %>
     </title>
   </head>
@@ -17,10 +18,12 @@
       <h4>Järjehoidjad:</h4>
       <ul>
         <% for(i in bookmarks) { bookmark = bookmarks[i]; %>
-        <li>
+        <li id="bookmark-<%= i %>">
           <a href="/teemad/<%= bookmark.url %>">
             <%= bookmark.title %>
           </a>
+          <a href="javascript:void(0);" onclick="removeFromList('<%= bookmark.url %>', '<%= bookmark.title %>', '<%= i %>')"
+            style="font-size: 1.8em;">x</a>
         </li>
         <% } %>
       </ul>

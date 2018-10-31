@@ -73,6 +73,7 @@ router.route('/logout').get((req, res) => {
 
 router.route('/').get(async (req, res) => {
   if (!auth.isUserLoggedIn(req)) res.redirect('/user/login?next=/user');
+  const { uid } = req.cookies;
   const users = await User.find({ uid }).then(data => data);
 
   res.render('user/user', { data: users[0] });

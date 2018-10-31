@@ -6,6 +6,11 @@ const functions = require('../functions');
 const Bookmark = require('../database/models/Bookmark');
 
 router.route('/set').post(async (req, res) => {
+  if (!authModule.isUserLoggedIn(req))
+    res
+      .status(400)
+      .send(JSON.stringify({ status: 400, message: 'Not logged in!' }));
+
   const { id, title, url } = req.body;
   const { uid } = req.cookies;
 
@@ -48,6 +53,11 @@ router.route('/set').post(async (req, res) => {
 });
 
 router.route('/del').post(async (req, res) => {
+  if (!authModule.isUserLoggedIn(req))
+    res
+      .status(400)
+      .send(JSON.stringify({ status: 400, message: 'Not logged in!' }));
+
   const { id } = req.body;
   const { uid } = req.cookies;
 

@@ -27,16 +27,8 @@
         </div>
       </div>
       <div class="section">
-        <h5>Järjehoidjad:</h5>
-        <ul>
-          <% for(i in bookmarks) { bookmark = bookmarks[i]; %>
-          <li>
-            <a href="/teemad/<%= bookmark.url %>">
-              <%= bookmark.title %>
-            </a>
-          </li>
-          <% } %>
-        </ul>
+        <a href="/user/bookmarks" target="_blank" rel="noopener noreferrer">Järjehoidjad</a><br>
+        <a href="/user/achievements" target="_blank" rel="noopener noreferrer">Saavutused</a>
       </div>
     </div>
   </body>
