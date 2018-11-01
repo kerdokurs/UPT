@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <% include ../../imports/head.ejs %>
+    <% include ../imports/head.ejs %>
     <title>Teema muutmine</title>
   </head>
   <body>
-    <% include ../../imports/sidenav.ejs %>
-    <% include ../../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %>
+    <% include ../imports/navbar.ejs %>
     <div class="container">
-      <form action="/admin/data/edit_topic/<%= data.id %>" method="POST">
+      <form action="/admin/edit_topic/<%= data.id %>" method="POST">
         <input type="text" name="title" value="<%= data.title %>">
         <textarea name="data" id="edit-topic-data" cols="30" rows="10" class="materialize-textarea"><%= data.data %></textarea>
         <input type="submit" value="Salvesta" class="btn green">

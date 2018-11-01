@@ -19,7 +19,7 @@ router.route('/feedback-submit').post((req, res) => {
   const { uid } = req.cookies;
 
   if (name && text) {
-    Feedback.create({ id: functions.randomString(24), uid, name, text }, () => {
+    Feedback.create({ id: functions.randomString(24), uid, text, name }, () => {
       res.status(200).send(
         JSON.stringify({
           status: 0

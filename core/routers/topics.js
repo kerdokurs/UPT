@@ -41,9 +41,6 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
     bookmarked = data.length > 0;
   }
 
-  let admin = false;
-  if (authModule.isUserLoggedIn(req)) admin = await authModule.isUserAdmin(req);
-
   if (categoryData && topicData) {
     const markdown = generateMarkdown(topicData.data);
     res.render('topics/topic', {
@@ -51,8 +48,7 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
       topic: topicData,
       markdown,
       bookmarked,
-      pathname: req.path,
-      admin
+      pathname: req.path
     });
   } else if (categoryData && !topicData) {
     res.render('topics/topics', {

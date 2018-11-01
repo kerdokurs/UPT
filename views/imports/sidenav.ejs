@@ -23,6 +23,11 @@ function isSelected(topic) {
         <span class="white-text email">
           <%= user.email %>
         </span>
+        <% if(admin) { %>
+        <span>
+          <a href="/admin" target="_blank" rel="noopener noreferrer" class="btn green">Admin</a>
+        </span>
+        <% } %>
       </div>
     </li>
     <li><a href="/user/settings"><i class="material-icons">settings</i>Sätted</a></li>

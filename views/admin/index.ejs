@@ -15,18 +15,20 @@ function getCategory(parent) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <% include ../../imports/head.ejs %>
-    <title>Admin data</title>
+    <% include ../imports/head.ejs %>
+    <title>Admin</title>
   </head>
   <body>
-    <% include ../../imports/sidenav.ejs %>
-    <% include ../../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %>
+    <% include ../imports/navbar.ejs %>
     <div class="container">
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
             <li class="tab col s3"><a class="active" href="#kategooriad">Kategooriad</a></li>
             <li class="tab col s3"><a href="#teemad">Teemad</a></li>
+            <li class="tab col s3"><a href="#adminid">Adminid</a></li>
+            <li class="tab col s3"><a href="#tagasiside">Tagasiside</a></li>
           </ul>
         </div>
       </div>
@@ -51,7 +53,7 @@ function getCategory(parent) {
                   <%= category.id %>
                 </td>
                 <td>
-                  <form method="POST" action="data/del_cat" onsubmit="confirm('Kindel, et kustutada <%= category.title %>?')">
+                  <form method="POST" action="/admin/del_cat" onsubmit="return confirm('Kindel, et kustutada <%= category.title %>?')">
                     <input type="hidden" name="id" value="<%= category.id %>">
                     <input type="submit" value="Kustuta" class="btn red">
                   </form>
@@ -62,7 +64,7 @@ function getCategory(parent) {
           </table>
         </div>
         <h5>Lisa uus kategooria</h5>
-        <form method="POST" action="data/add_cat">
+        <form method="POST" action="/admin/add_cat">
           <table>
             <tr>
               <td>Kategooria</td>
@@ -119,10 +121,10 @@ function getCategory(parent) {
                     class="btn green">Vaata</a>
                 </td>
                 <td>
-                  <a href="/admin/data/edit_topic/<%= topic.id %>" class="btn orange">Redigeeri</a>
+                  <a href="/admin/edit_topic/<%= topic.id %>" class="btn orange">Redigeeri</a>
                 </td>
                 <td>
-                  <form method="POST" action="data/del_top" onsubmit="confirm('Kindel, et kustutada <%= topic.title %>?')">
+                  <form method="POST" action="/admin/del_top" onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
                     <input type="hidden" name="id" value="<%= topic.id %>">
                     <input type="submit" value="Kustuta" class="btn red">
                   </form>
@@ -133,7 +135,7 @@ function getCategory(parent) {
           </table>
         </div>
         <h5>Lisa uus teema</h5>
-        <form action="/admin/data/add_top" method="POST">
+        <form action="/admin/add_top" method="POST">
           <table>
             <tr>
               <td>
@@ -171,6 +173,86 @@ function getCategory(parent) {
             </tr>
           </table>
         </form>
+      </div>
+      <div id="adminid">
+        <h4>Administraatorid</h4>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Nimi</th>
+                <th>UID</th>
+                <th>Email</th>
+                <th>Eemalda</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let _admin of admins) { %>
+              <tr>
+                <td>
+                  <%= _admin.displayName %>
+                </td>
+                <td>
+                  <%= _admin.uid %>
+                </td>
+                <td>
+                  <%= _admin.email %>
+                </td>
+                <td>
+                  <form method="POST" action="/admin/del_adm" onsubmit="return confirm('Kindel, et eemaldada <%= _admin.displayName %>?')">
+                    <input type="hidden" name="uid" value="<%= _admin.uid %>">
+                    <input type="submit" value="Eemalda" class="btn red">
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div id="tagasiside">
+        <h4>Tagasiside</h4>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>UID</th>
+                <th>Aeg</th>
+                <th>Nimi</th>
+                <th>Sisu</th>
+                <th>Kustuta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let _feedback of feedback) { %>
+              <tr>
+                <td>
+                  <%= _feedback.id %>
+                </td>
+                <td>
+                  <%= _feedback.uid %>
+                </td>
+                <td>
+                  <%= _feedback.timestamp %>
+                </td>
+                <td>
+                  <%= _feedback.name %>
+                </td>
+                <td>
+                  <%= _feedback.text %>
+                </td>
+                <td>
+                  <form method="POST" action="/admin/del_fdb" onsubmit="return confirm('Kindel, et kustutada <%= _feedback.name %>?')">
+                    <input type="hidden" name="id" value="<%= _feedback.id %>">
+                    <input type="submit" value="Kustuta" class="btn red">
+                  </form>
+                </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </body>

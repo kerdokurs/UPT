@@ -8,11 +8,16 @@ module.exports = {
 
     const _categories = await functions.getTopics();
 
+    let admin = false;
+    if (authModule.isUserLoggedIn(req))
+      admin = await authModule.isUserAdmin(req);
+
     return {
       pageTitle: 'Kerdo UPT 0.1',
 
       _categories,
-      user
+      user,
+      admin
     };
   }
 };

@@ -31,4 +31,4 @@ textarea { font-family: 'Roboto Mono', monospace; font-size: 0.8em !important; }
 
 .tabs .tab a:visited { color: #000; }
 
-.tabs .tab a:focus.active { background-color: #fff; }
+.tabs .tab a:focus { background-color: #fff !important; }
