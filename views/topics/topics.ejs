@@ -1,12 +1,3 @@
-<%
-function selected(topic) {
-  for(i in topics) {
-    const _topic = topics[i];
-    if(topic.id === _topic.id)
-      return _topic;
-  }
-}
-%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -22,43 +13,7 @@ function selected(topic) {
     <% include ../imports/sidenav.ejs %>
     <% include ../imports/navbar.ejs %>
     <div class="container">
-      <% if(selectedTopic) { %>
-      <h3>
-        <a href="/teemad/<%= topic.link_prefix %>">
-          <%= selectedTopic.title %>
-        </a>
-      </h3>
-      <ol>
-        <% for(j in selectedTopic.fields) { field = selectedTopic.fields[j]; %>
-        <li>
-          <a href="/teemad/<%= selectedTopic.link_prefix %><%= field.link %>">
-            <%= field.title %>
-          </a>
-        </li>
-        <% } %>
-      </ol>
-      <% } else { %>
-      <ol>
-        <% for(i in topics) { topic = topics[i]; %>
-        <li>
-          <h3>
-            <a href="/teemad/<%= topic.link_prefix %>">
-              <%= topic.title %>
-            </a>
-          </h3>
-        </li>
-        <ol style="list-style-type: upper-roman;">
-          <% for(j in topic.fields) { field = topic.fields[j]; %>
-          <li>
-            <a href="/teemad/<%= topic.link_prefix %><%= field.link %>">
-              <%= field.title %>
-            </a>
-          </li>
-          <% } %>
-        </ol>
-        <% } %>
-      </ol>
-      <% } %>
+
     </div>
   </body>
 </html>

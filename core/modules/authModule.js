@@ -12,7 +12,7 @@ function isUserLoggedIn(req) {
   return cookies['logged_in'] && cookies['uid'];
 }
 
-async function isUserAdmin(req, res, next) {
+async function adminGuard(req, res, next) {
   if (!isUserLoggedIn(req)) return false;
   const { uid } = req.cookies;
   const users = await User.find({ uid }, (err, data) => data);
@@ -20,8 +20,21 @@ async function isUserAdmin(req, res, next) {
   else res.redirect('/');
 }
 
+async function isUserAdmin(req) {
+  const { uid } = req.cookies;
+  if (uid) {
+    const data = await User.find({ uid }, (err, data) => {
+      return data;
+    });
+    return data[0] && data[0].admin;
+  }
+
+  return false;
+}
+
 module.exports = {
   getUser,
   isUserLoggedIn,
-  isUserAdmin
+  isUserAdmin,
+  adminGuard
 };

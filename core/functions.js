@@ -1,5 +1,8 @@
 const fs = require('fs');
 
+const Category = require('./database/models/Category');
+const Topic = require('./database/models/Topic');
+
 const randomString = length => {
   let text = '';
   const possible =
@@ -51,33 +54,34 @@ const currentTime = () => {
   );
 };
 
-const kymneastmed = {
-  all: () => {
-    return JSON.parse(
-      fs.readFileSync(__dirname + '/../data/kymne-astmed.json')
-    );
-  },
-  random: () => {
-    const json = kymneastmed.all();
-    const keys = Object.keys(json);
-    const random = keys[Math.floor(Math.random() * keys.length)];
-    return json[random];
+const getTopics = async () => {
+  const categories = await Category.find();
+  const topics = await Topic.find();
+
+  const _categories = [];
+
+  for (let category of categories) {
+    const _category = {
+      title: category.title,
+      id: category.id,
+      topics: []
+    };
+
+    for (let topic of topics) {
+      const _topic = {
+        title: topic.title,
+        id: topic.id
+      };
+
+      if (topic.parent === category.id) {
+        _category.topics.push(_topic);
+      }
+    }
+
+    _categories.push(_category);
   }
-};
 
-const getTopics = () => {
-  return JSON.parse(fs.readFileSync(__dirname + '/../data/teemad.json'));
-};
-
-const getTopic = topicId => {
-  const topics = getTopics();
-  for (i in topics) if (topics[i].id === topicId) return topics[i];
-};
-
-const getField = (topic, fieldId) => {
-  if (topic)
-    for (i in topic.fields)
-      if (topic.fields[i].id === fieldId) return topic.fields[i];
+  return _categories;
 };
 
 const getStatus = id => {
@@ -91,12 +95,9 @@ const getStatus = id => {
 
 module.exports = {
   currentTime,
-  kymneastmed,
   randomString,
 
   getTopics,
-  getTopic,
-  getField,
 
   getStatus
 };

@@ -17,64 +17,68 @@ const functions = require('../functions');
 const authModule = require('../modules/authModule');
 
 const Bookmark = require('../database/models/Bookmark');
+const Category = require('../database/models/Category');
+const Topic = require('../database/models/Topic');
 
-router.route('/:topicId?/:fieldId*?').get(async (req, res) => {
-  const { topicId, fieldId } = req.params;
+router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
+  const { categoryId, topicId } = req.params;
 
-  const topic = functions.getTopic(topicId);
-  const field = functions.getField(topic, fieldId);
+  let topicData = await getTopicData(topicId, categoryId);
+  topicData = topicData[0];
+  let categoryData = await getCategoryData(categoryId);
+  categoryData = categoryData[0];
 
   let bookmarked = false;
 
   if (authModule.isUserLoggedIn(req)) {
-    const bookmarkId = topicId + '-' + fieldId;
+    const bookmarkId = categoryId + '-' + topicId;
     const { uid } = req.cookies;
 
-    await Bookmark.find({ uid, id: bookmarkId }, (err, data) => {
-      if (data.length > 0) bookmarked = true;
-    });
+    const data = await Bookmark.find(
+      { uid, id: bookmarkId },
+      (err, data) => data
+    );
+    bookmarked = data.length > 0;
   }
 
-  if (topic && field) {
-    const data = await generateMarkdown(topic, field);
+  let admin = false;
+  if (authModule.isUserLoggedIn(req)) admin = await authModule.isUserAdmin(req);
+
+  if (categoryData && topicData) {
+    const markdown = generateMarkdown(topicData.data);
     res.render('topics/topic', {
-      selectedTopic: topic,
-      selectedField: field,
-      data,
+      category: categoryData,
+      topic: topicData,
+      markdown,
       bookmarked,
-      pathname: req.path
+      pathname: req.path,
+      admin
     });
-  } else if (topic && !field) {
+  } else if (categoryData && !topicData) {
     res.render('topics/topics', {
-      selectedTopic: topic
+      selectedCategory: categoryData
     });
   } else {
-    res.render('topics/topics', { selectedTopic: null });
+    res.render('topics/topics', {
+      selectedCategory: null
+    });
   }
 });
 
-function getFiles(topic, field) {
-  let data = '';
-  if (topic) {
-    if (field) {
-      data = topic.id + '/' + field.id;
-    } else {
-      data = topic.id + '/index';
-    }
-  } else {
-    data = 'index';
-  }
-  return data;
+async function getTopicData(topicId, categoryId) {
+  return await Topic.find(
+    { id: topicId, parent: categoryId },
+    (err, data) => data
+  );
 }
 
-function generateMarkdown(topic, field) {
+async function getCategoryData(categoryId) {
+  return await Category.find({ id: categoryId }, (err, data) => data);
+}
+
+function generateMarkdown(data) {
   let markdown;
   try {
-    const data = getFiles(topic, field);
-    markdown = fs
-      .readFileSync(__dirname + `/../../data/topics/${data}.md`)
-      .toString();
-
     const converter = new showdown.Converter({
       optionKey: 'value',
       customizedHeaderId: true,
@@ -82,7 +86,7 @@ function generateMarkdown(topic, field) {
       openLinksInNewWindow: true,
       headerLevelStart: 3
     });
-    markdown = converter.makeHtml(markdown);
+    markdown = converter.makeHtml(data);
 
     //Parse MathJax and insert it into topic HTML markdown.
     const regex = /\$.*?\$/g;

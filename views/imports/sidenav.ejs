@@ -36,18 +36,18 @@ function isSelected(topic) {
 
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion" class="collapsible">
-        <% for(i in topics) { topic = topics[i]; %>
-        <li class="<%= isSelected(topic) %>">
+        <% for(let category of _categories) { %>
+        <li class="<%= isSelected(category) %>">
           <a href="#!" class="collapsible-header">
-            <%= topic.title %>
+            <%= category.title %>
             <i class="material-icons">arrow_drop_down</i>
           </a>
           <div class="collapsible-body">
             <ol>
-              <% for(j in topic.fields) { field = topic.fields[j]; %>
+              <% for(i in category.topics) { _topic = category.topics[i]; %>
               <li>
-                <a href="/teemad/<%= topic.link_prefix + field.link %>">
-                  <%= field.title %>
+                <a href="/teemad/<%= category.id + '/' + _topic.id %>">
+                  <%= _topic.title %>
                 </a>
               </li>
               <% } %>

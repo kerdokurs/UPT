@@ -6,12 +6,12 @@ module.exports = {
     const { uid } = req.cookies;
     const user = await authModule.getUser(uid);
 
-    const topics = functions.getTopics();
+    const _categories = await functions.getTopics();
 
     return {
       pageTitle: 'Kerdo UPT 0.1',
 
-      topics,
+      _categories,
       user
     };
   }

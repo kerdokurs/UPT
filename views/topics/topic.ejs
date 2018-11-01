@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="description" content="<%= (selectedField ? selectedField.title + ' - ' : '') + (selectedTopic ? selectedTopic.title + ' - ' : '') %>">
     <% include ../imports/head.ejs %>
     <script src="/js/bookmarks.js"></script>
     <title>
-      <%= (selectedField ? selectedField.title + ' - ' : '') + (selectedTopic ? selectedTopic.title + ' - ' : '') + pageTitle %>
+      <%= (topic.name ? topic.name + ' - ' : '') + (topic.name ? topic.name + ' - ' : '') + pageTitle %>
     </title>
   </head>
   <body>
     <% include ../imports/sidenav.ejs %>
     <% include ../imports/navbar.ejs %>
     <div class="container">
+      <% if(admin) { %>
+      <a href="/admin/data/edit_topic/<%= topic.id %>" target="_blank" rel="noopener noreferrer" class="btn right orange">Redigeeri</a>
+      <% } %>
       <% if(user != null) { %>
       <% if(bookmarked) { %>
       <a href="#!" onclick="bookmark(0)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark</i></a>
@@ -22,7 +24,7 @@
       <a href="#!" onclick="bookmark(1)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark_border</i></a>
       <% } %>
       <% } %>
-      <%- data %>
+      <%- markdown %>
     </div>
   </body>
 </html>

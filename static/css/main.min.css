@@ -15,6 +15,20 @@ table tbody { font-size: 0.8em; font-family: 'Roboto Mono', monospace; }
 
 table tbody tr { height: 10px; }
 
+textarea { font-family: 'Roboto Mono', monospace; font-size: 0.8em !important; }
+
 .sidenav { font-weight: bold; }
 
 @media only screen and (max-width: 992px) { .breadcrumb { font-size: 0.8em; } }
+
+.tabs .tab a { color: #000; }
+
+.tabs .tab a:hover { background-color: #eee; color: #000; }
+
+.tabs .tab a.active { color: #000; }
+
+.tabs .indicator { background-color: #4caf50; }
+
+.tabs .tab a:visited { color: #000; }
+
+.tabs .tab a:focus.active { background-color: #fff; }
