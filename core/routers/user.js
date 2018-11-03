@@ -30,10 +30,12 @@ router.route('/post-login').get(async (req, res) => {
       const user = users[0];
       const { uid } = user;
 
-      res
-        .cookie('logged_in', true, { expires })
-        .cookie('uid', uid, { expires })
-        .redirect('/');
+      User.updateOne({ uid }, { $set: { last_sign_in: new Date() } }, () => {
+        res
+          .cookie('logged_in', true, { expires })
+          .cookie('uid', uid, { expires })
+          .redirect('/');
+      });
     } else {
       //User doesn't exist.
       const user = await admin
@@ -48,7 +50,9 @@ router.route('/post-login').get(async (req, res) => {
           uid,
           displayName,
           photoURL,
-          email
+          email,
+          sign_up: new Date(),
+          last_sign_in: new Date()
         },
         () => {
           res

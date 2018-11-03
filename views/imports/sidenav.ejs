@@ -1,7 +1,7 @@
 <%
-function isSelected(topic) {
-  if(locals.selectedTopic)
-    if(selectedTopic.id === topic.id)
+function isSelected(_cat) {
+  if(locals.category && category.id)
+    if(category.id === _cat.id)
       return 'active';
   return '';
 }

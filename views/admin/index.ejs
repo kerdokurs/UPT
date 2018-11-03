@@ -27,7 +27,7 @@ function getCategory(parent) {
           <ul class="tabs">
             <li class="tab col s3"><a class="active" href="#kategooriad">Kategooriad</a></li>
             <li class="tab col s3"><a href="#teemad">Teemad</a></li>
-            <li class="tab col s3"><a href="#adminid">Adminid</a></li>
+            <li class="tab col s3"><a href="#kasutajad">Kasutajad</a></li>
             <li class="tab col s3"><a href="#tagasiside">Tagasiside</a></li>
           </ul>
         </div>
@@ -174,8 +174,8 @@ function getCategory(parent) {
           </table>
         </form>
       </div>
-      <div id="adminid">
-        <h4>Administraatorid</h4>
+      <div id="kasutajad">
+        <h4>Kasutajad</h4>
         <div class="table">
           <table>
             <thead>
@@ -183,26 +183,33 @@ function getCategory(parent) {
                 <th>Nimi</th>
                 <th>UID</th>
                 <th>Email</th>
-                <th>Eemalda</th>
+                <th>Admin</th>
               </tr>
             </thead>
             <tbody>
-              <% for(let _admin of admins) { %>
+              <% for(let _user of users) { %>
               <tr>
                 <td>
-                  <%= _admin.displayName %>
+                  <%= _user.displayName %>
                 </td>
                 <td>
-                  <%= _admin.uid %>
+                  <%= _user.uid %>
                 </td>
                 <td>
-                  <%= _admin.email %>
+                  <%= _user.email %>
                 </td>
                 <td>
-                  <form method="POST" action="/admin/del_adm" onsubmit="return confirm('Kindel, et eemaldada <%= _admin.displayName %>?')">
-                    <input type="hidden" name="uid" value="<%= _admin.uid %>">
+                  <% if(_user.admin) { %>
+                  <form method="POST" action="/admin/del_adm" onsubmit="return confirm('Kindel, et eemaldada <%= _user.displayName %>?')">
+                    <input type="hidden" name="uid" value="<%= _user.uid %>">
                     <input type="submit" value="Eemalda" class="btn red">
                   </form>
+                  <% } else { %>
+                  <form method="POST" action="/admin/add_adm" onsubmit="return confirm('Kindel, et lisada <%= _user.displayName %>?')">
+                    <input type="hidden" name="uid" value="<%= _user.uid %>">
+                    <input type="submit" value="Lisa" class="btn green">
+                  </form>
+                  <% } %>
                 </td>
               </tr>
               <% } %>

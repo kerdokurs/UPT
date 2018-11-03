@@ -13,10 +13,23 @@ router.use(authModule.adminGuard);
 
 router.route('/').get(async (req, res) => {
   const categories = await Category.find();
-  const topics = await Topic.find();
-  const admins = await User.find({ admin: true });
-  const feedback = await Feedback.find();
-  res.render('admin/index', { categories, topics, admins, feedback });
+
+  let topics = await Topic.find();
+  topics = topics.sort((a, b) => {
+    return b.last_changed - a.last_changed;
+  });
+
+  let users = await User.find();
+  users = users.sort((a, b) => {
+    return b.sign_up - a.sign_up;
+  });
+
+  let feedback = await Feedback.find();
+  feedback = feedback.sort((a, b) => {
+    return b.timestamp - a.timestamp;
+  });
+
+  res.render('admin/index', { categories, topics, users, feedback });
 });
 
 router.route('/add_cat').post(async (req, res) => {
@@ -76,13 +89,22 @@ router.route('/del_top').post(async (req, res) => {
   else res.redirect('/admin#teemad');
 });
 
+router.route('/add_adm').post(async (req, res) => {
+  const { uid } = req.body;
+  if (uid)
+    User.updateOne({ uid }, { $set: { admin: true } }, () =>
+      res.redirect('/admin#kasutajad')
+    );
+  else res.redirect('/admin#kasutajad');
+});
+
 router.route('/del_adm').post(async (req, res) => {
   const { uid } = req.body;
   if (uid)
     User.updateOne({ uid }, { $set: { admin: false } }, () =>
-      res.redirect('/admin#adminid')
+      res.redirect('/admin#kasutajad')
     );
-  else res.redirect('/admin#adminid');
+  else res.redirect('/admin#kasutajad');
 });
 
 router.route('/del_fdb').post(async (req, res) => {
