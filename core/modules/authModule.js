@@ -13,7 +13,7 @@ function isUserLoggedIn(req) {
 }
 
 async function adminGuard(req, res, next) {
-  if (!isUserLoggedIn(req)) return false;
+  if (!isUserLoggedIn(req)) res.redirect('/user/login');
   const { uid } = req.cookies;
   const users = await User.find({ uid }, (err, data) => data);
   if (users[0] && users[0].admin) next();
