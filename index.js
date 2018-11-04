@@ -13,8 +13,6 @@ const misc = require('./core/routers/misc');
 const admin = require('./core/routers/admin');
 const ulesanded = require('./core/routers/ulesanded');
 
-const rest = require('./core/rest/rest');
-
 const functions = require('./core/functions');
 
 require('dotenv').config();
@@ -57,9 +55,8 @@ app.use('/bookmarks', bookmarks);
 app.use(misc);
 app.use('/admin', admin);
 app.use('/ulesanded', ulesanded);
-app.use('/rest', rest);
 
-app.get('**', async (req, res) => {
+app.all('**', async (req, res) => {
   res.render('404', {
     topic: null,
     field: null
