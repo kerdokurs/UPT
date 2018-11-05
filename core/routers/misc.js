@@ -35,8 +35,4 @@ router.route('/feedback-submit').post((req, res) => {
   }
 });
 
-router.route('/report').get((req, res) => {
-  res.send('report');
-});
-
 module.exports = router;

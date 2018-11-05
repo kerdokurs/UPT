@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Bookmark = require('./Bookmark');
-
 const userModel = new Schema(
   {
     uid: {
