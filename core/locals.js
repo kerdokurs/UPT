@@ -13,7 +13,7 @@ module.exports = {
       admin = await authModule.isUserAdmin(req);
 
     return {
-      pageTitle: 'Kerdo UPT 0.1',
+      pageTitle: 'Kerdo UPT',
 
       _categories,
       user,

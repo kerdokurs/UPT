@@ -6,7 +6,7 @@
   "scripts": {
     "serve": "nodemon index.js --watch ./core/",
     "mongo": "mongod --dbpath ./mongo/ --bind_ip 127.0.0.1",
-    "start": "npm run mongo & sudo node index"
+    "start": "sudo node ./index.js"
   },
   "author": "",
   "license": "ISC",
