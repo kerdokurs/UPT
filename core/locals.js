@@ -1,10 +1,12 @@
 const functions = require('./functions');
 const authModule = require('./modules/authModule');
 
+const Session = require('./database/models/Session');
+
 module.exports = {
   get: async req => {
-    const { uid } = req.cookies;
-    const user = await authModule.getUser(uid);
+    const session = await authModule.getSession(req);
+    const user = await authModule.getUser(session.uid);
 
     const _categories = await functions.getTopics();
 
