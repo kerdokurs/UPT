@@ -18,7 +18,9 @@ router.route('/login').get(async (req, res) => {
   }
 });
 
-router.route('/logout').get((req, res) => {
+router.route('/logout').get(async (req, res) => {
+  const session = (await authModule.getSession(req)) || {};
+  await Session.deleteOne({ id: session.id }, err => {});
   res
     .cookie('logged_in', '', { expires: new Date() })
     .cookie('_sid', '', { expires: new Date() })
@@ -85,8 +87,10 @@ router.route('/post-login').get(async (req, res) => {
   }
 });
 
+router.use(authModule.loginGuard);
+
 router.route('/').get(async (req, res) => {
-  const session = await authModule.getSession(req);
+  const session = (await authModule.getSession(req)) || {};
   const users = await User.find({ uid: session.uid }).then(data => data);
 
   res.render('user/user', { data: users[0] });

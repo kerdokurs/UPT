@@ -27,15 +27,11 @@ async function loginGuard(req, res, next) {
 }
 
 async function isUserAdmin(req) {
-  const { _sid } = req.cookies;
-  const uids = await Session.find({ id: _sid }).then(data => data);
-  const uid = uids[0].uid;
-  if (uid) {
-    const data = await User.find({ uid }, (err, data) => {
-      return data;
-    });
-    return data[0] && data[0].admin;
-  }
+  const session = (await getSession(req)) || {};
+  const data = await User.find({ uid: session.uid }, (err, data) => {
+    return data;
+  });
+  return data[0] && data[0].admin;
 
   return false;
 }

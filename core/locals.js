@@ -5,7 +5,7 @@ const Session = require('./database/models/Session');
 
 module.exports = {
   get: async req => {
-    const session = await authModule.getSession(req);
+    const session = (await authModule.getSession(req)) || {};
     const user = await authModule.getUser(session.uid);
 
     const _categories = await functions.getTopics();

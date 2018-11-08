@@ -12,7 +12,8 @@ router.route('/set').post(async (req, res) => {
       .send(JSON.stringify({ status: 400, message: 'Not logged in!' }));
 
   const { id, title, url } = req.body;
-  const { uid } = req.cookies;
+  const session = await authModule.getSession(req);
+  const uid = session.uid;
 
   if (uid && title && id) {
     const existingBookmarks = await Bookmark.find(
@@ -59,7 +60,8 @@ router.route('/del').post(async (req, res) => {
       .send(JSON.stringify({ status: 400, message: 'Not logged in!' }));
 
   const { id } = req.body;
-  const { uid } = req.cookies;
+  const session = await authModule.getSession(req);
+  const uid = session.uid;
 
   if (id && uid) {
     Bookmark.find({ id, uid }, (err, data) => {
