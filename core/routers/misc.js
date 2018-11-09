@@ -19,13 +19,15 @@ router.route('/feedback-submit').post((req, res) => {
   const { uid } = req.cookies;
 
   if (name && text) {
-    Feedback.create({ id: functions.randomString(24), uid, text, name }, () => {
-      res.status(200).send(
-        JSON.stringify({
-          status: 0
-        })
-      );
-    });
+    Feedback.create({ id: functions.randomString(24), uid, text, name })
+      .then(() => {
+        res.status(200).send(
+          JSON.stringify({
+            status: 0
+          })
+        );
+      })
+      .catch(err => functions.handle(err, '/core/routers/misc.js'));
   } else {
     res.status(200).send(
       JSON.stringify({

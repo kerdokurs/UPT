@@ -94,11 +94,17 @@ const getStatus = id => {
     : { id: -01, code: 404, message: 'Invalid status code id', colour: '#fff' };
 };
 
+const handle = (err, path) => {
+  console.log(`Error: [${path}, ${currentTime()}] > ${err}`);
+};
+
 module.exports = {
   currentTime,
   randomString,
 
   getTopics,
 
-  getStatus
+  getStatus,
+
+  handle
 };

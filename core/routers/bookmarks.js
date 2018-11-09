@@ -16,10 +16,9 @@ router.route('/set').post(async (req, res) => {
   const uid = session.uid;
 
   if (uid && title && id) {
-    const existingBookmarks = await Bookmark.find(
-      { id, uid },
-      (err, data) => data
-    );
+    const existingBookmarks = await Bookmark.find({ id, uid })
+      .then(data => data)
+      .catch(err => functions.handle(err, '/core/routers/bookmarks.js'));
 
     if (existingBookmarks.length > 0) {
       res.status(200).send(
@@ -28,21 +27,20 @@ router.route('/set').post(async (req, res) => {
         })
       );
     } else {
-      Bookmark.create(
-        {
-          id,
-          uid,
-          url: unescape(url),
-          title: unescape(title)
-        },
-        () => {
+      Bookmark.create({
+        id,
+        uid,
+        url: unescape(url),
+        title: unescape(title)
+      })
+        .then(() => {
           res.status(200).send(
             JSON.stringify({
               status: 0
             })
           );
-        }
-      );
+        })
+        .catch(err => functions.handle(err, '/core/routers/bookmarks.js'));
     }
   } else {
     res.status(200).send(
@@ -66,9 +64,9 @@ router.route('/del').post(async (req, res) => {
   if (id && uid) {
     Bookmark.find({ id, uid }, (err, data) => {
       if (data.length > 0) {
-        Bookmark.deleteOne({ uid, id }, () =>
-          res.status(200).send(JSON.stringify({ status: 1 }))
-        );
+        Bookmark.deleteOne({ uid, id })
+          .then(() => res.status(200).send(JSON.stringify({ status: 1 })))
+          .catch(err => functions.handle(err, '/core/routers/bookmarks.js'));
       } else {
         res.status(200).send(JSON.stringify({ status: -3 }));
       }

@@ -34,10 +34,9 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
     const bookmarkId = categoryId + '-' + topicId;
     const { uid } = req.cookies;
 
-    const data = await Bookmark.find(
-      { uid, id: bookmarkId },
-      (err, data) => data
-    );
+    const data = await Bookmark.find({ uid, id: bookmarkId })
+      .then(data => data)
+      .catch(err => functions.handle(err, '/core/routers/topics.js'));
     bookmarked = data.length > 0;
   }
 
@@ -62,14 +61,15 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
 });
 
 async function getTopicData(topicId, categoryId) {
-  return await Topic.find(
-    { id: topicId, parent: categoryId },
-    (err, data) => data
-  );
+  return await Topic.find({ id: topicId, parent: categoryId })
+    .then(data => data)
+    .catch(err => functions.handle(err, '/core/routers/topics.js'));
 }
 
 async function getCategoryData(categoryId) {
-  return await Category.find({ id: categoryId }, (err, data) => data);
+  return await Category.find({ id: categoryId })
+    .then(data => data)
+    .catch(err => functions.handle(err, '/core/routers/topics.js'));
 }
 
 function generateMarkdown(data) {
