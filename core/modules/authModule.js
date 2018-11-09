@@ -6,17 +6,17 @@ const Session = require('../database/models/Session');
 const functions = require('../functions');
 
 function getUser(uid) {
-  if (!uid || uid.toString().length < 1) return {};
+  if (!uid || uid.toString().length < 1) return null;
   return admin.auth().getUser(uid);
 }
 
-function isUserLoggedIn(req) {
-  const cookies = req.cookies;
-  return cookies['logged_in'] && cookies['_sid'];
+async function isUserLoggedIn(req) {
+  const session = await getSession(req);
+  return session !== null;
 }
 
 async function adminGuard(req, res, next) {
-  if (!isUserLoggedIn(req)) res.redirect('/user/login');
+  if (!(await isUserLoggedIn(req))) res.redirect('/user/login');
 
   const session = await getSession(req);
   const users = await User.find({ uid: session.uid })
@@ -49,7 +49,7 @@ async function getSession(req) {
     .then(data => data)
     .catch(err => functions.handle(err, '/core/modules/authModule.js'));
 
-  return data[0];
+  return data[0] || null;
 }
 
 module.exports = {

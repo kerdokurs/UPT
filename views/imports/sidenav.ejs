@@ -1,51 +1,56 @@
-<%
-function isSelected(_cat) {
-  if(locals.category && category.id)
-    if(category.id === _cat.id)
-      return 'active';
-  return '';
-}
-%>
+<% function isSelected(_cat) { if(locals.category && category.id) if(category.id
+=== _cat.id) return 'active'; return ''; } %>
 <div>
   <ul id="sidenav" class="sidenav">
     <li>
       <% if(user !== null) { %>
       <div class="user-view">
         <div class="background">
-          <img src="https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/Taiwan_16x9.jpg?itok=uXcThZKL">
+          <img
+            src="https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/Taiwan_16x9.jpg?itok=uXcThZKL"
+          />
         </div>
-        <a href="/user"><img class="circle" src="<%= user !== null ? user.photoURL : '/img/default_profile.png'; %>"></a>
+        <a href="/user"
+          ><img
+            class="circle"
+            src="<%= user !== null ? user.photoURL : '/img/default_profile.png'; %>"
+        /></a>
         <a href="/user">
-          <span class="white-text name">
-            <%= user.displayName %>
-          </span>
+          <span class="white-text name"> <%= user.displayName %> </span>
         </a>
-        <span class="white-text email">
-          <%= user.email %>
-        </span>
-        <% if(admin) { %>
+        <span class="white-text email"> <%= user.email %> </span> <% if(admin) {
+        %>
         <span>
-          <a href="/admin" target="_blank" rel="noopener noreferrer" class="btn green">Admin</a>
+          <a
+            href="/admin"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn green"
+            >Admin</a
+          >
         </span>
         <% } %>
       </div>
     </li>
-    <li><a href="/user/settings"><i class="material-icons">settings</i>Sätted</a></li>
-    <li><a href="/user/logout"><i class="material-icons">meeting_room</i>Välju</a></li>
-    <% } else { %>
-    <li><a href="/user/login"><i class="material-icons"></i>Sisene</a></li>
-    <% } %>
     <li>
-      <div class="divider"></div>
+      <a href="/user/settings"><i class="material-icons">settings</i>Sätted</a>
     </li>
+    <li>
+      <a href="/user/logout"><i class="material-icons">meeting_room</i>Välju</a>
+    </li>
+    <% } else { %>
+    <li>
+      <a href="/user/login"><i class="material-icons"></i>Sisene</a>
+    </li>
+    <% } %>
+    <li><div class="divider"></div></li>
 
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion" class="collapsible">
         <% for(let category of _categories) { %>
         <li class="<%= isSelected(category) %>">
           <a href="#!" class="collapsible-header">
-            <%= category.title %>
-            <i class="material-icons">arrow_drop_down</i>
+            <%= category.title %> <i class="material-icons">arrow_drop_down</i>
           </a>
           <div class="collapsible-body">
             <ol>
@@ -69,7 +74,15 @@ function isSelected(_cat) {
     <i class="large material-icons">menu</i>
   </a>
   <ul>
-    <li><a href="/feedback" class="btn-floating green"><i class="material-icons">feedback</i></a></li>
-    <li><a href="/info" class="btn-floating orange"><i class="material-icons">info</i></a></li>
+    <li>
+      <a href="/feedback" class="btn-floating green"
+        ><i class="material-icons">feedback</i></a
+      >
+    </li>
+    <li>
+      <a href="/info" class="btn-floating orange"
+        ><i class="material-icons">info</i></a
+      >
+    </li>
   </ul>
 </div>

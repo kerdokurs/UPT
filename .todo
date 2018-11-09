@@ -3,4 +3,4 @@ KÕIK:
   ☐ Korralik Google ID ülekandmine serverisse, mida kasutaja ei saaks eksploiteerida. @high
   ☐ Progressiooni jälgimine @low
   ☐ Saavutused @low
-  ☐ Korralik veakäsitsemine @high
+  ✔ Korralik veakäsitsemine @critical @done(18-11-09 19:50)

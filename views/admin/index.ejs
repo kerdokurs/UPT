@@ -1,34 +1,35 @@
-<%
-function getCategory(parent) {
-  for(let j in categories) {
-    const category = categories[j];
-    if(category.id = parent)
-      return category;
-  }
+<% function getCategory(parent) { for(let j in categories) { const category =
+categories[j]; if(category.id = parent) return category; } return null; } %> <%
+function getUser(uid) { for(let __user of users) { if(__user.uid === uid) {
+return __user; } } return null; } %>
 
-  return null;
-}
-%>
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
     <title>Admin</title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <div class="row">
         <div class="col s12">
           <ul class="tabs">
-            <li class="tab col s3"><a class="active" href="#kategooriad"><b>Kategooriad</b></a></li>
-            <li class="tab col s3"><a href="#teemad"><b>Teemad</b></a></li>
-            <li class="tab col s3"><a href="#kasutajad"><b>Kasutajad</b></a></li>
-            <li class="tab col s3"><a href="#tagasiside"><b>Tagasiside</b></a></li>
+            <li class="tab col s3">
+              <a class="active" href="#kategooriad"><b>Kategooriad</b></a>
+            </li>
+            <li class="tab col s3">
+              <a href="#teemad"><b>Teemad</b></a>
+            </li>
+            <li class="tab col s3">
+              <a href="#kasutajad"><b>Kasutajad</b></a>
+            </li>
+            <li class="tab col s3">
+              <a href="#tagasiside"><b>Tagasiside</b></a>
+            </li>
           </ul>
         </div>
       </div>
@@ -44,18 +45,18 @@ function getCategory(parent) {
               </tr>
             </thead>
             <tbody>
-              <% for(let i in categories) { const category = categories[i]; %>
+              <% for(let category of categories) {%>
               <tr>
+                <td><%= category.title %></td>
+                <td><%= category.id %></td>
                 <td>
-                  <%= category.title %>
-                </td>
-                <td>
-                  <%= category.id %>
-                </td>
-                <td>
-                  <form method="POST" action="/admin/del_cat" onsubmit="return confirm('Kindel, et kustutada <%= category.title %>?')">
-                    <input type="hidden" name="id" value="<%= category.id %>">
-                    <input type="submit" value="Kustuta" class="btn red">
+                  <form
+                    method="POST"
+                    action="/admin/del_cat"
+                    onsubmit="return confirm('Kindel, et kustutada <%= category.title %>?')"
+                  >
+                    <input type="hidden" name="id" value="<%= category.id %>" />
+                    <input type="submit" value="Kustuta" class="btn red" />
                   </form>
                 </td>
               </tr>
@@ -69,19 +70,15 @@ function getCategory(parent) {
             <tr>
               <td>Kategooria</td>
               <td>
-                <input type="text" name="title" id="add-cat-title" required>
+                <input type="text" name="title" id="add-cat-title" required />
               </td>
             </tr>
             <tr>
               <td>ID</td>
-              <td>
-                <input type="text" name="id" id="add-cat-id" required>
-              </td>
+              <td><input type="text" name="id" id="add-cat-id" required /></td>
             </tr>
             <tr>
-              <td>
-                <input type="submit" value="Lisa" class="btn green">
-              </td>
+              <td><input type="submit" value="Lisa" class="btn green" /></td>
             </tr>
           </table>
         </form>
@@ -102,31 +99,34 @@ function getCategory(parent) {
               </tr>
             </thead>
             <tbody>
-              <% for(i in topics) { const topic = topics[i]; %>
+              <% for(let topic of topics) { %>
               <tr>
+                <td><%= topic.title %></td>
+                <td><%= topic.id %></td>
+                <td><%= getCategory(topic.parent).title %></td>
+                <td><%= topic.last_changed %></td>
                 <td>
-                  <%= topic.title %>
+                  <a
+                    href="/teemad/<%= getCategory(topic.parent).id %>/<%= topic.id %>"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn green"
+                    >Vaata</a
+                  >
                 </td>
                 <td>
-                  <%= topic.id %>
+                  <a href="/admin/edit_topic/<%= topic.id %>" class="btn orange"
+                    >Redigeeri</a
+                  >
                 </td>
                 <td>
-                  <%= getCategory(topic.parent).title %>
-                </td>
-                <td>
-                  <%= topic.last_changed %>
-                </td>
-                <td>
-                  <a href="/teemad/<%= getCategory(topic.parent).id %>/<%= topic.id %>" target="_blank" rel="noopener noreferrer"
-                    class="btn green">Vaata</a>
-                </td>
-                <td>
-                  <a href="/admin/edit_topic/<%= topic.id %>" class="btn orange">Redigeeri</a>
-                </td>
-                <td>
-                  <form method="POST" action="/admin/del_top" onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
-                    <input type="hidden" name="id" value="<%= topic.id %>">
-                    <input type="submit" value="Kustuta" class="btn red">
+                  <form
+                    method="POST"
+                    action="/admin/del_top"
+                    onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')"
+                  >
+                    <input type="hidden" name="id" value="<%= topic.id %>" />
+                    <input type="submit" value="Kustuta" class="btn red" />
                   </form>
                 </td>
               </tr>
@@ -138,27 +138,21 @@ function getCategory(parent) {
         <form action="/admin/add_top" method="POST">
           <table>
             <tr>
+              <td>Pealkiri</td>
               <td>
-                Pealkiri
-              </td>
-              <td>
-                <input type="text" name="title" id="add-top-title" required>
+                <input type="text" name="title" id="add-top-title" required />
               </td>
             </tr>
             <tr>
-              <td>
-                ID
-              </td>
-              <td>
-                <input type="text" name="id" id="add-top-id" required>
-              </td>
+              <td>ID</td>
+              <td><input type="text" name="id" id="add-top-id" required /></td>
             </tr>
             <tr>
               <td>Kategooria</td>
               <td>
                 <select name="category" id="add-top-cat" required>
                   <option value="" disabled selected>Vali kategooria</option>
-                  <% for(let i in categories) { const category = categories[i]; %>
+                  <% for(let category of categories) { %>
                   <option value="<%= category.id %>">
                     <%= category.title %>
                   </option>
@@ -167,9 +161,7 @@ function getCategory(parent) {
               </td>
             </tr>
             <tr>
-              <td>
-                <input type="submit" value="Lisa" class="btn green">
-              </td>
+              <td><input type="submit" value="Lisa" class="btn green" /></td>
             </tr>
           </table>
         </form>
@@ -189,28 +181,52 @@ function getCategory(parent) {
             <tbody>
               <% for(let _user of users) { %>
               <tr>
-                <td>
-                  <%= _user.displayName %>
-                </td>
-                <td>
-                  <%= _user.uid %>
-                </td>
-                <td>
-                  <%= _user.email %>
-                </td>
+                <td><%= _user.displayName %></td>
+                <td><%= _user.uid %></td>
+                <td><%= _user.email %></td>
                 <td>
                   <% if(_user.admin) { %>
-                  <form method="POST" action="/admin/del_adm" onsubmit="return confirm('Kindel, et eemaldada <%= _user.displayName %>?')">
-                    <input type="hidden" name="uid" value="<%= _user.uid %>">
-                    <input type="submit" value="Eemalda" class="btn red">
+                  <form
+                    method="POST"
+                    action="/admin/del_adm"
+                    onsubmit="return confirm('Kindel, et eemaldada <%= _user.displayName %>?')"
+                  >
+                    <input type="hidden" name="uid" value="<%= _user.uid %>" />
+                    <input type="submit" value="Eemalda" class="btn red" />
                   </form>
                   <% } else { %>
-                  <form method="POST" action="/admin/add_adm" onsubmit="return confirm('Kindel, et lisada <%= _user.displayName %>?')">
-                    <input type="hidden" name="uid" value="<%= _user.uid %>">
-                    <input type="submit" value="Lisa" class="btn green">
+                  <form
+                    method="POST"
+                    action="/admin/add_adm"
+                    onsubmit="return confirm('Kindel, et lisada <%= _user.displayName %>?')"
+                  >
+                    <input type="hidden" name="uid" value="<%= _user.uid %>" />
+                    <input type="submit" value="Lisa" class="btn green" />
                   </form>
                   <% } %>
                 </td>
+              </tr>
+              <% } %>
+            </tbody>
+          </table>
+        </div>
+        <h4>Sessioonid</h4>
+        <a href="/admin/refresh_sessions">Kustuta aegunud sessioonid</a>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Kasutaja</th>
+                <th>Loomisaeg</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for(let session of sessions) { %>
+              <tr>
+                <td><%= session.id %></td>
+                <td><%= getUser(session.uid).displayName %></td>
+                <td><%= session.created_at %></td>
               </tr>
               <% } %>
             </tbody>
@@ -234,25 +250,23 @@ function getCategory(parent) {
             <tbody>
               <% for(let _feedback of feedback) { %>
               <tr>
+                <td><%= _feedback.id %></td>
+                <td><%= _feedback.uid %></td>
+                <td><%= _feedback.timestamp %></td>
+                <td><%= _feedback.name %></td>
+                <td><%= _feedback.text %></td>
                 <td>
-                  <%= _feedback.id %>
-                </td>
-                <td>
-                  <%= _feedback.uid %>
-                </td>
-                <td>
-                  <%= _feedback.timestamp %>
-                </td>
-                <td>
-                  <%= _feedback.name %>
-                </td>
-                <td>
-                  <%= _feedback.text %>
-                </td>
-                <td>
-                  <form method="POST" action="/admin/del_fdb" onsubmit="return confirm('Kindel, et kustutada <%= _feedback.name %>?')">
-                    <input type="hidden" name="id" value="<%= _feedback.id %>">
-                    <input type="submit" value="Kustuta" class="btn red">
+                  <form
+                    method="POST"
+                    action="/admin/del_fdb"
+                    onsubmit="return confirm('Kindel, et kustutada <%= _feedback.name %>?')"
+                  >
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="<%= _feedback.id %>"
+                    />
+                    <input type="submit" value="Kustuta" class="btn red" />
                   </form>
                 </td>
               </tr>

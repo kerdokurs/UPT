@@ -12,7 +12,7 @@ const Bookmark = require('../database/models/Bookmark');
 const Session = require('../database/models/Session');
 
 router.route('/login').get(async (req, res) => {
-  if (authModule.isUserLoggedIn(req)) res.redirect('/user');
+  if (await authModule.isUserLoggedIn(req)) res.redirect('/user');
   else {
     res.render('user/login');
   }
@@ -97,6 +97,7 @@ router.route('/post-login').get(async (req, res) => {
 router.use(authModule.loginGuard);
 
 router.route('/').get(async (req, res) => {
+  if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const session = (await authModule.getSession(req)) || {};
   const users = await User.find({ uid: session.uid })
     .then(data => data)
@@ -106,11 +107,13 @@ router.route('/').get(async (req, res) => {
 });
 
 router.route('/achievements').get(async (req, res) => {
+  if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const achievements = [];
   res.render('user/achievements', { achievements });
 });
 
 router.route('/bookmarks').get(async (req, res) => {
+  if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const session = await authModule.getSession(req);
   const bookmarks = await Bookmark.find({ uid: session.uid })
     .then(data => data)
