@@ -55,9 +55,13 @@ const currentTime = () => {
   );
 };
 
-const getTopics = async () => {
-  const categories = await Category.find();
-  const topics = await Topic.find();
+const getCategories = async () => {
+  const categories = await Category.find().catch(err =>
+    handle(err, '/core/functions.js')
+  );
+  const topics = await Topic.find().catch(err =>
+    handle(err, '/core/functions.js')
+  );
 
   const _categories = [];
 
@@ -102,7 +106,7 @@ module.exports = {
   currentTime,
   randomString,
 
-  getTopics,
+  getCategories,
 
   getStatus,
 

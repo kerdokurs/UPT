@@ -8,7 +8,7 @@ module.exports = {
     const session = (await authModule.getSession(req)) || {};
     const user = (await authModule.getUser(session.uid)) || null;
 
-    const _categories = (await functions.getTopics()) || [];
+    const _categories = (await functions.getCategories()) || [];
 
     let admin = false;
     if (authModule.isUserLoggedIn(req))
