@@ -6,5 +6,6 @@
     $('.fixed-action-btn').floatingActionButton({ direction: 'left' });
     $('select').formSelect();
     $('.tabs').tabs();
+    $('.collapsible').collapsible();
   });
 })(jQuery);

@@ -1,11 +1,22 @@
-<nav class="green">
-  <div class="nav-wrapper">
-    <a href="#!" data-target="sidenav" class="sidenav-trigger show-on-large"><i class="material-icons">menu</i></a>
-    <div class="left">
-      <a href="/">
-        <%= pageTitle %>
-      </a>
+<div class="navbar-fixed">
+  <nav class="white">
+    <div class="nav-wrapper">
+      <a href="#!" data-target="sidenav" class="sidenav-trigger show-on-large"
+        ><i class="material-icons">menu</i></a
+      >
+      <div class="left"><a href="/"> <%= pageTitle %> </a></div>
+      <div class="left search-box white">
+        <form action="/search" method="get">
+          <input
+            type="text"
+            name="query"
+            id="search-query"
+            placeholder="Otsi"
+            required
+          />
+        </form>
+      </div>
     </div>
-  </div>
-</nav>
-<br>
+  </nav>
+</div>
+<br />

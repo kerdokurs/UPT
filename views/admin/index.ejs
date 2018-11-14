@@ -1,7 +1,7 @@
-<% function getCategory(parent) { for(let j in categories) { const category =
-categories[j]; if(category.id = parent) return category; } return null; } %> <%
-function getUser(uid) { for(let __user of users) { if(__user.uid === uid) {
-return __user; } } return null; } %>
+<% function getUser(uid) { for(let __user of users) { if(__user.uid === uid) {
+return __user; } } return null; } %> <% function getTopics(_categoryId) { const
+__topics = []; for(let __topic of topics) { if(__topic.parent === _categoryId)
+__topics.push(__topic); } return __topics; } %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,10 +19,7 @@ return __user; } } return null; } %>
         <div class="col s12">
           <ul class="tabs">
             <li class="tab col s3">
-              <a class="active" href="#kategooriad"><b>Kategooriad</b></a>
-            </li>
-            <li class="tab col s3">
-              <a href="#teemad"><b>Teemad</b></a>
+              <a class="active" href="#sisu"><b>Sisu</b></a>
             </li>
             <li class="tab col s3">
               <a href="#kasutajad"><b>Kasutajad</b></a>
@@ -33,36 +30,77 @@ return __user; } } return null; } %>
           </ul>
         </div>
       </div>
-      <div id="kategooriad">
-        <h4>Kategooriad</h4>
-        <div class="table">
-          <table>
-            <thead>
-              <tr>
-                <th>Kategooria</th>
-                <th>ID</th>
-                <th>Kustuta</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for(let category of categories) {%>
-              <tr>
-                <td><%= category.title %></td>
-                <td><%= category.id %></td>
-                <td>
-                  <form
-                    method="POST"
-                    action="/admin/del_cat"
-                    onsubmit="return confirm('Kindel, et kustutada <%= category.title %>?')"
-                  >
-                    <input type="hidden" name="id" value="<%= category.id %>" />
-                    <input type="submit" value="Kustuta" class="btn red" />
-                  </form>
-                </td>
-              </tr>
-              <% } %>
-            </tbody>
-          </table>
+      <div id="sisu">
+        <h4>Sisu</h4>
+        <div>
+          <ul class="collapsible">
+            <% for(let category of categories) { %>
+            <li>
+              <div class="collapsible-header">
+                <h6 class="left"><%= category.title %></h6>
+              </div>
+              <div class="collapsible-body table">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Teema</th>
+                      <th>ID</th>
+                      <th>Muutmise aeg</th>
+                      <th>Vaata</th>
+                      <th>Redigeeri</th>
+                      <th>Kustuta</th>
+                    </tr>
+                  </thead>
+                  <tbody class="collapsible">
+                    <% for(let topic of getTopics(category.id)) { %>
+                    <tr>
+                      <td><%= topic.title %></td>
+                      <td><%= topic.id %></td>
+                      <td><%= topic.last_changed %></td>
+                      <td>
+                        <a
+                          href="/teemad/<%= category.id %>/<%= topic.id %>"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn green"
+                          >Vaata</a
+                        >
+                      </td>
+                      <td>
+                        <a
+                          href="/admin/edit_topic/<%= topic.id %>"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="btn orange"
+                          >Redigeeri</a
+                        >
+                      </td>
+                      <td>
+                        <form
+                          method="POST"
+                          action="/admin/del_top"
+                          onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')"
+                        >
+                          <input
+                            type="hidden"
+                            name="id"
+                            value="<%= topic.id %>"
+                          />
+                          <input
+                            type="submit"
+                            value="Kustuta"
+                            class="btn red"
+                          />
+                        </form>
+                      </td>
+                    </tr>
+                    <% } %>
+                  </tbody>
+                </table>
+              </div>
+            </li>
+            <% } %>
+          </ul>
         </div>
         <h5>Lisa uus kategooria</h5>
         <form method="POST" action="/admin/add_cat">
@@ -82,58 +120,6 @@ return __user; } } return null; } %>
             </tr>
           </table>
         </form>
-      </div>
-      <div id="teemad">
-        <h4>Teemad</h4>
-        <div class="table">
-          <table>
-            <thead>
-              <tr>
-                <th>Teema</th>
-                <th>ID</th>
-                <th>Kategooria</th>
-                <th>Muutmise aeg</th>
-                <th>Vaata</th>
-                <th>Redigeeri</th>
-                <th>Kustuta</th>
-              </tr>
-            </thead>
-            <tbody>
-              <% for(let topic of topics) { %>
-              <tr>
-                <td><%= topic.title %></td>
-                <td><%= topic.id %></td>
-                <td><%= getCategory(topic.parent).title %></td>
-                <td><%= topic.last_changed %></td>
-                <td>
-                  <a
-                    href="/teemad/<%= getCategory(topic.parent).id %>/<%= topic.id %>"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="btn green"
-                    >Vaata</a
-                  >
-                </td>
-                <td>
-                  <a href="/admin/edit_topic/<%= topic.id %>" class="btn orange"
-                    >Redigeeri</a
-                  >
-                </td>
-                <td>
-                  <form
-                    method="POST"
-                    action="/admin/del_top"
-                    onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')"
-                  >
-                    <input type="hidden" name="id" value="<%= topic.id %>" />
-                    <input type="submit" value="Kustuta" class="btn red" />
-                  </form>
-                </td>
-              </tr>
-              <% } %>
-            </tbody>
-          </table>
-        </div>
         <h5>Lisa uus teema</h5>
         <form action="/admin/add_top" method="POST">
           <table>

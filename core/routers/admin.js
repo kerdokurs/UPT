@@ -92,9 +92,9 @@ router.route('/edit_topic/:id').post(async (req, res) => {
   const { title, data } = req.body;
   if ((id && title, data)) {
     Topic.update({ id }, { $set: { title, data, last_changed: new Date() } })
-      .then(() => res.redirect('/admin#teemad'))
+      .then(() => res.redirect('/admin/edit_topic/' + id))
       .catch(err => functions.handle(err, '/core/routers/admin.js'));
-  } else res.redirect('/admin#teemad');
+  } else res.redirect('/admin/edit_topic/' + id);
 });
 
 router.route('/del_top').post(async (req, res) => {
