@@ -1,30 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
     <script src="/js/bookmarks.js"></script>
     <title>
-      <%= (topic.title ? topic.title + ' - ' : '') + (category.title ? category.title + ' - ' : '') + pageTitle %>
+      <%= (topic.title ? topic.title + ' - ' : '') + (category.title ?
+      category.title + ' - ' : '') + pageTitle %>
     </title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <% if(admin) { %>
-      <a href="/admin/edit_topic/<%= topic.id %>" target="_blank" rel="noopener noreferrer" class="btn right orange">Redigeeri</a>
-      <% } %>
-      <% if(user != null) { %>
-      <% if(bookmarked) { %>
-      <a href="#!" onclick="bookmark(0)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark</i></a>
+      <a
+        href="/admin/edit_topic/<%= topic.parent %>:<%= topic.id %>"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn right orange"
+        >Redigeeri</a
+      >
+      <% } %> <% if(user != null) { %> <% if(bookmarked) { %>
+      <a href="#!" onclick="bookmark(0)" id="bookmark-action"
+        ><i class="material-icons" id="bookmark-icon">bookmark</i></a
+      >
       <% } else { %>
-      <a href="#!" onclick="bookmark(1)" id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark_border</i></a>
-      <% } %>
-      <% } %>
-      <%- markdown %>
+      <a href="#!" onclick="bookmark(1)" id="bookmark-action"
+        ><i class="material-icons" id="bookmark-icon">bookmark_border</i></a
+      >
+      <% } %> <% } %> <%- markdown %>
     </div>
   </body>
 </html>

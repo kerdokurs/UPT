@@ -1,19 +1,28 @@
+<% function getTopics(category) { for(let _category of _categories) {
+if(_category.id === category.id) return _category.topics; } return null; } %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <title>
-      <%= pageTitle %>
-    </title>
+    <title><%= pageTitle %></title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-
+      <h5><%= selectedCategory.title %></h5>
+      <ol>
+        <% for(let topic of getTopics(selectedCategory)) { %>
+        <li>
+          <a href="/teemad/<%= selectedCategory.id %>/<%= topic.id %>"
+            ><%= topic.title %></a
+          >
+        </li>
+        <% } %>
+      </ol>
     </div>
   </body>
 </html>

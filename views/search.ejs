@@ -1,0 +1,49 @@
+<% function getCategory(_topic) { for(let category of _categories) {
+if(category.id === _topic.parent) return category; } return null; } %>
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ./imports/head.ejs %>
+    <title><%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ./imports/navbar.ejs %> <% include ./imports/sidenav.ejs %>
+    <div class="container">
+      <div class="left white">
+        <form action="/search" method="get">
+          <input
+            type="text"
+            name="query"
+            id="search-query"
+            placeholder="Otsi"
+            required
+          />
+        </form>
+      </div>
+      <br /><br />
+      <h5>Leitud kategooriad</h5>
+      <% if(foundCategories.length > 0) { %>
+      <ul>
+        <% for(let category of foundCategories) { %>
+        <li><a href="/teemad/<%= category.id %>"><%= category.title %></a></li>
+        <% } %>
+      </ul>
+      <% } else { %> Ei leitud ühtegi vastavat kategooriat <% } %>
+      <h5>Leitud teemad</h5>
+      <% if(foundTopics.length > 0) { %>
+      <ul>
+        <% for(let topic of foundTopics) { %>
+        <li>
+          <a href="/teemad/<%= getCategory(topic).id %>/<%= topic.id %>"
+            ><%= topic.title %></a
+          >
+        </li>
+        <% } %>
+      </ul>
+      <% } else { %> Ei leitud ühtegi vastavat teemat <% } %>
+    </div>
+  </body>
+</html>

@@ -5,13 +5,11 @@ const topicModel = new Schema(
   {
     title: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     id: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     parent: {
       type: String,

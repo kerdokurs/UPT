@@ -72,14 +72,17 @@ router.route('/add_top').post(async (req, res) => {
       data: '# ' + title,
       last_changed: new Date()
     })
-      .then(() => res.redirect('/admin/edit_topic/' + id))
+      .then(() => res.redirect('/admin/edit_topic/' + category + ':' + id))
       .catch(err => functions.handle(err, '/core/routers/admin.js'));
-  } else res.redirect('/admin#teemad');
+  } else res.redirect('/admin#sisu');
 });
 
 router.route('/edit_topic/:id').get(async (req, res) => {
   const { id } = req.params;
-  let data = await Topic.find({ id })
+  let data = await Topic.find({
+    id: id.split(':')[1],
+    parent: id.split(':')[0]
+  })
     .then(data => data)
     .catch(err => functions.handle(err, '/core/routers/admin.js'));
   data = data[0];
@@ -90,20 +93,30 @@ router.route('/edit_topic/:id').get(async (req, res) => {
 router.route('/edit_topic/:id').post(async (req, res) => {
   const { id } = req.params;
   const { title, data } = req.body;
-  if ((id && title, data)) {
-    Topic.update({ id }, { $set: { title, data, last_changed: new Date() } })
-      .then(() => res.redirect('/admin/edit_topic/' + id))
+  if (id && title && data) {
+    Topic.update(
+      { id: id.split(':')[1], parent: id.split(':')[0] },
+      { $set: { title, data, last_changed: new Date() } }
+    )
+      .then(() =>
+        res.redirect(
+          '/admin/edit_topic/' + id.split(':')[0] + ':' + id.split(':')[1]
+        )
+      )
       .catch(err => functions.handle(err, '/core/routers/admin.js'));
-  } else res.redirect('/admin/edit_topic/' + id);
+  } else
+    res.redirect(
+      '/admin/edit_topic/' + id.split(':')[0] + ':' + id.split(':')[1]
+    );
 });
 
 router.route('/del_top').post(async (req, res) => {
   const { id } = req.body;
   if (id)
-    Topic.deleteOne({ id })
-      .then(() => res.redirect('/admin#teemad'))
+    Topic.deleteOne({ id: id.split(':')[1], parent: id.split(':')[0] })
+      .then(() => res.redirect('/admin#sisu'))
       .catch(err => functions.handle(err, '/core/routers/admin.js'));
-  else res.redirect('/admin#teemad');
+  else res.redirect('/admin#sisu');
 });
 
 router.route('/add_adm').post(async (req, res) => {

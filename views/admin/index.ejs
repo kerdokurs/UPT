@@ -68,7 +68,7 @@ __topics.push(__topic); } return __topics; } %>
                       </td>
                       <td>
                         <a
-                          href="/admin/edit_topic/<%= topic.id %>"
+                          href="/admin/edit_topic/<%= category.id %>:<%= topic.id %>"
                           target="_blank"
                           rel="noopener noreferrer"
                           class="btn orange"
@@ -84,7 +84,7 @@ __topics.push(__topic); } return __topics; } %>
                           <input
                             type="hidden"
                             name="id"
-                            value="<%= topic.id %>"
+                            value="<%= category.id %>:<%= topic.id %>"
                           />
                           <input
                             type="submit"
