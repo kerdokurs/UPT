@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <title>
-      <%= pageTitle %>
-    </title>
+    <title><%= pageTitle %></title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <div class="user-profile">
         <div>
-          <img src="<%= user.photoURL %>" alt="<%= user.displayName %>" width="100%">
+          <img
+            src="<%= user.photoURL %>"
+            alt="<%= user.displayName %>"
+            width="100%"
+          />
         </div>
         <div>
-          <h4>
-            <%= user.displayName %>
-          </h4>
-          <p>
-            <%= user.uid %>
-          </p>
+          <h4><%= user.displayName %></h4>
+          <p><%= user.uid %></p>
         </div>
       </div>
       <div class="section">
-        <a href="/user/bookmarks" target="_blank" rel="noopener noreferrer">Järjehoidjad</a><br>
-        <a href="/user/achievements" target="_blank" rel="noopener noreferrer">Saavutused</a>
+        <a href="/user/bookmarks" rel="noopener noreferrer">Järjehoidjad</a
+        ><br />
+        <a href="/user/achievements" rel="noopener noreferrer">Saavutused</a>
       </div>
     </div>
   </body>

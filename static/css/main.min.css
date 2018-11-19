@@ -25,7 +25,10 @@ nav.white a { color: black !important; }
 
 .sidenav { font-weight: bold; }
 
-@media only screen and (max-width: 992px) { .breadcrumb { font-size: 0.8em; } }
+@media only screen and (max-width: 992px) { .breadcrumb { font-size: 0.8em; }
+  .main { grid-template-areas: 'bookmarks' 'bookmarks' 'achievements' 'achievements' 'activity' 'activity'; } }
+
+@media only screen and (min-width: 992px) { .main { grid-template-areas: 'bookmarks achievements' 'bookmarks achievements' 'activity activity'; } }
 
 .tabs .tab a { color: #000; }
 
@@ -38,3 +41,17 @@ nav.white a { color: black !important; }
 .tabs .tab a:visited { color: #000; }
 
 .tabs .tab a:focus { background-color: #fff !important; }
+
+.main { display: -ms-grid; display: grid; grid-row-gap: 20px; padding: 20px; }
+
+.main .container { width: calc(100% - 20px); }
+
+.bookmarks { grid-area: bookmarks; }
+
+.achievements { grid-area: achievements; }
+
+.activity { grid-area: activity; }
+
+.modal { padding: 20px; }
+
+.mobile-search { margin-right: 10px !important; }

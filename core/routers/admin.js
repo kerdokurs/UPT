@@ -49,17 +49,14 @@ router.route('/').get(async (req, res) => {
 router.route('/add_cat').post(async (req, res) => {
   const { id, title } = req.body;
   if (id && title)
-    Category.create({ id, title }).then(() =>
-      res.redirect('/admin#kategooriad')
-    );
-  else res.redirect('/admin#kategooriad');
+    Category.create({ id, title }).then(() => res.redirect('/admin#sisu'));
+  else res.redirect('/admin#sisu');
 });
 
 router.route('/del_cat').post(async (req, res) => {
   const { id } = req.body;
-  if (id)
-    Category.deleteOne({ id }).then(() => res.redirect('/admin#kategooriad'));
-  else res.redirect('/admin#kategooriad');
+  if (id) Category.deleteOne({ id }).then(() => res.redirect('/admin#sisu'));
+  else res.redirect('/admin#sisu');
 });
 
 router.route('/add_top').post(async (req, res) => {

@@ -7,5 +7,6 @@
     $('select').formSelect();
     $('.tabs').tabs();
     $('.collapsible').collapsible();
+    $('.modal').modal();
   });
 })(jQuery);

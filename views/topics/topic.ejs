@@ -17,7 +17,6 @@
       <% if(admin) { %>
       <a
         href="/admin/edit_topic/<%= topic.parent %>:<%= topic.id %>"
-        target="_blank"
         rel="noopener noreferrer"
         class="btn right orange"
         >Redigeeri</a
@@ -31,6 +30,30 @@
         ><i class="material-icons" id="bookmark-icon">bookmark_border</i></a
       >
       <% } %> <% } %> <%- markdown %>
+    </div>
+    <div class="modal" id="bookmark-saved-modal">
+      <h4>Järjehoidja salvestatud!</h4>
+      <a
+        href="javascript:$('#bookmark-saved-modal').modal('close');"
+        class="btn green"
+        >OK</a
+      >
+    </div>
+    <div class="modal" id="bookmark-removed-modal">
+      <h4>Järjehoidja eemaldatud!</h4>
+      <a
+        href="javascript:$('#bookmark-removed-modal').modal('close');"
+        class="btn green"
+        >OK</a
+      >
+    </div>
+    <div class="modal" id="bookmark-exists-modal">
+      <h4>Järjehoidja on juba olemas!</h4>
+      <a
+        href="javascript:$('#bookmark-removed-modal').modal('close');"
+        class="btn green"
+        >OK</a
+      >
     </div>
   </body>
 </html>

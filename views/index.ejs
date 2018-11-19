@@ -1,16 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ./imports/head.ejs %>
-    <title>
-      <%= pageTitle %>
-    </title>
+    <title><%= pageTitle %></title>
   </head>
   <body>
-    <% include ./imports/navbar.ejs %>
-    <% include ./imports/sidenav.ejs %>
+    <% include ./imports/navbar.ejs %> <% include ./imports/sidenav.ejs %>
+    <div class="main">
+      <% if(user !== null) { %>
+      <div class="bookmarks container z-depth-1">
+        <h6>
+          Viimased järjehoidjad (<a href="/user/bookmarks">vaata kõiki</a>)
+        </h6>
+        <ul>
+          <% for(let bookmark of recentBookmarks) { %>
+          <li id="bookmark-<%= i %>">
+            <a href="/teemad/<%= bookmark.url %>"> <%= bookmark.title %> </a>
+          </li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="achievements container z-depth-1">
+        <h6>
+          Viimased saavutused (<a
+            href="/user/achievements
+          unique: true"
+            >vaata kõiki</a
+          >)
+        </h6>
+      </div>
+      <div class="activity container z-depth-1"><h6>Aktiivsus</h6></div>
+      <% } %>
+    </div>
   </body>
 </html>

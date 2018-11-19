@@ -10,8 +10,7 @@ const sessionModel = new Schema(
     },
     uid: {
       type: String,
-      required: true,
-      unique: true
+      required: true
     },
     created_at: {
       type: Date,

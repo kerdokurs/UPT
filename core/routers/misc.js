@@ -69,8 +69,13 @@ router.route('/search').get(async (req, res) => {
       .then(data => data)
       .catch(err => functions.handle(err, '/core/routers/misc.js'));
 
-    res.render('search', { foundTopics, foundCategories });
-  } else res.render('search', { foundTopics: [], foundCategories: [] });
+    res.render('search', { foundTopics, foundCategories, searched: query });
+  } else
+    res.render('search', {
+      foundTopics: [],
+      foundCategories: [],
+      searched: query
+    });
 });
 
 module.exports = router;

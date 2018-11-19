@@ -5,7 +5,7 @@
         ><i class="material-icons">menu</i></a
       >
       <div class="left"><a href="/"> <%= pageTitle %> </a></div>
-      <div class="left search-box white">
+      <div class="left search-box hide-on-small-only">
         <form action="/search" method="get">
           <input
             type="text"
@@ -15,6 +15,23 @@
             required
           />
         </form>
+      </div>
+      <div class="right hide-on-med-and-up mobile-search">
+        <a href="#search_modal" class="modal-trigger">
+          <i class="material-icons">search</i>
+        </a>
+        <div class="modal" id="search_modal">
+          <form action="/search" method="get">
+            <input
+              type="text"
+              name="query"
+              id="search-query"
+              placeholder="Otsi"
+              required
+            />
+            <input type="submit" class="btn green" value="Otsi" />
+          </form>
+        </div>
       </div>
     </div>
   </nav>

@@ -10,6 +10,9 @@
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
+      <a href="/teemad/<%= data.parent %>/<%= data.id %>" class="btn green">
+        Vaata
+      </a>
       <form
         action="/admin/edit_topic/<%= data.parent %>:<%= data.id %>"
         method="POST"

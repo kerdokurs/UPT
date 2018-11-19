@@ -27,22 +27,21 @@ const bookmark = type => {
     url,
     data,
     success: data => {
-      console.log(data);
       data = JSON.parse(data);
 
       switch (data.status) {
         case 0:
-          alert('Järjehoidja lisatud!');
+          $('#bookmark-saved-modal').modal('open');
           $('#bookmark-action').attr('onclick', 'bookmark(0)');
           $('#bookmark-icon').text('bookmark');
           break;
         case 1:
-          alert('Järjehoidja eemaldatud!');
+          $('#bookmark-removed-modal').modal('open');
           $('#bookmark-action').attr('onclick', 'bookmark(1)');
           $('#bookmark-icon').text('bookmark_border');
           break;
         case -1:
-          alert('Järjehoidja on juba olemas!');
+          $('#bookmark-exists-modal').modal('open');
           break;
         case -2:
           alert('Parameetrid puuduvad!');
@@ -70,12 +69,11 @@ const removeFromList = (url, title, id) => {
     url: '/bookmarks/del',
     data,
     success: data => {
-      console.log(data);
       data = JSON.parse(data);
 
       switch (data.status) {
         case 1:
-          alert('Järjehoidja eemaldatud!');
+          $('#bookmark-removed-modal').modal('open');
           $('#bookmark-' + id).remove();
           break;
         case -2:
