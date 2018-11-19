@@ -6,4 +6,6 @@ KÕIK:
   ✔ Korralik veakäsitsemine @critical @done(18-11-09 19:50)
   ✔ Kategooriad ja teemad ühte aknasse. Kategooria avamisel tulevad nähtavale teemad. Admini vaade. @high @done(18-11-14 20:13)
   ☐ Kõik muutujad ruuterfailist. EJS funktsioonid eemaldada. @low
+  ☐ Eemaldada liigsed uue vahelehe ümbersuunamised. @today
+  ☐
   
