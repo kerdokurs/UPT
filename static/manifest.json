@@ -6,5 +6,5 @@
   "background-color": "#fff",
   "display": "standalone",
   "scope": "/",
-  "theme_color": "#4caf50"
+  "theme_color": "#fff"
 }

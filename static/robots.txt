@@ -2,3 +2,5 @@ User-Agent: *
 Disallow: /js/
 Disallow: /css/
 Disallow: /img/
+Disallow: /user/
+Disallow: /admin/

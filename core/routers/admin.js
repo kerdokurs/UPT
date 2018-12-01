@@ -91,7 +91,7 @@ router.route('/edit_topic/:id').post(async (req, res) => {
   const { id } = req.params;
   const { title, data } = req.body;
   if (id && title && data) {
-    Topic.update(
+    Topic.updateOne(
       { id: id.split(':')[1], parent: id.split(':')[0] },
       { $set: { title, data, last_changed: new Date() } }
     )
