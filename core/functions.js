@@ -91,15 +91,6 @@ const getCategories = async () => {
   return _categories;
 };
 
-const getStatus = id => {
-  const status = JSON.parse(
-    fs.readFileSync(__dirname + '/../data/status.json')
-  );
-  return status[id]
-    ? status[id]
-    : { id: -01, code: 404, message: 'Invalid status code id', colour: '#fff' };
-};
-
 const handle = (err, path) => {
   console.log(`Error: [${path}, ${currentTime()}] > ${err}`);
 };
@@ -124,8 +115,6 @@ module.exports = {
   randomString,
 
   getCategories,
-
-  getStatus,
 
   handle,
 
