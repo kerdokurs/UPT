@@ -10,6 +10,7 @@ require('../database/database');
 const User = require('../database/models/User');
 const Bookmark = require('../database/models/Bookmark');
 const Session = require('../database/models/Session');
+const Achievement = require('../database/models/Achievement');
 
 router.route('/login').get(async (req, res) => {
   if (await authModule.isUserLoggedIn(req)) res.redirect('/user');
@@ -83,7 +84,8 @@ router.route('/post-login').get(async (req, res) => {
         last_sign_in: new Date(),
         admin: false
       })
-        .then(() => {
+        .then(async () => {
+          await functions.grantAchievement(uid, 'login');
           res
             .cookie('logged_in', true, { expires })
             .cookie('_sid', sid, { expires })
@@ -108,8 +110,21 @@ router.route('/').get(async (req, res) => {
 
 router.route('/achievements').get(async (req, res) => {
   if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
-  const achievements = [];
-  res.render('user/achievements', { achievements });
+  const user = await authModule.getLoggedUser(req);
+  const achievements = user.achievements;
+
+  const _achievements = [];
+  for (let achievement of achievements) {
+    const _achievement = await Achievement.find({ id: achievement.id });
+
+    _achievements.push({
+      timestamp: achievement.timestamp,
+      title: _achievement[0].title,
+      description: _achievement[0].description
+    });
+  }
+
+  res.render('user/achievements', { achievements: _achievements });
 });
 
 router.route('/bookmarks').get(async (req, res) => {

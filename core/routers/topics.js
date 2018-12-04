@@ -33,7 +33,7 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
   if (authModule.isUserLoggedIn(req)) {
     const bookmarkId = categoryId + '-' + topicId;
     const session = await authModule.getSession(req);
-    const { uid } = session;
+    const { uid } = session || {};
 
     const data = await Bookmark.find({ uid, id: bookmarkId })
       .then(data => data)
@@ -83,6 +83,7 @@ function generateMarkdown(data) {
       openLinksInNewWindow: true,
       headerLevelStart: 3
     });
+    converter.setFlavor('github');
     markdown = converter.makeHtml(data);
 
     //Parse MathJax and insert it into topic HTML markdown.

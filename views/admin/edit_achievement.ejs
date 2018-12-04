@@ -5,27 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <title>Teema muutmine</title>
+    <title>Saavutuse muutmine</title>
   </head>
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-      <a href="/teemad/<%= data.parent %>/<%= data.id %>" class="btn green">
-        Vaata
-      </a>
       <form
-        action="/admin/edit_topic/<%= data.parent %>:<%= data.id %>"
+        action="/admin/edit_achievement/<%= achievement.id %>"
         method="POST"
       >
         <input type="submit" value="Salvesta" class="btn green" />
-        <input type="text" name="title" value="<%= data.title %>" />
+        <input type="text" name="title" value="<%= achievement.title %>" />
         <textarea
-          name="data"
-          id="edit-topic-data"
+          name="description"
+          id="edit-ach-data"
           cols="30"
           rows="10"
           class="materialize-textarea"
-        ><%= data.data %></textarea>
+        ><%= achievement.description %></textarea>
       </form>
     </div>
   </body>

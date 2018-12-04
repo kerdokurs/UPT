@@ -3,6 +3,8 @@ const fs = require('fs');
 const Category = require('./database/models/Category');
 const Topic = require('./database/models/Topic');
 
+const User = require('./database/models/User');
+
 const randomString = length => {
   let text = '';
   const possible =
@@ -102,6 +104,21 @@ const handle = (err, path) => {
   console.log(`Error: [${path}, ${currentTime()}] > ${err}`);
 };
 
+const hasAchievement = async (user, id) => {
+  for (let achievement of user.achievements)
+    if (achievement.id === id) return true;
+
+  return false;
+};
+
+const grantAchievement = async (uid, id) => {
+  let user = await User.find({ uid });
+  user = user[0];
+  if (await hasAchievement(user, id)) return;
+  await user.achievements.push({ id, timestamp: new Date() });
+  await user.save().catch(err => handle(err, '/core/functions.js'));
+};
+
 module.exports = {
   currentTime,
   randomString,
@@ -110,5 +127,7 @@ module.exports = {
 
   getStatus,
 
-  handle
+  handle,
+
+  grantAchievement
 };

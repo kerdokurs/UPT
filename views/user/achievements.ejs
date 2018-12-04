@@ -1,20 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <title>
-      Saavutused -
-      <%= pageTitle %>
-    </title>
+    <title>Saavutused - <%= pageTitle %></title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <h4>Saavutused</h4>
+      <table>
+        <thead>
+          <tr>
+            <th>Saavutus</th>
+            <th>Kirjeldus</th>
+            <th>Aeg</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% for(let achievement of achievements) { const {title, description,
+          timestamp} = achievement; %>
+          <tr>
+            <td><%= title %></td>
+            <td><%= description %></td>
+            <td><%= timestamp %></td>
+          </tr>
+          <% } %>
+        </tbody>
+      </table>
     </div>
   </body>
 </html>

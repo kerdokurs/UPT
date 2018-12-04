@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const UserAchievement = require('./UserAchievement');
+
 const userModel = new Schema(
   {
     uid: {
@@ -13,7 +15,8 @@ const userModel = new Schema(
     email: { type: String, required: true },
     admin: { type: Boolean, default: false },
     sign_up: { type: Date, default: Date.now },
-    last_sign_in: { type: Date, default: Date.now }
+    last_sign_in: { type: Date, default: Date.now },
+    achievements: [UserAchievement.schema]
   },
   { collection: 'users' }
 );

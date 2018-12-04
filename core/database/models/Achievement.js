@@ -15,6 +15,10 @@ const achievementModel = new Schema(
     description: {
       type: String,
       required: true
+    },
+    last_changed: {
+      type: Date,
+      required: true
     }
   },
   {

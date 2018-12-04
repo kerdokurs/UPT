@@ -10,6 +10,8 @@ const Session = require('../database/models/Session');
 const Category = require('../database/models/Category');
 const Topic = require('../database/models/Topic');
 
+const Achievement = require('../database/models/Achievement');
+
 const Feedback = require('../database/models/Feedback');
 
 router.use(authModule.adminGuard);
@@ -39,11 +41,25 @@ router.route('/').get(async (req, res) => {
     return b.timestamp - a.timestamp;
   });
 
+  let achievements = await Achievement.find().catch(err =>
+    functions.handle(err, '/core/routers/admin.js')
+  );
+  achievements = achievements.sort((a, b) => {
+    return b.timestamp - a.timestamp;
+  });
+
   const sessions = await Session.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
   );
 
-  res.render('admin/index', { categories, topics, users, feedback, sessions });
+  res.render('admin/index', {
+    categories,
+    topics,
+    users,
+    feedback,
+    sessions,
+    achievements
+  });
 });
 
 router.route('/add_cat').post(async (req, res) => {
@@ -149,6 +165,59 @@ router.route('/refresh_sessions').get(async (req, res) => {
   Session.deleteMany({ created_at: { $lte: now } })
     .then(() => res.redirect('/admin#kasutajad'))
     .catch(err => functions.handle(err, '/core/routers/admin.js'));
+});
+
+router.route('/add_ach').post(async (req, res) => {
+  const { id, title, description } = req.body;
+  if (id && title && description) {
+    Achievement.create({
+      id,
+      title,
+      description,
+      last_changed: new Date()
+    })
+      .then(() => res.redirect('/admin#saavutused'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin#saavutused');
+});
+
+router.route('/del_ach').post(async (req, res) => {
+  const { id } = req.body;
+  if (id) {
+    Achievement.deleteOne({ id })
+      .then(() => res.redirect('/admin#saavutused'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin#saavutused');
+});
+
+router.route('/edit_achievement/:id').get(async (req, res) => {
+  const { id } = req.params;
+  if (id) {
+    let achievement = await Achievement.find({ id })
+      .then(data => data)
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+    achievement = achievement[0];
+
+    res.render('admin/edit_achievement', { achievement });
+  } else res.redirect('/admin#saavutused');
+});
+
+router.route('/edit_achievement/:id').post(async (req, res) => {
+  const { id } = req.params;
+  const { title, description } = req.body;
+  if (id && title && description) {
+    Achievement.updateOne(
+      { id },
+      {
+        $set: {
+          title,
+          description
+        }
+      }
+    )
+      .then(() => res.redirect('/admin/edit_achievement/' + id))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin#saavutused');
 });
 
 module.exports = router;

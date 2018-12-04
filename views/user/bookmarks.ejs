@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
     <script src="/js/bookmarks.js"></script>
-    <title>
-      Järjehoidjad -
-      <%= pageTitle %>
-    </title>
+    <title>Järjehoidjad - <%= pageTitle %></title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <h4>Järjehoidjad:</h4>
       <ul>
         <% for(i in bookmarks) { bookmark = bookmarks[i]; %>
         <li id="bookmark-<%= i %>">
-          <a href="/teemad/<%= bookmark.url %>">
-            <%= bookmark.title %>
-          </a>
-          <a href="javascript:void(0);" onclick="removeFromList('<%= bookmark.url %>', '<%= bookmark.title %>', '<%= i %>')"
-            style="font-size: 1.8em;">x</a>
+          <a href="/teemad/<%= bookmark.url %>"> <%= bookmark.title %> </a>
+          <a
+            href="javascript:void(0);"
+            onclick="removeFromList('<%= bookmark.url %>', '<%= bookmark.title %>', '<%= i %>')"
+            style="font-size: 1.8em;"
+            >x</a
+          >
         </li>
         <% } %>
       </ul>

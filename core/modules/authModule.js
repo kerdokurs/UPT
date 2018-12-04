@@ -52,6 +52,13 @@ async function getSession(req) {
   return data[0] || null;
 }
 
+async function getLoggedUser(req) {
+  const session = await getSession(req);
+  const { uid } = session;
+  const user = await User.find({ uid });
+  return user[0] || null;
+}
+
 module.exports = {
   getUser,
   isUserLoggedIn,
@@ -59,5 +66,6 @@ module.exports = {
   adminGuard,
   loginGuard,
 
-  getSession
+  getSession,
+  getLoggedUser
 };
