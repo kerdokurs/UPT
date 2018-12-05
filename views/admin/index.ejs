@@ -37,10 +37,10 @@ __topics.push(__topic); } return __topics; } %>
         <h4>Sisu</h4>
         <div>
           <ul class="collapsible">
-            <% for(let category of categories) { %>
+            <% for(let {title, id, last_changed} of categories) { %>
             <li>
               <div class="collapsible-header">
-                <h6 class="left"><%= category.title %></h6>
+                <h6 class="left"><%= title %></h6>
               </div>
               <div class="collapsible-body table">
                 <table>
@@ -55,14 +55,14 @@ __topics.push(__topic); } return __topics; } %>
                     </tr>
                   </thead>
                   <tbody class="collapsible">
-                    <% for(let topic of getTopics(category.id)) { %>
+                    <% for(let topic of getTopics(id)) { %>
                     <tr>
                       <td><%= topic.title %></td>
                       <td><%= topic.id %></td>
                       <td><%= topic.last_changed %></td>
                       <td>
                         <a
-                          href="/teemad/<%= category.id %>/<%= topic.id %>"
+                          href="/teemad/<%= id %>/<%= topic.id %>"
                           target="_blank"
                           rel="noopener noreferrer"
                           class="btn green"
@@ -71,7 +71,7 @@ __topics.push(__topic); } return __topics; } %>
                       </td>
                       <td>
                         <a
-                          href="/admin/edit_topic/<%= category.id %>:<%= topic.id %>"
+                          href="/admin/edit_topic/<%= id %>:<%= topic.id %>"
                           target="_blank"
                           rel="noopener noreferrer"
                           class="btn orange"
@@ -87,7 +87,7 @@ __topics.push(__topic); } return __topics; } %>
                           <input
                             type="hidden"
                             name="id"
-                            value="<%= category.id %>:<%= topic.id %>"
+                            value="<%= id %>:<%= topic.id %>"
                           />
                           <input
                             type="submit"
@@ -182,31 +182,31 @@ __topics.push(__topic); } return __topics; } %>
               </tr>
             </thead>
             <tbody>
-              <% for(let _user of users) { %>
+              <% for(let {displayName, uid, email, admin} of users) { %>
               <tr>
-                <td><%= _user.displayName %></td>
-                <td><%= _user.uid %></td>
-                <td><%= _user.email %></td>
+                <td><%= displayName %></td>
+                <td><%= uid %></td>
+                <td><%= email %></td>
                 <td>
-                  <% if(_user.admin) { %>
                   <form
-                    method="POST"
-                    action="/admin/del_adm"
-                    onsubmit="return confirm('Kindel, et eemaldada <%= _user.displayName %>?')"
+                    action="/admin/<% if(admin) { %>del<% } else { %>add<% } %>_adm"
+                    method="post"
                   >
-                    <input type="hidden" name="uid" value="<%= _user.uid %>" />
-                    <input type="submit" value="Eemalda" class="btn red" />
+                    <input type="hidden" name="uid" value="<%= uid %>" />
+                    <div class="switch">
+                      <label>
+                        Off <% if(admin) { %>
+                        <input
+                          type="checkbox"
+                          onchange="this.form.submit()"
+                          checked
+                        />
+                        <% } else { %>
+                        <input type="checkbox" onchange="this.form.submit()" />
+                        <% }%> <span class="lever"></span> On
+                      </label>
+                    </div>
                   </form>
-                  <% } else { %>
-                  <form
-                    method="POST"
-                    action="/admin/add_adm"
-                    onsubmit="return confirm('Kindel, et lisada <%= _user.displayName %>?')"
-                  >
-                    <input type="hidden" name="uid" value="<%= _user.uid %>" />
-                    <input type="submit" value="Lisa" class="btn green" />
-                  </form>
-                  <% } %>
                 </td>
               </tr>
               <% } %>
@@ -225,11 +225,11 @@ __topics.push(__topic); } return __topics; } %>
               </tr>
             </thead>
             <tbody>
-              <% for(let session of sessions) { %>
+              <% for(let {id, uid, created_at} of sessions) { %>
               <tr>
-                <td><%= session.id %></td>
-                <td><%= getUser(session.uid).displayName %></td>
-                <td><%= session.created_at %></td>
+                <td><%= id %></td>
+                <td><%= getUser(uid).displayName %></td>
+                <td><%= created_at %></td>
               </tr>
               <% } %>
             </tbody>
@@ -251,24 +251,20 @@ __topics.push(__topic); } return __topics; } %>
               </tr>
             </thead>
             <tbody>
-              <% for(let _feedback of feedback) { %>
+              <% for(let {id, uid, timestamp, name, text} of feedback) { %>
               <tr>
-                <td><%= _feedback.id %></td>
-                <td><%= _feedback.uid %></td>
-                <td><%= _feedback.timestamp %></td>
-                <td><%= _feedback.name %></td>
-                <td><%= _feedback.text %></td>
+                <td><%= id %></td>
+                <td><%= uid %></td>
+                <td><%= timestamp %></td>
+                <td><%= name %></td>
+                <td><%= text %></td>
                 <td>
                   <form
                     method="POST"
                     action="/admin/del_fdb"
-                    onsubmit="return confirm('Kindel, et kustutada <%= _feedback.name %>?')"
+                    onsubmit="return confirm('Kindel, et kustutada <%= name %>?')"
                   >
-                    <input
-                      type="hidden"
-                      name="id"
-                      value="<%= _feedback.id %>"
-                    />
+                    <input type="hidden" name="id" value="<%= id %>" />
                     <input type="submit" value="Kustuta" class="btn red" />
                   </form>
                 </td>
@@ -292,15 +288,16 @@ __topics.push(__topic); } return __topics; } %>
             </tr>
           </thead>
           <tbody>
-            <% for(let achievement of achievements) { %>
+            <% for(let {id, title, description, last_changed} of achievements) {
+            %>
             <tr>
-              <td><%= achievement.id %></td>
-              <td><%= achievement.title %></td>
-              <td><%= achievement.description.substring(0, 50) %></td>
-              <td><%= achievement.last_changed %></td>
+              <td><%= id %></td>
+              <td><%= title %></td>
+              <td><%= description.substring(0, 50) %></td>
+              <td><%= last_changed %></td>
               <td>
                 <a
-                  href="/admin/edit_achievement/<%= achievement.id %>"
+                  href="/admin/edit_achievement/<%= id %>"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="btn orange"
@@ -308,16 +305,12 @@ __topics.push(__topic); } return __topics; } %>
                 >
               </td>
               <td>
-                  <form
+                <form
                   method="POST"
                   action="/admin/del_ach"
-                  onsubmit="return confirm('Kindel, et kustutada <%= achievement.title %>?')"
+                  onsubmit="return confirm('Kindel, et kustutada <%= title %>?')"
                 >
-                  <input
-                    type="hidden"
-                    name="id"
-                    value="<%= achievement.id %>"
-                  />
+                  <input type="hidden" name="id" value="<%= id %>" />
                   <input type="submit" value="Kustuta" class="btn red" />
                 </form>
               </td>
@@ -335,8 +328,8 @@ __topics.push(__topic); } return __topics; } %>
               <tr>
                 <td>ID</td>
                 <td>
-                    <input type="text" name="id" id="add-ach-id" required />
-                  </td>
+                  <input type="text" name="id" id="add-ach-id" required />
+                </td>
               </tr>
               <tr>
                 <td>Pealkiri</td>

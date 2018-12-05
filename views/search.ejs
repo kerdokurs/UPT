@@ -45,6 +45,10 @@ if(category.id === _topic.parent) return category; } return null; } %>
         <% } %>
       </ul>
       <% } else { %> Ei leitud ühtegi vastavat teemat <% } %>
+      <h5>Leitud ülesanded</h5>
+      <% if(foundExercises.length > 0) { %>
+      <ul></ul>
+      <% } else { %> Ei leitud ühtegi vastavat ülesannet <% } %>
     </div>
   </body>
 </html>

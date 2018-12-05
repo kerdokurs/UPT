@@ -69,7 +69,12 @@ router.route('/search').get(async (req, res) => {
       .then(data => data)
       .catch(err => functions.handle(err, '/core/routers/misc.js'));
 
-    res.render('search', { foundTopics, foundCategories, searched: query });
+    res.render('search', {
+      foundTopics,
+      foundCategories,
+      searched: query,
+      foundExercises: []
+    });
   } else
     res.render('search', {
       foundTopics: [],

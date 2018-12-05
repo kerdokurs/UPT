@@ -55,3 +55,5 @@ nav.white a { color: black !important; }
 .modal { padding: 20px; }
 
 .mobile-search { margin-right: 10px !important; }
+
+.astmed input[type='text']:disabled { color: #000 !important; }

@@ -110,6 +110,23 @@ const grantAchievement = async (uid, id) => {
   await user.save().catch(err => handle(err, '/core/functions.js'));
 };
 
+const shuffleArray = array => {
+  let currentIndex = array.length,
+    temporaryValue,
+    randomIndex;
+
+  while (currentIndex !== 0) {
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+};
+
 module.exports = {
   currentTime,
   randomString,
@@ -118,5 +135,7 @@ module.exports = {
 
   handle,
 
-  grantAchievement
+  grantAchievement,
+
+  shuffleArray
 };

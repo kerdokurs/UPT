@@ -9,7 +9,7 @@ const topics = require('./core/routers/topics');
 const bookmarks = require('./core/routers/bookmarks');
 const misc = require('./core/routers/misc');
 const admin = require('./core/routers/admin');
-const ulesanded = require('./core/routers/ulesanded');
+const exercises = require('./core/routers/exercises');
 
 const functions = require('./core/functions');
 
@@ -52,13 +52,10 @@ app.use('/teemad', topics);
 app.use('/bookmarks', bookmarks);
 app.use(misc);
 app.use('/admin', admin);
-app.use('/ulesanded', ulesanded);
+app.use('/ulesanded', exercises);
 
 app.all('**', async (req, res) => {
-  res.render('404', {
-    topic: null,
-    field: null
-  });
+  res.render('404', { path: req.path });
 });
 
 app.listen(port, () => {
