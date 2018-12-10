@@ -2,4 +2,4 @@
 /.vscode/
 /files/
 /mongo/
-/environment/
+/data/creds.json
