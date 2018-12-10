@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const fs = require('fs');
+
 const authModule = require('../modules/authModule');
 
 const functions = require('../functions');
@@ -14,18 +16,39 @@ const Achievement = require('../database/models/Achievement');
 
 const Feedback = require('../database/models/Feedback');
 
+const ExerciseCategory = require('../database/models/ExerciseCategory');
+const Exercise = require('../database/models/Exercise');
+
 router.use(authModule.adminGuard);
 
 router.route('/').get(async (req, res) => {
   if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
-  const categories = await Category.find();
+  const _categories = await Category.find();
 
-  let topics = await Topic.find().catch(err =>
-    functions.handle(err, '/core/routers/admin.js')
-  );
-  topics = topics.sort((a, b) => {
-    return b.last_changed - a.last_changed;
-  });
+  const categories = [];
+  for (const { id, title } of _categories) {
+    let _topics = await Topic.find().catch(err =>
+      functions.handle(err, '/core/routers/admin.js')
+    );
+    _topics = _topics.sort((a, b) => {
+      return b.last_changed - a.last_changed;
+    });
+
+    const topics = [];
+    for (let { title, id, data, last_changed } of _topics)
+      topics.push({
+        title,
+        id,
+        data,
+        last_changed: functions.parseDate(last_changed)
+      });
+
+    categories.push({
+      title,
+      id,
+      topics
+    });
+  }
 
   let users = await User.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
@@ -34,31 +57,112 @@ router.route('/').get(async (req, res) => {
     return b.sign_up - a.sign_up;
   });
 
-  let feedback = await Feedback.find().catch(err =>
+  let _feedback = await Feedback.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
   );
-  feedback = feedback.sort((a, b) => {
+  _feedback = _feedback.sort((a, b) => {
     return b.timestamp - a.timestamp;
   });
 
-  let achievements = await Achievement.find().catch(err =>
+  const feedback = [];
+  for (const { id, uid, timestamp, name, text } of _feedback)
+    feedback.push({
+      id,
+      uid,
+      timestamp: functions.parseDate(timestamp),
+      name,
+      text
+    });
+
+  let _achievements = await Achievement.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
   );
-  achievements = achievements.sort((a, b) => {
+  _achievements = _achievements.sort((a, b) => {
     return b.timestamp - a.timestamp;
   });
 
-  const sessions = await Session.find().catch(err =>
+  const achievements = [];
+  for (const { id, title, description, last_changed } of _achievements)
+    achievements.push({
+      id,
+      title,
+      description,
+      last_changed: functions.parseDate(last_changed)
+    });
+
+  let _sessions = await Session.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
   );
+  _sessions = _sessions.sort((a, b) => b.timestamp - a.timestamp);
+
+  const sessions = [];
+  for (const { id, uid, created_at } of _sessions) {
+    let displayName = '';
+    for (let user of users) {
+      if (user.uid == uid) {
+        displayName = user.displayName;
+        break;
+      }
+    }
+
+    sessions.push({
+      id,
+      displayName,
+      created_at: functions.parseDate(created_at)
+    });
+  }
+
+  let exerciseCategories = await ExerciseCategory.find().catch(err =>
+    functions.handle(err, '/core/routers/admin.js')
+  );
+  exerciseCategories = exerciseCategories.sort((a, b) => {
+    return b.timestamp - a.timestamp;
+  });
+
+  const exercise_categories = [];
+  for (let exerciseCategory of exerciseCategories) {
+    const { title, id, last_changed } = exerciseCategory;
+
+    const exercises = await Exercise.find({ category_id: id }).catch(err =>
+      functions.handle(err, '/core/routers/admin.js')
+    );
+
+    const category_exercises = [];
+    for (let {
+      id,
+      title,
+      data,
+      metadata,
+      created_at,
+      last_changed,
+      published
+    } of exercises) {
+      category_exercises.push({
+        id,
+        title,
+        data,
+        metadata,
+        created_at: functions.parseDate(created_at),
+        last_changed: functions.parseDate(last_changed),
+        published
+      });
+    }
+
+    exercise_categories.push({
+      title,
+      id,
+      last_changed: functions.parseDate(last_changed),
+      exercises: category_exercises
+    });
+  }
 
   res.render('admin/index', {
     categories,
-    topics,
     users,
     feedback,
     sessions,
-    achievements
+    achievements,
+    exercise_categories
   });
 });
 
@@ -218,6 +322,138 @@ router.route('/edit_achievement/:id').post(async (req, res) => {
       .then(() => res.redirect('/admin/edit_achievement/' + id))
       .catch(err => functions.handle(err, '/core/routers/admin.js'));
   } else res.redirect('/admin#saavutused');
+});
+
+router.route('/add_exe_cat').post(async (req, res) => {
+  const { id, title } = req.body;
+
+  if (id && title) {
+    await ExerciseCategory.create({
+      id,
+      title,
+      created_at: new Date(),
+      last_changed: new Date()
+    })
+      .then(() => res.redirect('/admin/#ulesanded'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/add_exe').post(async (req, res) => {
+  const { title, id, category } = req.body;
+
+  if (title && id && category) {
+    await Exercise.create({
+      id,
+      title,
+      category_id: category,
+      data: JSON.parse(
+        fs.readFileSync('./data/exercise_data_boilerplate.json').toString()
+      ),
+      metadata: {},
+      created_at: new Date(),
+      last_changed: new Date()
+    })
+      .then(() => res.redirect('/admin/#ulesanded'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/del_exe').post(async (req, res) => {
+  const { id } = req.body;
+
+  if (id) {
+    const ids = id.split(':');
+    const cat_id = ids[0],
+      exe_id = ids[1];
+
+    if (exe_id && cat_id) {
+      await Exercise.deleteOne({ id: exe_id, category_id: cat_id })
+        .then(() => res.redirect('/admin/#ulesanded'))
+        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+    } else res.redirect('/admin/#ulesanded');
+  } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/edit_exercise/:id').get(async (req, res) => {
+  const { id } = req.params;
+  if (id) {
+    const ids = id.split(':');
+    const cat_id = ids[0],
+      exe_id = ids[1];
+
+    if (cat_id && exe_id) {
+      const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
+        .then(data => data[0])
+        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+
+      if (exercise === null || exercise === undefined)
+        res.redirect('/admin/#ulesanded');
+
+      res.render('admin/edit_exercise', {
+        exercise,
+        cat_id
+      });
+    } else res.redirect('/admin/#ulesanded');
+  } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/edit_exercise/:id').post(async (req, res) => {
+  const { id } = req.params;
+  const { title, data } = req.body;
+  if (id && title && data) {
+    const ids = id.split(':');
+    const cat_id = ids[0],
+      exe_id = ids[1];
+
+    if (cat_id && exe_id) {
+      await Exercise.updateOne(
+        { id: exe_id, category_id: cat_id },
+        {
+          $set: {
+            title,
+            data: JSON.parse(data),
+            last_changed: new Date()
+          }
+        }
+      ).catch(err => functions.handle(err, '/core/routers/admin.js'));
+
+      const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
+        .then(data => data[0])
+        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+
+      if (exercise === null || exercise === undefined)
+        res.redirect('/admin/#ulesanded');
+
+      res.render('admin/edit_exercise', {
+        exercise,
+        cat_id
+      });
+    } else res.redirect('/admin/#ulesanded');
+  } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/set_exe_published').post(async (req, res) => {
+  const { id, state } = req.body;
+
+  if (id && state) {
+    const ids = id.split(':');
+    const cat_id = ids[0],
+      exe_id = ids[1];
+
+    if (cat_id && exe_id) {
+      await Exercise.updateOne(
+        { id: exe_id, category_id: cat_id },
+        {
+          $set: {
+            published: state === 'on' ? true : false
+          }
+        }
+      )
+        .then(() => res.redirect('/admin/#ulesanded'))
+        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+    } else res.redirect('/admin/#ulesanded');
+  } else res.redirect('/admin/#ulesanded');
 });
 
 module.exports = router;

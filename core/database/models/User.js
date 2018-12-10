@@ -16,7 +16,10 @@ const userModel = new Schema(
     admin: { type: Boolean, default: false },
     sign_up: { type: Date, default: Date.now },
     last_sign_in: { type: Date, default: Date.now },
-    achievements: [UserAchievement.schema]
+    achievements: [UserAchievement.schema],
+    metadata: {
+      type: Object
+    }
   },
   { collection: 'users' }
 );

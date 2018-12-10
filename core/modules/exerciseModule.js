@@ -25,5 +25,35 @@ module.exports = {
       return functions.shuffleArray(table);
     },
     check: async data => {}
+  },
+  generate: async data => {
+    const { variables, text, formula, mathjax, precision } = data;
+
+    let newText = text;
+    newFormula = formula;
+    const newVariables = {};
+    for (const v in variables) {
+      const variable = variables[v];
+
+      const { type, min, max } = variable;
+
+      const random = Math.floor(Math.random() * (max - min) + min);
+
+      const regex = new RegExp('<' + v + '>', 'gi');
+      newText = newText.replace(regex, `<b>${random} ${type}</b>`);
+      newFormula = newFormula.replace(regex, random);
+      newVariables[v] = random;
+    }
+
+    const answer = parseFloat(eval(newFormula)).toFixed(precision);
+
+    return {
+      text: newText,
+      answer,
+      mathjax,
+      precision,
+      variables: newVariables,
+      formula
+    };
   }
 };

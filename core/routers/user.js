@@ -6,7 +6,6 @@ const admin = require('../modules/firebase/admin');
 const authModule = require('../modules/authModule');
 const functions = require('../functions');
 
-require('../database/database');
 const User = require('../database/models/User');
 const Bookmark = require('../database/models/Bookmark');
 const Session = require('../database/models/Session');

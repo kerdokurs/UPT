@@ -14,6 +14,7 @@ const exercises = require('./core/routers/exercises');
 const functions = require('./core/functions');
 
 require('dotenv').config();
+require('./core/database/database');
 
 const port = process.env.PORT || 80;
 
@@ -34,7 +35,7 @@ app.use(async (req, res, next) => {
 
 app.use((req, res, next) => {
   console.log(
-    functions.currentTime() +
+    functions.parseDate(new Date()) +
       ' [WEB, ' +
       req.method +
       '] ' +

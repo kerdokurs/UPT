@@ -1,0 +1,61 @@
+<h4>Kasutajad</h4>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>Nimi</th>
+        <th>UID</th>
+        <th>Email</th>
+        <th>Admin</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let {displayName, uid, email, admin} of users) { %>
+      <tr>
+        <td><%= displayName %></td>
+        <td><%= uid %></td>
+        <td><%= email %></td>
+        <td>
+          <form
+            action="/admin/<% if(admin) { %>del<% } else { %>add<% } %>_adm"
+            method="post"
+          >
+            <input type="hidden" name="uid" value="<%= uid %>" />
+            <div class="switch">
+              <label>
+                Off <% if(admin) { %>
+                <input type="checkbox" onchange="this.form.submit()" checked />
+                <% } else { %>
+                <input type="checkbox" onchange="this.form.submit()" /> <% }%>
+                <span class="lever"></span> On
+              </label>
+            </div>
+          </form>
+        </td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+<h4>Sessioonid</h4>
+<a href="/admin/refresh_sessions">Kustuta aegunud sessioonid</a>
+<div class="table">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Kasutaja</th>
+        <th>Loomisaeg</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% for(let {id, displayName, created_at} of sessions) { %>
+      <tr>
+        <td><%= id %></td>
+        <td><%= displayName %></td>
+        <td><%= created_at %></td>
+      </tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
