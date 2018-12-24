@@ -10,12 +10,15 @@
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-      <% const {id, title, data, metadata} = exercise; %>
+      <% const {id, category_id, title, data, metadata} = exercise; %>
 
       <h4><%= title %></h4>
       <p><%- data.text %></p>
       <p>Vastus ümarda <%= data.precision %> komakohani.</p>
-      <form action="/ulesanded/<%= id %>/submit" method="post">
+      <form
+        action="/ulesanded/<%= category_id %>:<%= id %>/submit"
+        method="post"
+      >
         <input type="hidden" name="o_id" value="<%= o_id %>" />
         <label for="exercise-answer">Vastus</label>
         <input type="text" name="answer" id="exercise-answer" required />

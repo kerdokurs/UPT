@@ -100,11 +100,11 @@ router.use(authModule.loginGuard);
 router.route('/').get(async (req, res) => {
   if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const session = (await authModule.getSession(req)) || {};
-  const users = await User.find({ uid: session.uid })
-    .then(data => data)
+  const user = await User.find({ uid: session.uid })
+    .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/user.js'));
 
-  res.render('user/user', { data: users[0] });
+  res.render('user/user', { data: user });
 });
 
 router.route('/achievements').get(async (req, res) => {

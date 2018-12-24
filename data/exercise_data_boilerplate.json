@@ -2,10 +2,25 @@
   "data": {
     "variables": {
       "time": { "type": "s", "min": 20, "max": 100 },
-      "speed": { "type": "m/s", "min": 5, "max": 25 }
+      "speed": { "type": "m/s", "min": 5, "max": 25 },
+      "dist": {
+        "type": "m",
+        "calc": "<time> * <speed>"
+      }
     },
-    "text": "Auto sõitis <time> sekundit kiirusega <speed>. Kui suure vahemaa ta läbis?",
-    "formula": "<time> * <speed>",
-    "precision": 2
+    "variants": [
+      {
+        "text": "Auto sõitis <time> kiirusega <speed>. Kui suure vahemaa ta läbis?",
+        "formula": "<time> * <speed>",
+        "precision": 2
+      },
+      {
+        "text": "Auto läbis <time> <dist>. Kui suur oli tema keskmine kiirus?",
+        "formula": "<dist> / <time>",
+        "precision": 2
+      }
+    ],
+    "points": 20,
+    "time_limit": 300
   }
 }

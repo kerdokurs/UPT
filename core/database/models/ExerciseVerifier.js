@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const exerciseVerifierObjectModel = new Schema(
+const exerciseVerifierModel = new Schema(
   {
     id: {
       type: String,
@@ -24,6 +24,10 @@ const exerciseVerifierObjectModel = new Schema(
       type: Object,
       required: true
     },
+    variant: {
+      type: Number,
+      required: true
+    },
     formula: {
       type: String,
       required: true
@@ -34,11 +38,8 @@ const exerciseVerifierObjectModel = new Schema(
     }
   },
   {
-    collection: 'exercise_verifier_objects'
+    collection: 'exercise_verifiers'
   }
 );
 
-module.exports = mongoose.model(
-  'exerciseVerifierObject',
-  exerciseVerifierObjectModel
-);
+module.exports = mongoose.model('exerciseVerifier', exerciseVerifierModel);

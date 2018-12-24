@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
     <% include ./imports/head.ejs %>
     <title><%= pageTitle %></title>
   </head>
@@ -25,15 +29,38 @@
       </div>
       <div class="achievements container z-depth-1">
         <h6>
-          Viimased saavutused (<a
-            href="/user/achievements
-          unique: true"
-            >vaata kõiki</a
-          >)
+          Viimased saavutused (<a href="/user/achievements">vaata kõiki</a>)
         </h6>
+        <ul>
+          <!-- TODO: Fix up -->
+          <% for(let achievement of recentAchievements) { %>
+          <li id="achievement-<%= i %>">
+            <a href="/teemad/<%= achievement.url %>"> <%= achievement.id %> </a>
+          </li>
+          <% } %>
+        </ul>
       </div>
-      <div class="activity container z-depth-1"><h6>Aktiivsus</h6></div>
+      <div class="activity container z-depth-1">
+        <h6>Aktiivsus</h6>
+        <div id="piechart" style="width: 900px; height: 500px;"></div>
+      </div>
       <% } %>
     </div>
+    <script defer type="text/javascript">
+      google.charts.load('current', { packages: ['corechart'] });
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable(
+          JSON.parse(`<%- activity.data %>`)
+        );
+
+        var chart = new google.visualization.ColumnChart(
+          document.getElementById('piechart')
+        );
+
+        chart.draw(data, JSON.parse(`<%- activity.options %>`));
+      }
+    </script>
   </body>
 </html>

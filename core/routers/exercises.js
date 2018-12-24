@@ -4,7 +4,7 @@ const authModule = require('../modules/authModule');
 const exerciseModule = require('../modules/exerciseModule');
 
 const Exercise = require('../database/models/Exercise');
-const ExerciseVerifierObject = require('../database/models/ExerciseVerifierObject');
+const ExerciseVerifier = require('../database/models/ExerciseVerifier');
 
 const User = require('../database/models/User');
 
@@ -26,53 +26,91 @@ router.route('/astmed').post(async (req, res) => {
   res.send('<pre>' + JSON.stringify(req.body, null, 2) + '</pre>');
 });
 
+router.route('/lahendatud').get(async (req, res) => {
+  res.send('jah.');
+});
+
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
-  let exercise = await Exercise.find({ id })
+  const ids = id.split(':');
+  const cat_id = ids[0],
+    exe_id = ids[1];
+  let exercise = await Exercise.find({ category_id: cat_id, id: exe_id })
     .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/exercises.js'));
-  exercise.data = await exerciseModule.generate(exercise.data);
+  if (exercise != null) {
+    exercise.data = await exerciseModule.generate(exercise.data);
 
-  const o_id = functions.randomString(24);
-  await ExerciseVerifierObject.create({
-    id: o_id,
-    e_id: id,
-    created_at: new Date(),
-    valid_for: 1,
-    variables: exercise.data.variables,
-    formula: exercise.data.formula,
-    answer: exercise.data.answer
-  });
+    const o_id = functions.randomString(24);
+    await ExerciseVerifier.create({
+      id: o_id,
+      e_id: id,
+      created_at: new Date(),
+      valid_for: exercise.data.time_limit || 300,
+      variables: exercise.data.variables,
+      formula: exercise.data.formula,
+      answer: exercise.data.answer,
+      points: exercise.data.points,
+      variant: exercise.data.variantId
+    });
 
-  res.render('exercises/index', { exercise, o_id });
+    res.render('exercises/index', { exercise, o_id });
+  } else res.redirect('/');
 });
 
 router.route('/:id/submit').post(async (req, res) => {
   const { id } = req.params;
   const { o_id, answer } = req.body;
 
-  const verifier = await ExerciseVerifierObject.find({ id: o_id, e_id: id })
+  if (!answer && !o_id) {
+    res.status(403).send(
+      JSON.stringify({
+        code: 403,
+        msg: 'Invalid parameters.'
+      })
+    );
+    return;
+  }
+
+  const verifier = await ExerciseVerifier.find({ id: o_id, e_id: id })
     .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
-  const isCorrect = answer == verifier.answer;
+  const ids = verifier.e_id.split(':');
+  const cat_id = ids[0],
+    exe_id = ids[1];
+  const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
+    .then(data => data[0])
+    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
+  const isCorrect = answer == (verifier != null ? verifier.answer : false);
+
+  await ExerciseVerifier.deleteOne({ id: o_id, e_id: id });
   if (isCorrect) {
-    await ExerciseVerifierObject.deleteOne({ id: o_id, e_id: id });
-    const { uid, metadata } = await authModule.getLoggedUser(req);
-    await User.find(
+    const { uid } = await authModule.getLoggedUser(req);
+    await User.updateOne(
       { uid },
       {
-        $set: {
-          metadata: {
-            completed_exercises: (metadata.completed_exercises || 0) + 1
-          }
+        $inc: {
+          'metadata.completed_exercises': 1,
+          'metadata.exercise_points': exercise.data.points || 20
         }
       }
     );
-    res.send('correct');
+    res.send(
+      JSON.stringify({
+        points: exercise.data.points,
+        answer,
+        formula: exercise.data.formula,
+        msg: `Õigesti lahendatud! Teenisid <answer> punkti!`
+      })
+    );
   } else {
-    res.send('incorrect');
+    res.send({
+      answer,
+      formula: exercise.data.formula,
+      msg: `Midagi oli valesti. Õige vastus oli: <answer>.`
+    });
   }
 });
 

@@ -27,7 +27,9 @@ module.exports = {
     check: async data => {}
   },
   generate: async data => {
-    const { variables, text, formula, mathjax, precision } = data;
+    const { variables, variants, mathjax } = data;
+    const variantId = Math.floor(Math.random() * variants.length);
+    const { text, formula, precision } = variants[variantId];
 
     let newText = text;
     newFormula = formula;
@@ -53,7 +55,8 @@ module.exports = {
       mathjax,
       precision,
       variables: newVariables,
-      formula
+      formula,
+      variantId
     };
   }
 };

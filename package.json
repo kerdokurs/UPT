@@ -6,7 +6,10 @@
   "scripts": {
     "serve": "nodemon index.js --watch ./core/",
     "mongo": "mongod --dbpath ./mongo/ --bind_ip 127.0.0.1",
-    "start": "sudo node ./index.js"
+    "start": "node ./index.js",
+    "dump": "mongodump -d upt --excludeCollection users --excludeCollection sessions",
+    "restore": "mongorestore -d upt dump/upt",
+    "clean": "rm -r dump"
   },
   "author": "",
   "license": "ISC",

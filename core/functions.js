@@ -49,7 +49,7 @@ const getCategories = async () => {
 };
 
 const handle = (err, path) => {
-  console.log(`Error: [${path}, ${currentTime()}] > ${err}`);
+  console.log(`Error: [${path}, ${parseDate(new Date())}] > ${err}`);
 };
 
 const hasAchievement = async (user, id) => {
@@ -123,6 +123,14 @@ const parseDate = date => {
   );
 };
 
+const randomHexString = () => {
+  const possible = '0123456789abcdef';
+  let text = '';
+  for (let i = 0; i < 6; i++)
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  return text;
+};
+
 module.exports = {
   randomString,
   parseDate,
@@ -133,5 +141,6 @@ module.exports = {
 
   grantAchievement,
 
-  shuffleArray
+  shuffleArray,
+  randomHexString
 };

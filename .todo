@@ -9,3 +9,6 @@ KÕIK:
   ✔ Eemaldada liigsed uue vahelehe ümbersuunamised. @today @done(18-11-19 20:58)
   ✔ Aknad kasutaja informeerimiseks javascript:alert() asemel @low @done(18-11-19 21:34)
   ☐ Kategooriate ja teemade sorteerimine kõrvalmenüüs ja adminvaates järjekorra muutmine @low
+  ☐ Tagasisidepaneel adminvaates ei näita kasutaja UIDd. @low
+  ☐ Aegunud sessioonide kustutamine ei tööta. @high
+  ☐ Adminvaates sisu kategooriad ei näita õigesti. @critical

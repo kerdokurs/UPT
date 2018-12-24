@@ -45,26 +45,31 @@
                 </form>
               </td>
               <td>
-                <form action="/admin/set_exe_published" method="post">
+                <form
+                  action="/admin/set_exe_published"
+                  method="post"
+                  id="exe_published_form"
+                >
                   <input
                     type="hidden"
                     name="id"
                     value="<%= id %>:<%= exercise.id %>"
                   />
                   <div class="switch">
+                    <!-- TODO: Fix switching -->
                     <label>
                       Off <% if(exercise.published) { %>
                       <input
                         type="checkbox"
-                        onchange="this.form.submit()"
                         name="state"
+                        id="exe_published_input"
                         checked
                       />
                       <% } else { %>
                       <input
                         type="checkbox"
-                        onchange="this.form.submit()"
                         name="state"
+                        id="exe_published_input"
                       />
                       <% }%> <span class="lever"></span> On
                     </label>

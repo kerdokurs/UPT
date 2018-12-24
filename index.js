@@ -13,6 +13,8 @@ const exercises = require('./core/routers/exercises');
 
 const functions = require('./core/functions');
 
+const authModule = require('./core/modules/authModule');
+
 require('dotenv').config();
 require('./core/database/database');
 
@@ -30,6 +32,12 @@ app.use(express.static(__dirname + '/static'));
 
 app.use(async (req, res, next) => {
   res.locals = await locals.get(req);
+  next();
+});
+
+app.use(async (req, res, next) => {
+  const user = await authModule.getLoggedUser(req);
+  if (user !== null) await authModule.loginStats(user);
   next();
 });
 

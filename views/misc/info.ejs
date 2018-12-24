@@ -1,25 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <title>
-      Info -
-      <%= pageTitle %>
-    </title>
+    <title>Info - <%= pageTitle %></title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-      <h4>
-        <%= pageTitle %>
-      </h4>
-      <p>
-        on interaktiivne füüsika õpikeskkond.
-      </p>
+      <h4>Mis on <%= pageTitle %>?</h4>
+      <blockquote>
+        <%= pageTitle %> on praktilise töö raames loodud õpikeskkond, mis aitab
+        õpilasel ise korraldada õppimist.
+      </blockquote>
+      <blockquote>
+        <%= pageTitle %> on veel väga algses staadiumis ja kui leidub vigu, saab
+        neist märku anda <a href="/feedback">siin.</a>
+      </blockquote>
+      <blockquote>
+        Ühendust saab võtta ka e-posti aadressi teel:
+        <a href="mailto:kerdo@kerdo.me">kerdo@kerdo.me</a>
+      </blockquote>
     </div>
   </body>
 </html>

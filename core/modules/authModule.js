@@ -59,6 +59,38 @@ async function getLoggedUser(req) {
   return user[0] || null;
 }
 
+async function loginStats(user) {
+  const now = new Date();
+  let dateStr = `${now.getDate()}${now.getMonth() + 1}${now.getFullYear()}`;
+  dateStr = parseInt(dateStr);
+
+  let hasVisited = false;
+  let activity = user.metadata.activity;
+  if (activity != null) {
+    for (let entry of activity) {
+      if (entry == dateStr) {
+        hasVisited = true;
+        break;
+      }
+    }
+  } else {
+    activity = [];
+  }
+  if (!hasVisited) {
+    activity.push(dateStr);
+    await User.updateOne(
+      { uid: user.uid },
+      {
+        $set: {
+          metadata: {
+            activity
+          }
+        }
+      }
+    );
+  }
+}
+
 module.exports = {
   getUser,
   isUserLoggedIn,
@@ -67,5 +99,6 @@ module.exports = {
   loginGuard,
 
   getSession,
-  getLoggedUser
+  getLoggedUser,
+  loginStats
 };

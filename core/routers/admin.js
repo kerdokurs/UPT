@@ -436,10 +436,12 @@ router.route('/edit_exercise/:id').post(async (req, res) => {
 router.route('/set_exe_published').post(async (req, res) => {
   const { id, state } = req.body;
 
+  console.log(req.body);
   if (id && state) {
     const ids = id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
+    console.log(state);
 
     if (cat_id && exe_id) {
       await Exercise.updateOne(
@@ -454,6 +456,26 @@ router.route('/set_exe_published').post(async (req, res) => {
         .catch(err => functions.handle(err, '/core/routers/admin.js'));
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/test').get((req, res) => {
+  const data = [
+    ['Task', 'Hours per Day'],
+    ['Work', 11],
+    ['Eat', 2],
+    ['Commute', 2],
+    ['Watch TV', 2],
+    ['Sleep', 7]
+  ];
+
+  const options = {
+    title: 'My Daily Activities'
+  };
+
+  res.render('admin/test', {
+    data: JSON.stringify(data),
+    options: JSON.stringify(options)
+  });
 });
 
 module.exports = router;
