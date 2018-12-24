@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const _ = require('lodash');
+
 const authModule = require('../modules/authModule');
 const functions = require('../functions');
 
@@ -23,12 +25,10 @@ router.route('/').get(async (req, res) => {
       .catch(err => functions.handle(err, '/core/routers/app.js'));
 
     let { achievements } = user;
-    achievements = achievements.sort((a, b) => b.timestamp - a.timestamp);
-    const recentAchievements = [];
-    for (let i = 0; i < 5; i++) {
-      const ach = achievements[i];
-      if (ach != null) recentAchievements.push(ach);
-    }
+    const recentAchievements = _.take(
+      _.orderBy(achievements, 'timestamp', 'desc'),
+      5
+    );
 
     const weeklyLogins = await getUserActivity(req, 7);
     const weeklyOptions = { title: 'Viimase 7 päeva sisselogimised' };

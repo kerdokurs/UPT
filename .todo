@@ -12,3 +12,4 @@ KÕIK:
   ☐ Tagasisidepaneel adminvaates ei näita kasutaja UIDd. @low
   ☐ Aegunud sessioonide kustutamine ei tööta. @high
   ☐ Adminvaates sisu kategooriad ei näita õigesti. @critical
+  ☐ Korista kood ES6 nõudmistele. @high
