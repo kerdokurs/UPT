@@ -5,17 +5,17 @@ const Session = require('../database/models/Session');
 
 const functions = require('../functions');
 
-function getUser(uid) {
+const getUser = uid => {
   if (!uid || uid.toString().length < 1) return null;
   return admin.auth().getUser(uid);
-}
+};
 
-async function isUserLoggedIn(req) {
+const isUserLoggedIn = async req => {
   const session = await getSession(req);
   return session !== null;
-}
+};
 
-async function adminGuard(req, res, next) {
+const adminGuard = async (req, res, next) => {
   if (!(await isUserLoggedIn(req))) res.redirect('/user/login');
 
   const session = await getSession(req);
@@ -25,14 +25,14 @@ async function adminGuard(req, res, next) {
 
   if (users[0] && users[0].admin) next();
   else res.redirect('/');
-}
+};
 
-async function loginGuard(req, res, next) {
+const loginGuard = async (req, res, next) => {
   if (!isUserLoggedIn(req)) res.redirect('/user/login');
   next();
-}
+};
 
-async function isUserAdmin(req) {
+const isUserAdmin = async req => {
   const session = (await getSession(req)) || {};
 
   const data = await User.find({ uid: session.uid })
@@ -40,9 +40,9 @@ async function isUserAdmin(req) {
     .catch(err => functions.handle(err, '/core/modules/authModule.js'));
 
   return data[0] && data[0].admin;
-}
+};
 
-async function getSession(req) {
+const getSession = async req => {
   const { _sid } = req.cookies;
 
   const data = await Session.find({ id: _sid })
@@ -50,16 +50,16 @@ async function getSession(req) {
     .catch(err => functions.handle(err, '/core/modules/authModule.js'));
 
   return data[0] || null;
-}
+};
 
-async function getLoggedUser(req) {
+const getLoggedUser = async req => {
   const session = await getSession(req);
   const { uid } = session;
   const user = await User.find({ uid });
   return user[0] || null;
-}
+};
 
-async function loginStats(user) {
+const loginStats = async user => {
   const now = new Date();
   let dateStr = `${now.getDate()}${now.getMonth() + 1}${now.getFullYear()}`;
   dateStr = parseInt(dateStr);
@@ -89,7 +89,7 @@ async function loginStats(user) {
       }
     );
   }
-}
+};
 
 module.exports = {
   getUser,

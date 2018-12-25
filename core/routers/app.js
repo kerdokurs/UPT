@@ -24,14 +24,18 @@ router.route('/').get(async (req, res) => {
       .then(data => data[0])
       .catch(err => functions.handle(err, '/core/routers/app.js'));
 
-    let { achievements } = user;
-    const recentAchievements = _.take(
+    const { achievements } = user;
+    let recentAchievements = _.take(
       _.orderBy(achievements, 'timestamp', 'desc'),
       5
     );
+    recentAchievements = recentAchievements.map(ach => {
+      ach.timestamp = functions.parseDate(ach.timestamp);
+      return ach;
+    });
 
     const weeklyLogins = await getUserActivity(req, 7);
-    const weeklyOptions = { title: 'Viimase 7 päeva sisselogimised' };
+    const weeklyOptions = { title: 'Viimased sisselogimised' };
 
     res.render('index', {
       recentBookmarks,

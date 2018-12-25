@@ -27,7 +27,7 @@ router.route('/').get(async (req, res) => {
 
   const categories = [];
   for (const { id, title } of _categories) {
-    let _topics = await Topic.find().catch(err =>
+    let _topics = await Topic.find({ parent: id }).catch(err =>
       functions.handle(err, '/core/routers/admin.js')
     );
     _topics = _topics.sort((a, b) => {
@@ -65,7 +65,7 @@ router.route('/').get(async (req, res) => {
   });
 
   const feedback = [];
-  for (const { id, uid, timestamp, name, text } of _feedback)
+  for (const { id, uid, timestamp, name, text } of _feedback) {
     feedback.push({
       id,
       uid,
@@ -73,6 +73,7 @@ router.route('/').get(async (req, res) => {
       name,
       text
     });
+  }
 
   let _achievements = await Achievement.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
@@ -278,7 +279,8 @@ router.route('/add_ach').post(async (req, res) => {
       id,
       title,
       description,
-      last_changed: new Date()
+      last_changed: new Date(),
+      published: false
     })
       .then(() => res.redirect('/admin#saavutused'))
       .catch(err => functions.handle(err, '/core/routers/admin.js'));

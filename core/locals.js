@@ -1,8 +1,6 @@
 const functions = require('./functions');
 const authModule = require('./modules/authModule');
 
-const Session = require('./database/models/Session');
-
 module.exports = {
   get: async req => {
     const session = (await authModule.getSession(req)) || {};

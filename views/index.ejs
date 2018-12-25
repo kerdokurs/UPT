@@ -35,7 +35,9 @@
           <!-- TODO: Fix up -->
           <% for(let achievement of recentAchievements) { %>
           <li id="achievement-<%= i %>">
-            <a href="/teemad/<%= achievement.url %>"> <%= achievement.id %> </a>
+            <p>
+              <%= achievement.id %> <span><%= achievement.timestamp %></span>
+            </p>
           </li>
           <% } %>
         </ul>

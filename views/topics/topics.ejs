@@ -1,6 +1,3 @@
-<% function getTopics(category) { for(let _category of _categories) {
-if(_category.id === category.id) return _category.topics; } return null; } %>
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -13,11 +10,11 @@ if(_category.id === category.id) return _category.topics; } return null; } %>
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-      <h5><%= selectedCategory.title %></h5>
+      <h5><%= category.title %></h5>
       <ol>
-        <% for(let topic of getTopics(selectedCategory)) { %>
+        <% for(let topic of category.topics) { %>
         <li>
-          <a href="/teemad/<%= selectedCategory.id %>/<%= topic.id %>"
+          <a href="/teemad/<%= category.id %>/<%= topic.id %>"
             ><%= topic.title %></a
           >
         </li>

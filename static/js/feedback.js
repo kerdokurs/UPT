@@ -4,7 +4,7 @@ const feedback = form => {
 
   $.ajax({
     type: 'POST',
-    url: '/feedback-submit',
+    url: '/feedback',
     data: { name, text },
     success: data => {
       data = JSON.parse(data);

@@ -8,6 +8,8 @@ const Feedback = require('../database/models/Feedback');
 const Topic = require('../database/models/Topic');
 const Category = require('../database/models/Category');
 
+const authModule = require('../modules/authModule');
+
 router.route('/info').get((req, res) => {
   res.render('misc/info');
 });
@@ -16,9 +18,9 @@ router.route('/feedback').get((req, res) => {
   res.render('misc/feedback');
 });
 
-router.route('/feedback-submit').post((req, res) => {
+router.route('/feedback').post(async (req, res) => {
   const { name, text } = req.body;
-  const { uid } = req.cookies;
+  const { uid } = await authModule.getSession(req);
 
   if (name && text) {
     Feedback.create({ id: functions.randomString(24), uid, text, name })

@@ -24,9 +24,7 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
   const { categoryId, topicId } = req.params;
 
   let topicData = await getTopicData(topicId, categoryId);
-  topicData = topicData[0];
   let categoryData = await getCategoryData(categoryId);
-  categoryData = categoryData[0];
 
   let bookmarked = false;
 
@@ -41,6 +39,10 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
     bookmarked = data.length > 0;
   }
 
+  categoryData.topics = res.locals._categories.filter(
+    cat => cat.id == categoryId
+  )[0].topics;
+
   if (categoryData && topicData) {
     const markdown = generateMarkdown(topicData.data);
     res.render('topics/topic', {
@@ -52,24 +54,24 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
     });
   } else if (categoryData && !topicData) {
     res.render('topics/topics', {
-      selectedCategory: categoryData
+      category: categoryData
     });
   } else {
     res.render('topics/topics', {
-      selectedCategory: null
+      category: {}
     });
   }
 });
 
 async function getTopicData(topicId, categoryId) {
   return await Topic.find({ id: topicId, parent: categoryId })
-    .then(data => data)
+    .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/topics.js'));
 }
 
 async function getCategoryData(categoryId) {
   return await Category.find({ id: categoryId })
-    .then(data => data)
+    .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/topics.js'));
 }
 
