@@ -64,16 +64,15 @@ router.route('/').get(async (req, res) => {
     return b.timestamp - a.timestamp;
   });
 
-  const feedback = [];
-  for (const { id, uid, timestamp, name, text } of _feedback) {
-    feedback.push({
+  const feedback = _feedback.map(({ id, uid, timestamp, name, text }) => {
+    return {
       id,
       uid,
       timestamp: functions.parseDate(timestamp),
       name,
       text
-    });
-  }
+    };
+  });
 
   let _achievements = await Achievement.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
@@ -267,7 +266,7 @@ router.route('/del_fdb').post(async (req, res) => {
 router.route('/refresh_sessions').get(async (req, res) => {
   const now = new Date();
   now.setDate(now.getDate() - 30);
-  Session.deleteMany({ created_at: { $lte: now } })
+  Session.deleteMany({ created_at: { $lt: now } })
     .then(() => res.redirect('/admin#kasutajad'))
     .catch(err => functions.handle(err, '/core/routers/admin.js'));
 });

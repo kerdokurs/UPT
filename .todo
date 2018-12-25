@@ -5,12 +5,12 @@ KÕIK:
   ☐ Saavutused @low
   ✔ Korralik veakäsitsemine @critical @done(18-11-09 19:50)
   ✔ Kategooriad ja teemad ühte aknasse. Kategooria avamisel tulevad nähtavale teemad. Admini vaade. @high @done(18-11-14 20:13)
-  ☐ Kõik muutujad ruuterfailist. EJS funktsioonid eemaldada. @low
+  ✔ Kõik muutujad ruuterfailist. EJS funktsioonid eemaldada. @low @done(18-12-25 19:49)
   ✔ Eemaldada liigsed uue vahelehe ümbersuunamised. @today @done(18-11-19 20:58)
   ✔ Aknad (modaalid) kasutaja informeerimiseks javascript:alert() asemel @low @done(18-11-19 21:34)
   ☐ Kategooriate ja teemade sorteerimine kõrvalmenüüs ja adminvaates järjekorra muutmine @low
   ✔ Tagasisidepaneel adminvaates ei näita kasutaja UIDd. @low @done(18-12-25 11:02)
-  ☐ Aegunud sessioonide kustutamine ei tööta. @high
+  ✔ Aegunud sessioonide kustutamine ei tööta. @high @done(18-12-25 19:48)
   ✔ Adminvaates sisu kategooriad ei näita õigesti. @critical @done(18-12-25 10:58)
   ☐ Korista kood ES6 nõudmistele. @high
   ☐ Saavutuste ja ülesannete avalikustamine @low

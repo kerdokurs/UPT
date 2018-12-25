@@ -97,7 +97,7 @@ const parseDate = date => {
   let day = date.getDate();
   if (parseInt(day) < 10) day = '0' + day;
 
-  let month = parseInt(date.getMonth());
+  let month = date.getMonth() + parseInt(process.env.MONTH_OFFSET || 0);
   if (parseInt(month) < 10) month = '0' + month;
 
   let year = date
