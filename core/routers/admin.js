@@ -22,17 +22,13 @@ const Exercise = require('../database/models/Exercise');
 router.use(authModule.adminGuard);
 
 router.route('/').get(async (req, res) => {
-  if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const _categories = await Category.find();
 
   const categories = [];
   for (const { id, title } of _categories) {
-    let _topics = await Topic.find({ parent: id }).catch(err =>
-      functions.handle(err, '/core/routers/admin.js')
-    );
-    _topics = _topics.sort((a, b) => {
-      return b.last_changed - a.last_changed;
-    });
+    const _topics = await Topic.find({ parent: id }, null, {
+      sort: '-last_changed'
+    }).catch(err => functions.handle(err, '/core/routers/admin.js'));
 
     const topics = [];
     for (let { title, id, data, last_changed } of _topics)
@@ -50,19 +46,13 @@ router.route('/').get(async (req, res) => {
     });
   }
 
-  let users = await User.find().catch(err =>
+  const users = await User.find({}, null, { sort: '-sign_up' }).catch(err =>
     functions.handle(err, '/core/routers/admin.js')
   );
-  users = users.sort((a, b) => {
-    return b.sign_up - a.sign_up;
-  });
 
-  let _feedback = await Feedback.find().catch(err =>
-    functions.handle(err, '/core/routers/admin.js')
+  const _feedback = await Feedback.find({}, null, { sort: '-timestamp' }).catch(
+    err => functions.handle(err, '/core/routers/admin.js')
   );
-  _feedback = _feedback.sort((a, b) => {
-    return b.timestamp - a.timestamp;
-  });
 
   const feedback = _feedback.map(({ id, uid, timestamp, name, text }) => {
     return {
@@ -74,26 +64,29 @@ router.route('/').get(async (req, res) => {
     };
   });
 
-  let _achievements = await Achievement.find().catch(err =>
-    functions.handle(err, '/core/routers/admin.js')
-  );
-  _achievements = _achievements.sort((a, b) => {
-    return b.timestamp - a.timestamp;
-  });
+  const _achievements = await Achievement.find({}, null, {
+    sort: '-timestamp'
+  }).catch(err => functions.handle(err, '/core/routers/admin.js'));
 
   const achievements = [];
-  for (const { id, title, description, last_changed } of _achievements)
+  for (const {
+    id,
+    title,
+    description,
+    last_changed,
+    published
+  } of _achievements)
     achievements.push({
       id,
       title,
       description,
-      last_changed: functions.parseDate(last_changed)
+      last_changed: functions.parseDate(last_changed),
+      published
     });
 
-  let _sessions = await Session.find().catch(err =>
-    functions.handle(err, '/core/routers/admin.js')
+  const _sessions = await Session.find({}, null, { sort: '-timestamp' }).catch(
+    err => functions.handle(err, '/core/routers/admin.js')
   );
-  _sessions = _sessions.sort((a, b) => b.timestamp - a.timestamp);
 
   const sessions = [];
   for (const { id, uid, created_at } of _sessions) {
@@ -115,17 +108,14 @@ router.route('/').get(async (req, res) => {
   let exerciseCategories = await ExerciseCategory.find().catch(err =>
     functions.handle(err, '/core/routers/admin.js')
   );
-  exerciseCategories = exerciseCategories.sort((a, b) => {
-    return b.timestamp - a.timestamp;
-  });
 
   const exercise_categories = [];
   for (let exerciseCategory of exerciseCategories) {
     const { title, id, last_changed } = exerciseCategory;
 
-    const exercises = await Exercise.find({ category_id: id }).catch(err =>
-      functions.handle(err, '/core/routers/admin.js')
-    );
+    const exercises = await Exercise.find({ category_id: id }, null, {
+      sort: '-last_changed'
+    }).catch(err => functions.handle(err, '/core/routers/admin.js'));
 
     const category_exercises = [];
     for (let {
@@ -169,8 +159,8 @@ router.route('/').get(async (req, res) => {
 router.route('/add_cat').post(async (req, res) => {
   const { id, title } = req.body;
   if (id && title)
-    Category.create({ id, title }).then(() => res.redirect('/admin#sisu'));
-  else res.redirect('/admin#sisu');
+    Category.create({ id, title }).then(() => res.redirect('/admin#sisu?s=1'));
+  else res.redirect('/admin#sisu?s=2');
 });
 
 router.route('/del_cat').post(async (req, res) => {
@@ -254,6 +244,23 @@ router.route('/del_adm').post(async (req, res) => {
   else res.redirect('/admin#kasutajad');
 });
 
+router.route('/toggle_admin').post(async (req, res) => {
+  const { uid } = req.body;
+  if (uid) {
+    const data = await User.findOne({ uid });
+    User.updateOne(
+      { uid },
+      {
+        $set: {
+          admin: !data.admin
+        }
+      }
+    )
+      .then(() => res.redirect('/admin#kasutajad'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin#kasutajad');
+});
+
 router.route('/del_fdb').post(async (req, res) => {
   const { id } = req.body;
   if (id)
@@ -323,6 +330,18 @@ router.route('/edit_achievement/:id').post(async (req, res) => {
       .then(() => res.redirect('/admin/edit_achievement/' + id))
       .catch(err => functions.handle(err, '/core/routers/admin.js'));
   } else res.redirect('/admin#saavutused');
+});
+
+// TODO: Luba ainult avalikustatud saavutuste teenimine.
+router.route('/toggle_ach_published').post(async (req, res) => {
+  const { id } = req.body;
+
+  if (id) {
+    const data = await Achievement.findOne({ id });
+    Achievement.updateOne({ id }, { $set: { published: !data.published } })
+      .then(() => res.redirect('/admin/#saavutused'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  } else res.redirect('/admin/#saavutused');
 });
 
 router.route('/add_exe_cat').post(async (req, res) => {
@@ -434,22 +453,27 @@ router.route('/edit_exercise/:id').post(async (req, res) => {
   } else res.redirect('/admin/#ulesanded');
 });
 
-router.route('/set_exe_published').post(async (req, res) => {
-  const { id, state } = req.body;
+router.route('/toggle_exe_published').post(async (req, res) => {
+  const { id } = req.body;
 
-  console.log(req.body);
-  if (id && state) {
+  if (id) {
     const ids = id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
-    console.log(state);
 
     if (cat_id && exe_id) {
+      const data = await Exercise.findOne({
+        id: exe_id,
+        category_id: cat_id
+      }).catch(err => functions.handle(err, '/core/routers/admin.js'));
       await Exercise.updateOne(
-        { id: exe_id, category_id: cat_id },
+        {
+          id: exe_id,
+          category_id: cat_id
+        },
         {
           $set: {
-            published: state === 'on' ? true : false
+            published: !data.published
           }
         }
       )
@@ -457,26 +481,6 @@ router.route('/set_exe_published').post(async (req, res) => {
         .catch(err => functions.handle(err, '/core/routers/admin.js'));
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
-});
-
-router.route('/test').get((req, res) => {
-  const data = [
-    ['Task', 'Hours per Day'],
-    ['Work', 11],
-    ['Eat', 2],
-    ['Commute', 2],
-    ['Watch TV', 2],
-    ['Sleep', 7]
-  ];
-
-  const options = {
-    title: 'My Daily Activities'
-  };
-
-  res.render('admin/test', {
-    data: JSON.stringify(data),
-    options: JSON.stringify(options)
-  });
 });
 
 module.exports = router;

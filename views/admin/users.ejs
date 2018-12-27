@@ -16,10 +16,7 @@
         <td><%= uid %></td>
         <td><%= email %></td>
         <td>
-          <form
-            action="/admin/<% if(admin) { %>del<% } else { %>add<% } %>_adm"
-            method="post"
-          >
+          <form action="/admin/toggle_admin" method="post">
             <input type="hidden" name="uid" value="<%= uid %>" />
             <div class="switch">
               <label>

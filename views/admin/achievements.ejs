@@ -2,18 +2,18 @@
 <table>
   <thead>
     <tr>
-      <th>ID</th>
       <th>Pealkiri</th>
       <th>Kirjeldus</th>
       <th>Viimati muudetud</th>
       <th>Redigeeri</th>
       <th>Kustuta</th>
+      <th>Avalik</th>
     </tr>
   </thead>
   <tbody>
-    <% for(let {id, title, description, last_changed} of achievements) { %>
+    <% for(let {id, title, description, last_changed, published} of
+    achievements) { %>
     <tr>
-      <td><%= id %></td>
       <td><%= title %></td>
       <td><%= description.substring(0, 50) %></td>
       <td><%= last_changed %></td>
@@ -34,6 +34,20 @@
         >
           <input type="hidden" name="id" value="<%= id %>" />
           <input type="submit" value="Kustuta" class="btn red" />
+        </form>
+      </td>
+      <td>
+        <form method="post" action="/admin/toggle_ach_published">
+          <input type="hidden" name="id" value="<%= id %>" />
+          <div class="switch">
+            <label>
+              Off <% if(published) { %>
+              <input type="checkbox" onchange="this.form.submit()" checked /> <%
+              } else { %>
+              <input type="checkbox" onchange="this.form.submit()" /> <% }%>
+              <span class="lever"></span> On
+            </label>
+          </div>
         </form>
       </td>
     </tr>

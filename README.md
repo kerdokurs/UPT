@@ -1,3 +1,3 @@
 # KerdoUPT
 
-See repositoorium hoiustab Kerdo UPT faile.
+See repositoorium hoiustab Kerdo UPT projekti faile.

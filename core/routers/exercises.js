@@ -39,6 +39,10 @@ router.route('/:id').get(async (req, res) => {
     .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/exercises.js'));
   if (exercise != null) {
+    if (!exercise.published) {
+      res.status(400).render('exercises/not_published');
+    }
+
     exercise.data = await exerciseModule.generate(exercise.data);
 
     const o_id = functions.randomString(24);
