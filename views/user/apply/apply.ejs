@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../../imports/head.ejs %>
+    <title><%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../../imports/sidenav.ejs %> <% include ../../imports/navbar.ejs
+    %>
+    <div class="container">
+      <h4>Registreeri end õpilaseks</h4>
+      <form action="/user/apply" method="post">
+        <table>
+          <tr>
+            <td>Kooli nimi:</td>
+            <td><input type="text" name="school" id="school-name" /></td>
+          </tr>
+          <tr>
+            <td>Klass:</td>
+            <td><input type="text" name="class_nr" id="class_nr" /></td>
+          </tr>
+        </table>
+
+        <input type="submit" class="btn green" value="Registreeri" />
+      </form>
+    </div>
+  </body>
+</html>

@@ -10,6 +10,7 @@ const bookmarks = require('./core/routers/bookmarks');
 const misc = require('./core/routers/misc');
 const admin = require('./core/routers/admin');
 const exercises = require('./core/routers/exercises');
+const teacher = require('./core/routers/teacher');
 
 const functions = require('./core/functions');
 
@@ -62,6 +63,7 @@ app.use('/bookmarks', bookmarks);
 app.use(misc);
 app.use('/admin', admin);
 app.use('/ulesanded', exercises);
+app.use('/op', teacher);
 
 app.all('**', async (req, res) => {
   res.render('404', { path: req.path });

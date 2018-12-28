@@ -19,11 +19,23 @@ const adminGuard = async (req, res, next) => {
   if (!(await isUserLoggedIn(req))) res.redirect('/user/login');
 
   const session = await getSession(req);
-  const users = await User.find({ uid: session.uid })
-    .then(data => data)
-    .catch(err => functions.handle(err, '/core/modules/authModule.js'));
+  const user = await User.findOne({ uid: session.uid }).catch(err =>
+    functions.handle(err, '/core/modules/authModule.js')
+  );
 
-  if (users[0] && users[0].admin) next();
+  if (user && user.admin) next();
+  else res.redirect('/');
+};
+
+const teacherGuard = async (req, res, next) => {
+  if (!(await isUserLoggedIn(req))) res.redirect('/user/login');
+
+  const session = await getSession(req);
+  const user = await User.findOne({ uid: session.uid }).catch(err =>
+    functions.handle(err, '/core/modules/authModule.js')
+  );
+
+  if (user && user.teacher) next();
   else res.redirect('/');
 };
 
@@ -55,8 +67,8 @@ const getSession = async req => {
 const getLoggedUser = async req => {
   const session = await getSession(req);
   const { uid } = session;
-  const user = await User.find({ uid });
-  return user[0] || null;
+  const user = await User.findOne({ uid });
+  return user || {};
 };
 
 const loginStats = async user => {
@@ -97,6 +109,7 @@ module.exports = {
   isUserAdmin,
   adminGuard,
   loginGuard,
+  teacherGuard,
 
   getSession,
   getLoggedUser,

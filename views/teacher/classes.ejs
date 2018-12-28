@@ -1,0 +1,32 @@
+<h4>Sinu klassid</h4>
+<ul class="collapsible">
+  <% for(let {id, title, students} of classes) { %>
+  <li>
+    <div class="collapsible-header"><h6 class="left"><%= title %></h6></div>
+    <div class="collapsible-body">
+      <ul>
+        <% for(let {displayName} of students) { %>
+        <li><%= displayName %></li>
+        <% } %>
+      </ul>
+    </div>
+  </li>
+  <% } %>
+</ul>
+<a class="btn modal-trigger green" href="#add_class_modal"> Lisa uus klass</a>
+<div class="modal" id="add_class_modal">
+  <h5>Lisa uus klass</h5>
+  <form method="POST" action="/op/add_class">
+    <table>
+      <tr>
+        <td>Nimi:</td>
+        <td>
+          <input type="text" name="title" id="add-class-title" required />
+        </td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Lisa" class="btn green" /></td>
+      </tr>
+    </table>
+  </form>
+</div>

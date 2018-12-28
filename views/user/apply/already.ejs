@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../../imports/head.ejs %>
+    <title><%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../../imports/sidenav.ejs %> <% include ../../imports/navbar.ejs
+    %>
+    <div class="container">
+      <h5>Sa oled juba õpilane</h5>
+      <p>Kool: <%= school %></p>
+      <p>Õpetaja: <%= teacher %></p>
+      <p>Klass: <%= class_nr %></p>
+    </div>
+  </body>
+</html>
