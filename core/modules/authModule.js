@@ -16,15 +16,17 @@ const isUserLoggedIn = async req => {
 };
 
 const adminGuard = async (req, res, next) => {
-  if (!(await isUserLoggedIn(req))) res.redirect('/user/login');
+  if (!(await isUserLoggedIn(req))) {
+    res.redirect('/user/login?next=' + req.baseUrl + req.path);
+  } else {
+    const session = await getSession(req);
+    const user = await User.findOne({ uid: session.uid }).catch(err =>
+      functions.handle(err, '/core/modules/authModule.js')
+    );
 
-  const session = await getSession(req);
-  const user = await User.findOne({ uid: session.uid }).catch(err =>
-    functions.handle(err, '/core/modules/authModule.js')
-  );
-
-  if (user && user.admin) next();
-  else res.redirect('/');
+    if (user && user.admin) next();
+    else res.redirect('/');
+  }
 };
 
 const teacherGuard = async (req, res, next) => {
@@ -66,12 +68,13 @@ const getSession = async req => {
 
 const getLoggedUser = async req => {
   const session = await getSession(req);
-  const { uid } = session;
+  const { uid } = session || {};
   const user = await User.findOne({ uid });
   return user || {};
 };
 
 const loginStats = async user => {
+  if (user == null || user.metadata == null) return;
   const now = new Date();
   let dateStr = `${now.getDate()}${now.getMonth() + 1}${now.getFullYear()}`;
   dateStr = parseInt(dateStr);

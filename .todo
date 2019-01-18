@@ -17,6 +17,7 @@ TEHA:
   ☐ Staatuse indikaator @low
   ☐ Korrasta andmebaas ja mudelid @low
   ☐ Küsimustiku tüüpi ülesanded @high
-  ☐ Teemade tiitlite parandamine (liiga suured) @high
-  ☐ Õpetajaala õpilaste jälgimiseks @low
-  ☐ Koolid, õpetajad, klassid @low
+  ☐ Tiitlite korrigeerimine @high
+  ✔ Väljalogimine ei tööta @high @done(19-01-18 19:59)
+  ☐ Vead, kui pole sisse logitud @high
+  ☐ Sisu @critical

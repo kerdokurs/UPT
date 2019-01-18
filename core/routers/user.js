@@ -54,7 +54,7 @@ router.route('/post-login').get(async (req, res) => {
           res
             .cookie('logged_in', true, { expires })
             .cookie('_sid', sid, { expires })
-            .redirect('/');
+            .redirect(req.redir);
         })
         .catch(err => functions.handle(err, '/core/routers/user.js'));
     } else {
@@ -81,16 +81,14 @@ router.route('/post-login').get(async (req, res) => {
         email,
         sign_up: new Date(),
         last_sign_in: new Date(),
-        admin: false,
-        teacher: false,
-        student: false
+        admin: false
       })
         .then(async () => {
           await functions.grantAchievement(uid, 'login');
           res
             .cookie('logged_in', true, { expires })
             .cookie('_sid', sid, { expires })
-            .redirect('/user/apply');
+            .redirect(req.redir);
         })
         .catch(err => functions.handle(err, '/core/routers/user.js'));
     }
@@ -102,11 +100,11 @@ router.use(authModule.loginGuard);
 router.route('/').get(async (req, res) => {
   if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const session = (await authModule.getSession(req)) || {};
-  const user = await User.find({ uid: session.uid })
+  let user = await User.find({ uid: session.uid })
     .then(data => data[0])
     .catch(err => functions.handle(err, '/core/routers/user.js'));
 
-  res.render('user/user', { data: user });
+  res.render('user/user', { data: user, parseDate: functions.parseDate });
 });
 
 router.route('/achievements').get(async (req, res) => {
@@ -135,47 +133,6 @@ router.route('/bookmarks').get(async (req, res) => {
     .then(data => data)
     .catch(err => functions.handle(err, '/core/routers/user.js'));
   res.render('user/bookmarks', { bookmarks });
-});
-
-router.route('/apply').get(async (req, res) => {
-  const user = await authModule.getLoggedUser(req);
-  const { student, school_data } = user;
-  const { school, teacher, class_nr, accepted } = school_data;
-
-  if (student && accepted) {
-    res.render('user/apply/already', { school, teacher, class_nr });
-  } else if (student && !accepted) {
-    res.render('user/apply/pending');
-  } else {
-    res.render('user/apply/apply');
-  }
-});
-
-router.route('/apply').post(async (req, res) => {
-  const { school, class_nr } = req.body;
-
-  if (school && class_nr) {
-    const user = await authModule.getLoggedUser(req);
-
-    const { student, school: ex_school, class: ex_class } = user; // TODO: Clean this mess up.
-    if (!student) res.redirect('/user/apply');
-    if (ex_school && ex_class) res.redirect('/user/apply');
-
-    User.updateOne(
-      { uid: user.uid },
-      {
-        $set: {
-          school_data: {
-            school,
-            class_nr,
-            teacher: '',
-            accepted: false
-          },
-          student: true
-        }
-      }
-    ).then(() => res.redirect('/user/apply'));
-  } else res.redirect('/user/apply');
 });
 
 module.exports = router;

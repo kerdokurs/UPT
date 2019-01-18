@@ -21,7 +21,8 @@
         <div>
           <h4><%= user.displayName %></h4>
           <p>
-            <%= data.school_data.school %>, <%= data.school_data.class_nr %>
+            Viimane sisselogimine:
+            <span><%= parseDate(data.last_sign_in) %></span>
           </p>
         </div>
       </div>
@@ -31,9 +32,17 @@
         <a href="/user/achievements" rel="noopener noreferrer">Saavutused</a>
       </div>
       <div class="section">
-        Ülesannete punktid: <b><%= data.metadata.exercise_points %></b><br />
-        <a href="/ulesanded/lahendatud">Vaata siit</a> oma lahendatud
-        ülesandeid.
+        <h5>Ülesanded</h5>
+        <!-- TODO: metadata.solved_exercises pole defineeritud. -->
+        <% if(data.metadata && data.metadata.solved_exercises) { %>
+        <p>Ülesannete punktid: <b><%= data.metadata.exercise_points %></b></p>
+        <p>
+          <a href="/ulesanded/lahendatud">Vaata siit</a> oma lahendatud
+          ülesandeid.
+        </p>
+        <% } else { %>
+        <p>Sa pole veel ülesandeid lahendanud.</p>
+        <% } %>
       </div>
     </div>
   </body>

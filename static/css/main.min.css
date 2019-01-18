@@ -26,9 +26,9 @@ nav.white a { color: black !important; }
 .sidenav { font-weight: bold; }
 
 @media only screen and (max-width: 992px) { .breadcrumb { font-size: 0.8em; }
-  .main { grid-template-areas: 'bookmarks' 'bookmarks' 'achievements' 'achievements' 'activity' 'activity'; } }
+  .main { grid-template-areas: 'bookmarks' 'bookmarks' 'achievements' 'achievements' 'materials' 'materials'; } }
 
-@media only screen and (min-width: 992px) { .main { grid-template-areas: 'bookmarks achievements' 'bookmarks achievements' 'activity activity'; } }
+@media only screen and (min-width: 992px) { .main { grid-template-areas: 'bookmarks achievements' 'bookmarks achievements' 'materials materials'; } }
 
 .tabs .tab a { color: #000; }
 
@@ -50,7 +50,7 @@ nav.white a { color: black !important; }
 
 .achievements { grid-area: achievements; }
 
-.activity { grid-area: activity; }
+.materials { grid-area: materials; }
 
 .modal { padding: 20px; }
 

@@ -106,21 +106,7 @@ const parseDate = date => {
     .substr(2, 2);
   if (parseInt(year) < 10) year = '0' + year;
 
-  return (
-    '[' +
-    hours +
-    ':' +
-    minutes +
-    ':' +
-    seconds +
-    ' ' +
-    day +
-    '/' +
-    month +
-    '/' +
-    year +
-    ']'
-  );
+  return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
 };
 
 const randomHexString = () => {
@@ -129,6 +115,14 @@ const randomHexString = () => {
   for (let i = 0; i < 6; i++)
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   return text;
+};
+
+const parseParams = (req, res, next) => {
+  const redir = req.query.next || '/';
+  const ref = req.query.ref;
+  req.redir = redir;
+  req.ref = ref;
+  next();
 };
 
 module.exports = {
@@ -142,5 +136,7 @@ module.exports = {
   grantAchievement,
 
   shuffleArray,
-  randomHexString
+  randomHexString,
+
+  parseParams
 };

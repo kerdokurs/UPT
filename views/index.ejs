@@ -14,7 +14,7 @@
   <body>
     <% include ./imports/navbar.ejs %> <% include ./imports/sidenav.ejs %>
     <div class="main">
-      <% if(user !== null) { %>
+      <% if(user != null) { %>
       <div class="bookmarks container z-depth-1">
         <h6>
           Viimased järjehoidjad (<a href="/user/bookmarks">vaata kõiki</a>)
@@ -42,27 +42,10 @@
           <% } %>
         </ul>
       </div>
-      <div class="activity container z-depth-1">
-        <h6>Aktiivsus</h6>
-        <div id="piechart" style="width: 900px; height: 500px;"></div>
+      <div class="materials container z-depth-1">
+        <h6>Viimatised materjalid</h6>
       </div>
       <% } %>
     </div>
-    <script defer type="text/javascript">
-      google.charts.load('current', { packages: ['corechart'] });
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable(
-          JSON.parse(`<%- activity.data %>`)
-        );
-
-        var chart = new google.visualization.ColumnChart(
-          document.getElementById('piechart')
-        );
-
-        chart.draw(data, JSON.parse(`<%- activity.options %>`));
-      }
-    </script>
   </body>
 </html>

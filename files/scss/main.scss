@@ -71,13 +71,13 @@ nav.white {
   }
 
   .main {
-    grid-template-areas: 'bookmarks' 'bookmarks' 'achievements' 'achievements' 'activity' 'activity';
+    grid-template-areas: 'bookmarks' 'bookmarks' 'achievements' 'achievements' 'materials' 'materials';
   }
 }
 
 @media only screen and (min-width: 992px) {
   .main {
-    grid-template-areas: 'bookmarks achievements' 'bookmarks achievements' 'activity activity';
+    grid-template-areas: 'bookmarks achievements' 'bookmarks achievements' 'materials materials';
   }
 }
 
@@ -124,8 +124,8 @@ nav.white {
   grid-area: achievements;
 }
 
-.activity {
-  grid-area: activity;
+.materials {
+  grid-area: materials;
 }
 
 .modal {

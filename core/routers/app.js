@@ -34,42 +34,16 @@ router.route('/').get(async (req, res) => {
       return ach;
     });
 
-    const weeklyLogins = await getUserActivity(req, 7);
-    const weeklyOptions = { title: 'Viimased sisselogimised' };
-
     res.render('index', {
       recentBookmarks,
-      recentAchievements,
-      activity: {
-        data: JSON.stringify(weeklyLogins),
-        options: JSON.stringify(weeklyOptions)
-      }
+      recentAchievements
     });
   } else {
-    res.render('index');
+    res.render('index', {
+      recentBookmarks: [],
+      recentAchievements: []
+    });
   }
 });
 
 module.exports = router;
-
-//TODO: Liiguta see kuskile mujale
-
-async function getUserActivity(req, limit) {
-  const user = await authModule.getLoggedUser(req);
-  if (user == null) return [];
-  const activity = user.metadata.activity;
-  if (activity == null) return [];
-  const data = [['Kuupäev', 'Sisselogitud', { role: 'style' }]];
-  for (let i = 0; i < limit; i++) {
-    let entry = activity.shift();
-    if (entry != null) {
-      entry = entry.toString();
-      entry = `${entry.substr(0, 2)}/${entry.substr(2, 2)}/${entry.substr(
-        4,
-        4
-      )}`;
-      data.push([entry, 1, '#' + functions.randomHexString()]);
-    }
-  }
-  return data;
-}
