@@ -26,7 +26,7 @@ module.exports = {
     },
     check: async data => {}
   },
-  generate: async data => {
+  generate: data => {
     const { variables, variants, mathjax } = data;
     const variantId = Math.floor(Math.random() * variants.length);
     const { text, formula, precision } = variants[variantId];
@@ -58,5 +58,54 @@ module.exports = {
       formula,
       variantId
     };
+  },
+  quiz: {
+    generate: data => {
+      data.elements = functions.shuffleArray(data.elements);
+
+      // TODO: Lisa MathJax võimalus!
+      return data;
+    },
+    verify: (verifier, body) => {
+      const { data } = verifier;
+
+      const returnData = [];
+
+      for (const element of data.elements) {
+        const { id, type, question, answer, points, options } = element;
+
+        const provided = body['field-' + id];
+
+        if (!provided || provided == '') {
+          returnData.push({
+            id,
+            question,
+            points: 0,
+            correctAnswer: answer,
+            correct: false,
+            provided
+          });
+          continue;
+        }
+
+        let correct = false;
+        if (type == 'field') {
+          if (provided == answer) correct = true;
+        } else {
+          if (options[answer] == provided) correct = true;
+        }
+
+        returnData.push({
+          id,
+          question,
+          points: points,
+          correctAnswer: type == 'field' ? answer : options[answer],
+          correct,
+          provided
+        });
+      }
+
+      return returnData;
+    }
   }
 };

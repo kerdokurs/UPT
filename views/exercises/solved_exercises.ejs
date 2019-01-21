@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Ülesanne - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <h4>Sinu lahendatud ülesanded</h4>
+      <p>Kokku oled lahendanud <%= solvedExercises.length %> ülesannet!</p>
+      <ul>
+        <% for(let {id, eid, title, solved, type, timestamp, points, data} of
+        solvedExercises) { %>
+        <li id="<%= id %>">
+          <h5><a href="/ulesanded/<%= type %>/<%= eid %>/"><%= title %></a></h5>
+          <pre>
+Õige: <%= (type == 'e' ? (solved ? 'jah' : 'ei') : (data.corrects + '/' + data.total)) %>
+<% if(solved) { %>Teenisid <% } else { %>Kaotasid <% } %> <%= Math.abs(points) %> punkti.
+          </pre>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </body>
+</html>

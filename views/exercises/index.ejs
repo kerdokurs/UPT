@@ -16,7 +16,7 @@
       <p><%- data.text %></p>
       <p>Vastus ümarda <%= data.precision %> komakohani.</p>
       <form
-        action="/ulesanded/<%= category_id %>:<%= id %>/submit"
+        action="/ulesanded/e/<%= category_id %>:<%= id %>/submit"
         method="post"
       >
         <input type="hidden" name="o_id" value="<%= o_id %>" />

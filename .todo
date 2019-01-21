@@ -8,7 +8,7 @@ TEHA:
   ✔ Kõik muutujad ruuterfailist. EJS funktsioonid eemaldada. @low @done(18-12-25 19:49)
   ✔ Eemaldada liigsed uue vahelehe ümbersuunamised. @today @done(18-11-19 20:58)
   ✔ Aknad (modaalid) kasutaja informeerimiseks javascript:alert() asemel @low @done(18-11-19 21:34)
-  ☐ Kategooriate ja teemade sorteerimine kõrvalmenüüs ja adminvaates järjekorra muutmine @low
+  ✘ Kategooriate ja teemade sorteerimine kõrvalmenüüs ja adminvaates järjekorra muutmine @low @cancelled(19-01-21 19:10)
   ✔ Tagasisidepaneel adminvaates ei näita kasutaja UIDd. @low @done(18-12-25 11:02)
   ✔ Aegunud sessioonide kustutamine ei tööta. @high @done(18-12-25 19:48)
   ✔ Adminvaates sisu kategooriad ei näita õigesti. @critical @done(18-12-25 10:58)
@@ -21,3 +21,5 @@ TEHA:
   ✔ Väljalogimine ei tööta @high @done(19-01-18 19:59)
   ☐ Vead, kui pole sisse logitud @high
   ☐ Sisu @critical
+  ☐ Võta arvesse ülesande ajalimiiti ja las kasutaja ise kustutab ülesandekinnitajad, mis on ajast üle läinud (requestil). @high
+  ☐ Lisa lahendatud ülesande andmed andmebaasi. @high

@@ -12,6 +12,7 @@ const quizModel = new Schema(
       type: String,
       required: true
     },
+    title: { type: String, required: true },
     data: {
       type: Object,
       required: true

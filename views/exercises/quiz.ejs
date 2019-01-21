@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Ülesanne - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <form
+        action="/ulesanded/q/<%= quiz.category_id + ':' + quiz.id %>/submit"
+        method="post"
+      >
+        <input type="hidden" name="qvid" value="<%= qvid %>" /> <% for(let {id,
+        type, question, answer, points, options} of quiz.data.elements) { %>
+        <p><%= question %> - <%= points %> punkti.</p>
+        <% if(type == 'field') { %>
+        <input type="text" id="field-<%= id %>" name="field-<%= id %>" /> <% }
+        else { %> <% for(let oi in options) { let option = options[oi]; %>
+        <p>
+          <label>
+            <input
+              type="radio"
+              name="field-<%= id %>"
+              id="field-<%= id %>-<%= oi %>"
+              value="<%= option %>"
+            />
+            <span><%= option %></span>
+          </label>
+        </p>
+        <% } %> <% } %> <% } %>
+        <input type="submit" value="Esita" class="btn green" />
+      </form>
+    </div>
+  </body>
+</html>
