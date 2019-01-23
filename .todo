@@ -1,6 +1,6 @@
 TEHA:
   ✔ Kasuta sessioone, mitte kasutaja UIDd, et autentida kasutaja. @done(18-11-08 23:02)
-  ☐ Korralik Google ID ülekandmine serverisse, mida kasutaja ei saaks eksploiteerida. @low
+  ✔ Korralik Google ID ülekandmine serverisse, mida kasutaja ei saaks eksploiteerida. @low @done(19-01-22 17:48)
   ☐ Progressi jälgimine @low
   ✔ Saavutused @low @done(18-12-27 16:18)
   ✔ Korralik veakäsitsemine @critical @done(18-11-09 19:50)

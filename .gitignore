@@ -2,3 +2,4 @@
 /mongo/
 /data/creds.json
 /temp/
+.env

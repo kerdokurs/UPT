@@ -4,11 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "serve": "nodemon index.js --watch ./core/",
+    "live": "nodemon index.js --watch ./core/",
     "mongo": "mongod --dbpath ./mongo/ --bind_ip 127.0.0.1",
     "start": "node ./index.js",
     "dump": "mongodump -d upt --excludeCollection users --excludeCollection sessions",
     "restore": "mongorestore -d upt dump/upt",
+    "update": "git fetch --hard",
     "clean": "rm -r dump"
   },
   "author": "",
@@ -16,16 +17,16 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
-    "dotenv": "^6.1.0",
+    "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "ejs-lint": "^0.3.0",
     "express": "^4.16.4",
-    "firebase": "^5.6.0",
-    "firebase-admin": "^6.3.0",
+    "firebase": "^5.8.0",
+    "firebase-admin": "^6.5.0",
     "lodash": "^4.17.11",
     "mathjax-node": "^2.1.1",
-    "mongodb": "^3.1.10",
-    "mongoose": "^5.3.14",
+    "mongodb": "^3.1.12",
+    "mongoose": "^5.4.6",
     "request": "^2.88.0",
     "showdown": "^1.8.6"
   }
