@@ -11,7 +11,7 @@
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <form
-        action="/admin/edit_exercise/<%= cat_id %>:<%= exercise.id %>"
+        action="/admin/edit_exercise/<%= cat_id %>:<%= exercise.id %>/<%= type %>"
         method="POST"
       >
         <input type="submit" value="Salvesta" class="btn green" />
@@ -22,7 +22,9 @@
           cols="30"
           rows="10"
           class="materialize-textarea"
-        ><%= JSON.stringify(exercise.data, null, 2) %></textarea>
+        >
+<%= JSON.stringify(exercise.data, null, 2) %></textarea
+        >
       </form>
     </div>
   </body>

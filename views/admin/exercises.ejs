@@ -11,6 +11,7 @@
             <tr>
               <th>Ülesanne</th>
               <th>Muutmise aeg</th>
+              <th>Lahenda</th>
               <th>Redigeeri</th>
               <th>Kustuta</th>
               <th>Avalik</th>
@@ -23,7 +24,16 @@
               <td><%= exercise.last_changed %></td>
               <td>
                 <a
-                  href="/admin/edit_exercise/<%= id %>:<%= exercise.id %>"
+                  href="/ulesanded/<%= exercise.type %>/<%= id %>:<%= exercise.id %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn green"
+                  >Lahenda</a
+                >
+              </td>
+              <td>
+                <a
+                  href="/admin/edit_exercise/<%= id %>:<%= exercise.id %>/<%= exercise.type %>"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="btn orange"
@@ -41,6 +51,11 @@
                     name="id"
                     value="<%= id %>:<%= exercise.id %>"
                   />
+                  <input
+                    type="hidden"
+                    name="type"
+                    value="<%= exercise.type %>"
+                  />
                   <input type="submit" value="Kustuta" class="btn red" />
                 </form>
               </td>
@@ -54,6 +69,11 @@
                     type="hidden"
                     name="id"
                     value="<%= id %>:<%= exercise.id %>"
+                  />
+                  <input
+                    type="hidden"
+                    name="type"
+                    value="<%= exercise.type %>"
                   />
                   <div class="switch">
                     <label>
@@ -123,6 +143,15 @@
             <% for(let { id, title } of exercise_categories) { %>
             <option value="<%= id %>"> <%= title %> </option>
             <% } %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Tüüp</td>
+        <td>
+          <select name="type" id="add-exe-type">
+            <option value="e">Ülesanne</option>
+            <option value="q">Küsitlus</option>
           </select>
         </td>
       </tr>

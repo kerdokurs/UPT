@@ -18,6 +18,7 @@ const Feedback = require('../database/models/Feedback');
 
 const ExerciseCategory = require('../database/models/ExerciseCategory');
 const Exercise = require('../database/models/Exercise');
+const Quiz = require('../database/models/Quiz');
 
 router.use(authModule.adminGuard);
 
@@ -116,6 +117,9 @@ router.route('/').get(async (req, res) => {
     const exercises = await Exercise.find({ category_id: id }, null, {
       sort: '-last_changed'
     }).catch(err => functions.handle(err, '/core/routers/admin.js'));
+    const quizzes = await Quiz.find({ category_id: id }, null, {
+      sort: '-last_changed'
+    }).catch(err => functions.handle(err, '/core/routers/admin.js'));
 
     const category_exercises = [];
     for (let {
@@ -134,7 +138,29 @@ router.route('/').get(async (req, res) => {
         metadata,
         created_at: functions.parseDate(created_at),
         last_changed: functions.parseDate(last_changed),
-        published
+        published,
+        type: 'e'
+      });
+    }
+
+    for (let {
+      id,
+      title,
+      data,
+      metadata,
+      created_at,
+      last_changed,
+      published
+    } of quizzes) {
+      category_exercises.push({
+        id,
+        title,
+        data,
+        metadata,
+        created_at: functions.parseDate(created_at),
+        last_changed: functions.parseDate(last_changed),
+        published,
+        type: 'q'
       });
     }
 
@@ -360,85 +386,133 @@ router.route('/add_exe_cat').post(async (req, res) => {
 });
 
 router.route('/add_exe').post(async (req, res) => {
-  const { title, id, category } = req.body;
+  const { title, id, category, type } = req.body;
 
-  if (title && id && category) {
-    await Exercise.create({
-      id,
-      title,
-      category_id: category,
-      data: JSON.parse(
-        fs.readFileSync('./data/exercise_data_boilerplate.json').toString()
-      ),
-      metadata: {},
-      created_at: new Date(),
-      last_changed: new Date()
-    })
-      .then(() => res.redirect('/admin/#ulesanded'))
-      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  if (title && id && category && type) {
+    if (type == 'e') {
+      await Exercise.create({
+        id,
+        title,
+        category_id: category,
+        data: JSON.parse(
+          fs.readFileSync('./data/exercise_data_boilerplate.json').toString()
+        ),
+        metadata: {},
+        created_at: new Date(),
+        last_changed: new Date(),
+        published: false
+      })
+        .then(() => res.redirect('/admin/#ulesanded'))
+        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+    } else if (type == 'q') {
+      await Quiz.create({
+        id,
+        title,
+        category_id: category,
+        data: JSON.parse(
+          fs.readFileSync('./data/quiz_data_boilerplate.json').toString()
+        ),
+        metadata: {},
+        created_at: new Date(),
+        last_changed: new Date(),
+        published: false
+      })
+        .then(() => res.redirect('/admin/#ulesanded'))
+        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+    }
   } else res.redirect('/admin/#ulesanded');
 });
 
 router.route('/del_exe').post(async (req, res) => {
-  const { id } = req.body;
+  const { id, type } = req.body;
 
   if (id) {
     const ids = id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
 
-    if (exe_id && cat_id) {
-      await Exercise.deleteOne({ id: exe_id, category_id: cat_id })
-        .then(() => res.redirect('/admin/#ulesanded'))
-        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+    if (exe_id && cat_id && type) {
+      if (type == 'e') {
+        await Exercise.deleteOne({ id: exe_id, category_id: cat_id })
+          .then(() => res.redirect('/admin/#ulesanded'))
+          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      } else if (type == 'q') {
+        await Quiz.deleteOne({ id: exe_id, category_id: cat_id })
+          .then(() => res.redirect('/admin/#ulesanded'))
+          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      }
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
 });
 
-router.route('/edit_exercise/:id').get(async (req, res) => {
-  const { id } = req.params;
-  if (id) {
+router.route('/edit_exercise/:id/:type').get(async (req, res) => {
+  const { id, type } = req.params;
+  if (id && type) {
     const ids = id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
 
     if (cat_id && exe_id) {
-      const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
-        .then(data => data[0])
-        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      let exercise;
+
+      if (type == 'e') {
+        exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
+          .then(data => data[0])
+          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      } else if (type == 'q') {
+        exercise = await Quiz.find({ id: exe_id, category_id: cat_id })
+          .then(data => data[0])
+          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      }
 
       if (exercise === null || exercise === undefined)
         res.redirect('/admin/#ulesanded');
 
       res.render('admin/edit_exercise', {
         exercise,
-        cat_id
+        cat_id,
+        type
       });
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
 });
 
-router.route('/edit_exercise/:id').post(async (req, res) => {
-  const { id } = req.params;
+router.route('/edit_exercise/:id/:type').post(async (req, res) => {
+  const { id, type } = req.params;
   const { title, data } = req.body;
-  if (id && title && data) {
+  if (id && title && data && type) {
     const ids = id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
 
     if (cat_id && exe_id) {
-      await Exercise.updateOne(
-        { id: exe_id, category_id: cat_id },
-        {
-          $set: {
-            title,
-            data: JSON.parse(data),
-            last_changed: new Date()
+      if (type == 'e') {
+        await Exercise.updateOne(
+          { id: exe_id, category_id: cat_id },
+          {
+            $set: {
+              title,
+              data: JSON.parse(data),
+              last_changed: new Date()
+            }
           }
-        }
-      ).catch(err => functions.handle(err, '/core/routers/admin.js'));
+        ).catch(err => functions.handle(err, '/core/routers/admin.js'));
+      } else if (type == 'q') {
+        await Quiz.updateOne(
+          { id: exe_id, category_id: cat_id },
+          {
+            $set: {
+              title,
+              data: JSON.parse(data),
+              last_changed: new Date()
+            }
+          }
+        ).catch(err => functions.handle(err, '/core/routers/admin.js'));
+      }
 
-      const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
+      res.redirect(`/admin/edit_exercise/${id}/${type}`);
+
+      /* const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
         .then(data => data[0])
         .catch(err => functions.handle(err, '/core/routers/admin.js'));
 
@@ -448,37 +522,57 @@ router.route('/edit_exercise/:id').post(async (req, res) => {
       res.render('admin/edit_exercise', {
         exercise,
         cat_id
-      });
+      }); */
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
 });
 
 router.route('/toggle_exe_published').post(async (req, res) => {
-  const { id } = req.body;
+  const { id, type } = req.body;
 
-  if (id) {
+  if (id && type) {
     const ids = id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
 
     if (cat_id && exe_id) {
-      const data = await Exercise.findOne({
-        id: exe_id,
-        category_id: cat_id
-      }).catch(err => functions.handle(err, '/core/routers/admin.js'));
-      await Exercise.updateOne(
-        {
+      if (type == 'e') {
+        const data = await Exercise.findOne({
           id: exe_id,
           category_id: cat_id
-        },
-        {
-          $set: {
-            published: !data.published
+        }).catch(err => functions.handle(err, '/core/routers/admin.js'));
+        await Exercise.updateOne(
+          {
+            id: exe_id,
+            category_id: cat_id
+          },
+          {
+            $set: {
+              published: !data.published
+            }
           }
-        }
-      )
-        .then(() => res.redirect('/admin/#ulesanded'))
-        .catch(err => functions.handle(err, '/core/routers/admin.js'));
+        )
+          .then(() => res.redirect('/admin/#ulesanded'))
+          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      } else {
+        const data = await Quiz.findOne({
+          id: exe_id,
+          category_id: cat_id
+        }).catch(err => functions.handle(err, '/core/routers/admin.js'));
+        await Quiz.updateOne(
+          {
+            id: exe_id,
+            category_id: cat_id
+          },
+          {
+            $set: {
+              published: !data.published
+            }
+          }
+        )
+          .then(() => res.redirect('/admin/#ulesanded'))
+          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+      }
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
 });

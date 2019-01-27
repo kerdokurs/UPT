@@ -1,0 +1,20 @@
+{
+  "time_limit": 300,
+  "elements": [
+    {
+      "id": 0,
+      "type": "field",
+      "question": "Miks?",
+      "answer": "ns",
+      "points": 5
+    },
+    {
+      "id": 1,
+      "type": "radio",
+      "question": "Mis on?",
+      "points": 5,
+      "options": ["see", "too", "mis asi?"],
+      "answer": 0
+    }
+  ]
+}
