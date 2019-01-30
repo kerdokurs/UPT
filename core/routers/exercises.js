@@ -1,5 +1,7 @@
 const router = require('express').Router();
 
+const fs = require('fs');
+
 const authModule = require('../modules/authModule');
 const exerciseModule = require('../modules/exerciseModule');
 
@@ -8,6 +10,8 @@ const Quiz = require('../database/models/Quiz');
 const QuizVerifier = require('../database/models/QuizVerifier');
 const SolvedExercise = require('../database/models/SolvedExercise');
 const ExerciseVerifier = require('../database/models/ExerciseVerifier');
+const ExerciseRevision = require('../database/models/ExerciseRevision');
+const ExerciseCategory = require('../database/models/ExerciseCategory');
 
 const User = require('../database/models/User');
 
@@ -16,7 +20,23 @@ const functions = require('../functions');
 router.use(authModule.loginGuard);
 
 router.route('/').get(async (req, res) => {
-  res.send('ÜLESANDED.');
+  const categories = await ExerciseCategory.find();
+
+  const data = [];
+  for (const category of categories) {
+    const { id, title } = category;
+
+    const exercises = await Exercise.find({ category_id: id });
+    const quizzes = await Quiz.find({ category_id: id });
+
+    data.push({
+      id,title,
+      exercises,
+      quizzes
+    });
+  }
+
+  res.render('exercises/all', { data });
 });
 
 router.route('/astmed').get(async (req, res) => {
@@ -26,17 +46,103 @@ router.route('/astmed').get(async (req, res) => {
 });
 
 router.route('/astmed').post(async (req, res) => {
-  res.send('<pre>' + JSON.stringify(req.body, null, 2) + '</pre>');
+  const { uid } = await authModule.getLoggedUser(req);
+
+  const tree = JSON.parse(
+    fs.readFileSync(__dirname + '/../../data/kymne-astmed.json').toString()
+  );
+
+  let points = 0,
+    corrects = 0;
+  const data = [];
+  for (let i = 0; i < 12; i++) {
+    const token = req.body['f' + i + '-token'],
+      power = req.body['f' + i + '-power'],
+      name = req.body['f' + i + '-name'],
+      provided = req.body['f' + i + '-provided'];
+
+    const obj = getFromTree(
+      tree,
+      provided,
+      provided == 'token' ? token : provided == 'power' ? power : name
+    );
+
+    const isCorrect =
+      token == obj.token && power == obj.power && name == obj.name;
+
+    if (isCorrect) {
+      points += 1;
+      corrects += 1;
+    } else {
+      points -= 1;
+    }
+
+    data.push({
+      token,
+      power,
+      name,
+      obj,
+      isCorrect
+    });
+  }
+
+  if (uid) {
+    const rid = functions.randomString(24);
+
+    await ExerciseRevision.create({
+      id: rid,
+      uid: uid || '',
+      type: 'astmed',
+      title: 'Astmed',
+      created_at: new Date(),
+      data: { data, points }
+    });
+
+    await SolvedExercise.create({
+      id: functions.randomString(24),
+      uid,
+      eid: 'astmed',
+      rid,
+      type: 'a',
+      title: 'Astmed',
+      solved: points >= 0,
+      points: points,
+      timestamp: new Date(),
+      data: {
+        corrects,
+        total: 12
+      }
+    });
+
+    await User.updateOne(
+      { uid },
+      {
+        $inc: {
+          'metadata.completed_exercises': 1,
+          'metadata.exercise_points': points
+        }
+      }
+    );
+  }
+
+  res.render('exercises/astmed_done', { data, points });
 });
 
 router.route('/lahendatud').get(async (req, res) => {
   const { uid } = await authModule.getLoggedUser(req);
+  if (!uid) {
+    res.redirect('/user/login?next=/ulesanded/lahendatud');
+    return;
+  }
+
   const solvedExercises = await SolvedExercise.find({ uid })
     .sort({ timestamp: 'desc' })
     .then(data => data);
+  const user = await User.findOne({ uid });
 
   res.render('exercises/solved_exercises', {
-    solvedExercises
+    solvedExercises,
+    user
   });
 });
 
@@ -47,6 +153,13 @@ router.route('/edetabel').get(async (req, res) => {
     .limit(100);
 
   res.render('exercises/leaderboard', { uid, users });
+});
+
+router.route('/vaata/:id').get(async (req, res) => {
+  const { id } = req.params;
+
+  const exerciseRevision = await ExerciseRevision.findOne({ id });
+  res.send('<pre>' + JSON.stringify(exerciseRevision, null, 2) + '</pre>');
 });
 
 router.route('/:type/:id').get(async (req, res) => {
@@ -143,28 +256,31 @@ router.route('/:type/:id/submit').post(async (req, res) => {
     const pointsToAward =
       (exercise.data.points || 20) * (isCorrect ? 1 : -0.25);
 
-    await SolvedExercise.create({
-      id: se,
-      uid,
-      eid: id,
-      type: 'e',
-      title: exercise.title,
-      solved: isCorrect,
-      points: pointsToAward,
-      timestamp: new Date(),
-      data: {}
-    });
+    if (uid) {
+      await SolvedExercise.create({
+        id: se,
+        uid,
+        eid: id,
+        rid: rid,
+        type: 'e',
+        title: exercise.title,
+        solved: isCorrect,
+        points: pointsToAward,
+        timestamp: new Date(),
+        data: {}
+      });
+      await User.updateOne(
+        { uid },
+        {
+          $inc: {
+            'metadata.completed_exercises': 1,
+            'metadata.exercise_points': pointsToAward
+          }
+        }
+      );
+    }
 
     await ExerciseVerifier.deleteOne({ id: o_id, e_id: id });
-    await User.updateOne(
-      { uid },
-      {
-        $inc: {
-          'metadata.completed_exercises': 1,
-          'metadata.exercise_points': pointsToAward
-        }
-      }
-    );
     if (isCorrect) {
       res.send(
         JSON.stringify({
@@ -210,32 +326,35 @@ router.route('/:type/:id/submit').post(async (req, res) => {
       }
 
       const se = functions.randomString(24);
-      await SolvedExercise.create({
-        id: se,
-        uid,
-        type: 'q',
-        eid: verifier.e_id,
-        title: quiz.title,
-        solved: true,
-        points,
-        timestamp: new Date(),
-        data: {
-          corrects,
-          total
-        }
-      });
 
       await QuizVerifier.deleteOne({ id: qvid });
 
-      await User.updateOne(
-        { uid },
-        {
-          $inc: {
-            'metadata.completed_exercises': 1,
-            'metadata.exercise_points': points
+      if (uid) {
+        await SolvedExercise.create({
+          id: se,
+          uid,
+          type: 'q',
+          eid: verifier.e_id,
+          title: quiz.title,
+          solved: true,
+          points,
+          timestamp: new Date(),
+          data: {
+            corrects,
+            total
           }
-        }
-      );
+        });
+
+        await User.updateOne(
+          { uid },
+          {
+            $inc: {
+              'metadata.completed_exercises': 1,
+              'metadata.exercise_points': points
+            }
+          }
+        );
+      }
 
       res.render('exercises/quiz_done', {
         quiz,
@@ -247,3 +366,8 @@ router.route('/:type/:id/submit').post(async (req, res) => {
 });
 
 module.exports = router;
+
+function getFromTree(tree, id, key) {
+  for (const el of tree) if (el[id] == key) return el;
+  return null;
+}

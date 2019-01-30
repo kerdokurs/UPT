@@ -16,11 +16,12 @@ TEHA:
   ✔ Saavutuste ja ülesannete avalikustamine. @low @today @done(18-12-27 16:17)
   ☐ Staatuse indikaator @low
   ☐ Korrasta andmebaas ja mudelid @low
-  ☐ Küsimustiku tüüpi ülesanded @high
+  ✔ Küsimustiku tüüpi ülesanded @high @done(19-01-29 21:00)
   ☐ Tiitlite korrigeerimine @high
   ✔ Väljalogimine ei tööta @high @done(19-01-18 19:59)
   ☐ Vead, kui pole sisse logitud @high
   ☐ Sisu @critical
   ☐ Võta arvesse ülesande ajalimiiti ja las kasutaja ise kustutab ülesandekinnitajad, mis on ajast üle läinud (requestil). @high
-  ☐ Lisa lahendatud ülesande andmed andmebaasi. @high
+  ✔ Lisa lahendatud ülesande andmed andmebaasi. @high @done(19-01-30 19:46)
   ☐ Järjehoidjatesse # URL'id @high
+  ☐ Ülesannete läbivaatus @high

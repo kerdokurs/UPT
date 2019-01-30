@@ -29,20 +29,11 @@
       <div class="section">
         <a href="/user/bookmarks" rel="noopener noreferrer">Järjehoidjad</a
         ><br />
-        <a href="/user/achievements" rel="noopener noreferrer">Saavutused</a>
-      </div>
-      <div class="section">
-        <h5>Ülesanded</h5>
-        <!-- TODO: metadata.solved_exercises pole defineeritud. -->
-        <% if(data.metadata && data.metadata.solved_exercises) { %>
-        <p>Ülesannete punktid: <b><%= data.metadata.exercise_points %></b></p>
-        <p>
-          <a href="/ulesanded/lahendatud">Vaata siit</a> oma lahendatud
-          ülesandeid.
-        </p>
-        <% } else { %>
-        <p>Sa pole veel ülesandeid lahendanud.</p>
-        <% } %>
+        <a href="/user/achievements" rel="noopener noreferrer">Saavutused</a
+        ><br />
+        <a href="/ulesanded/lahendatud" rel="noopener noreferrer"
+          >Lahendatud ülesanded</a
+        >
       </div>
     </div>
   </body>

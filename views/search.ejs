@@ -44,8 +44,22 @@
       </ul>
       <% } else { %> Ei leitud ühtegi vastavat teemat <% } %>
       <h5>Leitud ülesanded</h5>
-      <% if(foundExercises.length > 0) { %>
-      <ul></ul>
+      <% if(foundExercises.length > 0 || foundQuizzes.length > 0) { %>
+      <ul>
+        <% for(let exercise of foundExercises) { %>
+        <li>
+          <a href="/ulesanded/e/<%= exercise.category_id %>:<%= exercise.id %>"
+            ><%= exercise.title %></a
+          >
+        </li>
+        <% } %> <% for(let quiz of foundQuizzes) { %>
+        <li>
+          <a href="/ulesanded/q/<%= quiz.category_id %>:<%= quiz.id %>"
+            ><%= quiz.title %></a
+          >
+        </li>
+        <% } %>
+      </ul>
       <% } else { %> Ei leitud ühtegi vastavat ülesannet <% } %>
     </div>
   </body>

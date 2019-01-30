@@ -57,7 +57,3 @@ nav.white a { color: black !important; }
 .mobile-search { margin-right: 10px !important; }
 
 .astmed input[type='text']:disabled { color: #000 !important; }
-
-ul { padding-left: 40px !important; }
-
-ul li { list-style-type: circle !important; }

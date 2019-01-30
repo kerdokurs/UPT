@@ -22,7 +22,13 @@
             </tr>
           </thead>
           <tbody>
-            <% for(let k in data) { const {token, power, name} = data[k]; %>
+            <% for(let k in data) { const {token, power, name} = data[k]; let
+            provided = token ? 'token' : (power ? 'power' : 'name'); %>
+            <input
+              type="hidden"
+              name="f<%= k %>-provided"
+              value="<%= provided %>"
+            />
             <tr>
               <td>
                 <% if(token) { %>

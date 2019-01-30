@@ -10,13 +10,24 @@
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
+      <% const points = (user.metadata != null ? user.metadata.exercise_points :
+      0) %>
       <h4>Sinu lahendatud ülesanded</h4>
       <p>Kokku oled lahendanud <%= solvedExercises.length %> ülesannet!</p>
+      <p>
+        Kokku on sul
+        <font
+          color="<%= (points == 0 ? 'black' : (points > 0 ? 'green' : 'red' )) %>"
+          ><%= points %></font
+        >
+        punkti!
+      </p>
       <ul>
-        <% for(let {id, eid, title, solved, type, timestamp, points, data} of
-        solvedExercises) { %>
+        <% for(let {id, eid, rid, title, solved, type, timestamp, points, data}
+        of solvedExercises) { %>
         <li id="<%= id %>">
           <h5><a href="/ulesanded/<%= type %>/<%= eid %>/"><%= title %></a></h5>
+          <p><a href="/ulesanded/vaata/<%= rid %>">Läbivaatus</a></p>
           <pre>
 Õige: <%= (type == 'e' ? (solved ? 'jah' : 'ei') : (data.corrects + '/' + data.total)) %>
 <% if(solved) { %>Teenisid <% } else { %>Kaotasid <% } %> <%= Math.abs(points) %> punkti.

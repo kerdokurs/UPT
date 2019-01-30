@@ -15,6 +15,9 @@ const solvedExerciseModel = new Schema(
     eid: {
       type: String
     },
+    rid: {
+      type: String
+    },
     type: {
       type: String,
       required: true

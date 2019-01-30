@@ -63,7 +63,6 @@ module.exports = {
     generate: data => {
       data.elements = functions.shuffleArray(data.elements);
 
-      // TODO: Lisa MathJax võimalus!
       return data;
     },
     verify: (verifier, body) => {
