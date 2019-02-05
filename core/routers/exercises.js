@@ -17,6 +17,19 @@ const User = require('../database/models/User');
 
 const functions = require('../functions');
 
+const applyAchievements = async uid => {
+  await authModule.grantAchievement(uid, 'ulesanne1');
+
+  const user = await User.findOne({ uid });
+
+  if (user.metadata.completed_exercises == 5)
+    await authModule.grantAchievement(uid, 'ulesanne5');
+  else if (user.metadata.completed_exercises == 10)
+    await authModule.grantAchievement(uid, 'ulesanne10');
+  else if (user.metadata.completed_exercises == 100)
+    await authModule.grantAchievement(uid, 'ulesanne100');
+};
+
 router.use(authModule.loginGuard);
 
 router.route('/').get(async (req, res) => {
@@ -30,7 +43,8 @@ router.route('/').get(async (req, res) => {
     const quizzes = await Quiz.find({ category_id: id });
 
     data.push({
-      id,title,
+      id,
+      title,
       exercises,
       quizzes
     });
@@ -163,6 +177,7 @@ router.route('/vaata/:id').get(async (req, res) => {
 });
 
 router.route('/:type/:id').get(async (req, res) => {
+  exerciseModule.deleteVerifiers();
   const { id, type } = req.params;
   const ids = id.split(':');
   const cat_id = ids[0],
@@ -269,6 +284,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
         timestamp: new Date(),
         data: {}
       });
+
       await User.updateOne(
         { uid },
         {
@@ -278,6 +294,8 @@ router.route('/:type/:id/submit').post(async (req, res) => {
           }
         }
       );
+
+      await applyAchievements(uid);
     }
 
     await ExerciseVerifier.deleteOne({ id: o_id, e_id: id });
@@ -354,6 +372,8 @@ router.route('/:type/:id/submit').post(async (req, res) => {
             }
           }
         );
+
+        await applyAchievements(uid);
       }
 
       res.render('exercises/quiz_done', {

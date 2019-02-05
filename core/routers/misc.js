@@ -20,6 +20,13 @@ router.route('/feedback').get((req, res) => {
   res.render('misc/feedback');
 });
 
+router.route('/kusitlus').get(async (req, res) => {
+  const user = await authModule.getLoggedUser(req);
+  if (user) await authModule.grantAchievement(user.uid, 'tagasiside-kysitlus');
+
+  res.redirect('https://goo.gl/forms/coRZN3NIPSotfxGF2');
+});
+
 router.route('/feedback').post(async (req, res) => {
   const { name, text } = req.body;
   const { uid } = await authModule.getSession(req);

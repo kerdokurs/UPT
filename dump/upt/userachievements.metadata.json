@@ -1,1 +1,0 @@
-{"options":{},"indexes":[{"v":2,"key":{"_id":1},"name":"_id_","ns":"upt.userachievements"},{"v":2,"unique":true,"key":{"id":1},"name":"id_1","ns":"upt.userachievements","background":true}],"uuid":"ea96641893a14a38a7ff409ec31b57dd"}

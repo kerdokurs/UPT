@@ -2,6 +2,7 @@ const admin = require('./firebase/admin');
 
 const User = require('../database/models/User');
 const Session = require('../database/models/Session');
+const Achievement = require('../database/models/Achievement');
 
 const functions = require('../functions');
 
@@ -106,6 +107,27 @@ const loginStats = async user => {
   }
 };
 
+const hasAchievement = async (user, id) => {
+  for (let achievement of user.achievements)
+    if (achievement.id === id) return true;
+
+  return false;
+};
+
+const grantAchievement = async (uid, id) => {
+  const user = await User.findOne({ uid });
+  if (await hasAchievement(user, id)) return;
+  const achievement = await Achievement.findOne({ id });
+  if (achievement && achievement.published) {
+    await user.achievements.push({
+      id,
+      timestamp: new Date(),
+      title: achievement.title
+    });
+    await user.save().catch(err => handle(err, '/core/functions.js'));
+  }
+};
+
 module.exports = {
   getUser,
   isUserLoggedIn,
@@ -116,5 +138,6 @@ module.exports = {
 
   getSession,
   getLoggedUser,
-  loginStats
+  loginStats,
+  grantAchievement
 };

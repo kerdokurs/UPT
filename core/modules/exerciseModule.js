@@ -2,6 +2,9 @@ const fs = require('fs');
 
 const functions = require('../functions');
 
+const QuizVerifier = require('../database/models/QuizVerifier');
+const ExerciseVerifier = require('../database/models/ExerciseVerifier');
+
 module.exports = {
   astmed: {
     generate: async () => {
@@ -106,5 +109,14 @@ module.exports = {
 
       return returnData;
     }
+  },
+  deleteVerifiers: () => {
+    const now = new Date(new Date().getTime() - 60000 * 5);
+    QuizVerifier.deleteMany({ created_at: { $lt: now } }).catch(err =>
+      functions.handle(err, '/core/modules/exerciseModule.js')
+    );
+    ExerciseVerifier.deleteMany({ created_at: { $lt: now } }).catch(err =>
+      functions.handle(err, '/core/modules/exerciseModule.js')
+    );
   }
 };

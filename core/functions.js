@@ -52,21 +52,6 @@ const handle = (err, path) => {
   console.log(`Error: [${path}, ${parseDate(new Date())}] > ${err}`);
 };
 
-const hasAchievement = async (user, id) => {
-  for (let achievement of user.achievements)
-    if (achievement.id === id) return true;
-
-  return false;
-};
-
-const grantAchievement = async (uid, id) => {
-  let user = await User.find({ uid });
-  user = user[0];
-  if (await hasAchievement(user, id)) return;
-  await user.achievements.push({ id, timestamp: new Date() });
-  await user.save().catch(err => handle(err, '/core/functions.js'));
-};
-
 const shuffleArray = array => {
   let currentIndex = array.length,
     temporaryValue,
@@ -106,7 +91,7 @@ const parseDate = date => {
     .substr(2, 2);
   if (parseInt(year) < 10) year = '0' + year;
 
-  return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+  return `[${hours}:${minutes}:${seconds} ${day}/${month}/${year}]`;
 };
 
 const randomHexString = () => {
@@ -132,8 +117,6 @@ module.exports = {
   getCategories,
 
   handle,
-
-  grantAchievement,
 
   shuffleArray,
   randomHexString,

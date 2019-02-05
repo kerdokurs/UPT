@@ -36,15 +36,16 @@
           <% for(let achievement of recentAchievements) { %>
           <li id="achievement-<%= i %>">
             <p>
-              <%= achievement.id %> <span><%= achievement.timestamp %></span>
+              <b><%= achievement.title %></b>
+              <span><%= achievement.timestamp %></span>
             </p>
           </li>
           <% } %>
         </ul>
       </div>
-      <div class="materials container z-depth-1">
+      <!--<div class="materials container z-depth-1">
         <h6>Viimatised materjalid</h6>
-      </div>
+      </div>-->
       <% } %>
     </div>
   </body>

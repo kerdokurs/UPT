@@ -84,7 +84,7 @@ router.route('/post-login').get(async (req, res) => {
         admin: false
       })
         .then(async () => {
-          await functions.grantAchievement(uid, 'login');
+          await authModule.grantAchievement(uid, 'login');
           res
             .cookie('logged_in', true, { expires })
             .cookie('_sid', sid, { expires })
@@ -123,7 +123,10 @@ router.route('/achievements').get(async (req, res) => {
     });
   }
 
-  res.render('user/achievements', { achievements: _achievements });
+  res.render('user/achievements', {
+    achievements: _achievements,
+    parseDate: functions.parseDate
+  });
 });
 
 router.route('/bookmarks').get(async (req, res) => {

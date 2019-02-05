@@ -26,19 +26,24 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
         <% } %>
       </div>
     </li>
-    <li>
+    <!--<li>
       <a href="/user/settings"><i class="material-icons">settings</i>Sätted</a>
-    </li>
+    </li>-->
     <li>
       <a href="/user/logout"><i class="material-icons">meeting_room</i>Välju</a>
     </li>
     <% } else { %>
     <li>
-      <a href="/user/login"><i class="material-icons"></i>Sisene</a>
+      <a href="/user/login"
+        ><i class="material-icons">account_circle</i>Sisene</a
+      >
     </li>
     <% } %>
     <li><div class="divider"></div></li>
-
+    <li>
+      <a href="/ulesanded"><i class="material-icons">assignment</i>Ülesanded</a>
+    </li>
+    <li><div class="divider"></div></li>
     <li class="no-padding">
       <ul class="collapsible collapsible-accordion">
         <% for(let category of _categories) { %>
