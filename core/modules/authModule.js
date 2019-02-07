@@ -108,6 +108,8 @@ const loginStats = async user => {
 };
 
 const hasAchievement = async (user, id) => {
+  if (user == null) return false;
+
   for (let achievement of user.achievements)
     if (achievement.id === id) return true;
 
@@ -115,6 +117,8 @@ const hasAchievement = async (user, id) => {
 };
 
 const grantAchievement = async (uid, id) => {
+  if (uid == null) return;
+
   const user = await User.findOne({ uid });
   if (await hasAchievement(user, id)) return;
   const achievement = await Achievement.findOne({ id });

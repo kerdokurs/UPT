@@ -13,15 +13,16 @@
       <% const points = (user.metadata != null ? user.metadata.exercise_points :
       0) %>
       <h4>Sinu lahendatud ülesanded</h4>
-      <p>Kokku oled lahendanud <%= solvedExercises.length %> ülesannet!</p>
+      <p>Kokku oled lahendanud <%= solvedExercises.length || 0 %> ülesannet!</p>
       <p>
         Kokku on sul
         <font
-          color="<%= (points == 0 ? 'black' : (points > 0 ? 'green' : 'red' )) %>"
-          ><%= points %></font
+          color="<%= (points ? (points == 0 ? 'black' : (points > 0 ? 'green' : 'red' )) : 'black') %>"
+          ><%= points || 0 %></font
         >
         punkti!
       </p>
+      <p><a href="/ulesanded/edetabel">Ülesandepunktide edetabel</a></p>
       <ul>
         <% for(let {id, eid, rid, title, solved, type, timestamp, points, data}
         of solvedExercises) { %>

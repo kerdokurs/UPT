@@ -17,10 +17,15 @@
           <th>Kasutaja</th>
           <th>Punktid</th>
         </tr>
-        <% for(let i = 0; i < users.length; i++) { const user = users[i]; %>
+        <% for(let i = 0; i < users.length; i++) { const user = users[i];
+        console.log(user); %>
         <tr>
           <td><%= i + 1 %></td>
-          <td><%= user.displayName %></td>
+          <td>
+            <% if (user.uid == uid) { %><b
+              ><% } %><%= user.displayName %><% if (user.uid == uid) { %></b
+            ><% } %>
+          </td>
           <td><%= user.metadata.exercise_points %></td>
         </tr>
         <% } %>

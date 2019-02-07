@@ -162,7 +162,10 @@ router.route('/lahendatud').get(async (req, res) => {
 
 router.route('/edetabel').get(async (req, res) => {
   const { uid } = await authModule.getLoggedUser(req);
-  const users = await User.find()
+
+  const users = await User.find({
+    'metadata.exercise_points': { $ne: 0 }
+  })
     .sort({ 'metadata.exercise_points': -1 })
     .limit(100);
 

@@ -81,7 +81,12 @@ router.route('/post-login').get(async (req, res) => {
         email,
         sign_up: new Date(),
         last_sign_in: new Date(),
-        admin: false
+        admin: false,
+        metadata: {
+          activity: [],
+          solved_exercises: 0,
+          exercise_points: 0
+        }
       })
         .then(async () => {
           await authModule.grantAchievement(uid, 'login');
