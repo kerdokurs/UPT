@@ -32,7 +32,6 @@
           Viimased saavutused (<a href="/user/achievements">vaata kõiki</a>)
         </h6>
         <ul>
-          <!-- TODO: Fix up -->
           <% for(let achievement of recentAchievements) { %>
           <li id="achievement-<%= i %>">
             <p>
@@ -43,10 +42,30 @@
           <% } %>
         </ul>
       </div>
-      <!--<div class="materials container z-depth-1">
-        <h6>Viimatised materjalid</h6>
-      </div>-->
       <% } %>
+      <div class="materials container z-depth-1">
+        <h6>Õpikeskkonna materjal</h5>
+        <ul>
+          <% for(let category of _categories) { %>
+          <li>
+            <h6>
+              <a href="/teemad/<%= category.id %>">
+                <%= category.title %>
+              </a>
+            </h6>
+            <ol>
+              <% for(i in category.topics) { _topic = category.topics[i]; %>
+              <li>
+                <a href="/teemad/<%= category.id + '/' + _topic.id %>">
+                  <%= _topic.title %>
+                </a>
+              </li>
+              <% } %>
+            </ol>
+          </li>
+          <% } %>
+        </ul>
+      </div>
     </div>
   </body>
 </html>

@@ -10,19 +10,30 @@
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-      <h4>Mis on <%= pageTitle %>?</h4>
-      <blockquote>
-        <%= pageTitle %> on praktilise töö raames loodud õpikeskkond, mis aitab
-        õpilasel ise korraldada õppimist.
-      </blockquote>
-      <blockquote>
-        <%= pageTitle %> on veel väga algses staadiumis ja kui leidub vigu, saab
-        neist märku anda <a href="/feedback">siin.</a>
-      </blockquote>
-      <blockquote>
-        Ühendust saab võtta ka e-posti aadressi teel:
+      <h5>Tutvustus</h5>
+      <p>
+        <%= pageTitle %> on interaktiivne füüsika õpikeskkond mehaanika
+        kursusele. Õpikeskkond rajati Jõgevamaa Gümnaasiumi praktilise töö
+        raames 2018/2019 õppeaastal. Õpikeskkond on veel pooleli! <br />
+        Autor: Kerdo Kurs, kontakt:
         <a href="mailto:kerdo@kerdo.me">kerdo@kerdo.me</a>
-      </blockquote>
+      </p>
+      <h5>Kasutusjuhend</h5>
+      <p>
+        Kogu navigeerimine käib läbi vasakul asuva "hamburgermenüü". Seal on
+        olemas kogu õpikeskkonna materjal ja ülesanded.
+      </p>
+      <p>
+        Kõik saavad materjali vaadata ja ülesandeid lahendada. On ka võimalus
+        luua konto, millega jälgida enda saavutusi, järjehoidjaid ja ülesandeid
+        ning -punkte. Oma kasutajalehele saab vajutades vasakul menüüs oma
+        pildile.
+      </p>
+      <p>
+        Vigade leidmisel anda neist teada
+        <a href="/feedback">siin</a>.</br>
+        Palun ka täita lühike küsitlus peale õpikeskkonna ülevaatamist <a href="/kusitlus">siin</a>.
+      </p>
     </div>
   </body>
 </html>

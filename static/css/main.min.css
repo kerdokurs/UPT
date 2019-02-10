@@ -27,6 +27,8 @@ nav.white a { color: black !important; }
 
 .sidenav { font-weight: bold; }
 
+.sidenav .crop { text-overflow: ellipsis; white-space: nowrap; overflow: hidden; }
+
 @media only screen and (max-width: 992px) { .breadcrumb { font-size: 0.8em; }
   .main { grid-template-areas: 'bookmarks' 'bookmarks' 'achievements' 'achievements' 'materials' 'materials'; } }
 
@@ -59,3 +61,11 @@ nav.white a { color: black !important; }
 .mobile-search { margin-right: 10px !important; }
 
 .astmed input[type='text']:disabled { color: #000 !important; }
+
+::-webkit-scrollbar { width: 8px; }
+
+::-webkit-scrollbar-track { background: #fff; }
+
+::-webkit-scrollbar-thumb { background: #c7c7c7; }
+
+::-webkit-scrollbar-thumb:hover { background: #999; }

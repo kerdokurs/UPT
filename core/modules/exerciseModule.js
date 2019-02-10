@@ -30,7 +30,7 @@ module.exports = {
     check: async data => {}
   },
   generate: data => {
-    const { variables, variants, mathjax } = data;
+    const { variables, variants, mathjax } = data.data;
     const variantId = Math.floor(Math.random() * variants.length);
     const { text, formula, precision } = variants[variantId];
 

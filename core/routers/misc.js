@@ -61,6 +61,9 @@ router.route('/search').get(async (req, res) => {
         },
         {
           title: new RegExp(query, 'gi')
+        },
+        {
+          parent: new RegExp(query, 'gi')
         }
       ]
     })

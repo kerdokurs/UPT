@@ -9,7 +9,6 @@
     "start": "node ./index.js",
     "dump": "mongodump -d upt --excludeCollection sessions --excludeCollection exercise_verifiers --excludeCollection quiz_verifiers",
     "restore": "mongorestore -d upt dump/upt",
-    "update": "git fetch --hard",
     "clean": "rm -r dump"
   },
   "author": "",

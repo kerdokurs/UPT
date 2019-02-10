@@ -39,9 +39,13 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
     bookmarked = data.length > 0;
   }
 
-  categoryData.topics = res.locals._categories.filter(
+  const _category = res.locals._categories.filter(
     cat => cat.id == categoryId
-  )[0].topics;
+  )[0];
+
+  if (_category == null) return res.redirect('/');
+
+  categoryData.topics = _category.topics;
 
   if (categoryData && topicData) {
     const markdown = generateMarkdown(topicData.data);
@@ -89,7 +93,7 @@ function generateMarkdown(data) {
     markdown = converter.makeHtml(data);
 
     //Parse MathJax and insert it into topic HTML markdown.
-    const regex = /\$.*?\$/g;
+    const regex = /\$.*?\$/gs;
     const finds = [];
     let find;
 

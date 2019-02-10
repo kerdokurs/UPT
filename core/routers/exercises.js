@@ -263,9 +263,10 @@ router.route('/:type/:id/submit').post(async (req, res) => {
     const ids = verifier.e_id.split(':');
     const cat_id = ids[0],
       exe_id = ids[1];
-    const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
-      .then(data => data[0])
-      .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+    const exercise = await Exercise.findOne({
+      id: exe_id,
+      category_id: cat_id
+    }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
     const isCorrect = answer == (verifier != null ? verifier.answer : false);
 
@@ -279,7 +280,6 @@ router.route('/:type/:id/submit').post(async (req, res) => {
         id: se,
         uid,
         eid: id,
-        rid: rid,
         type: 'e',
         title: exercise.title,
         solved: isCorrect,
@@ -302,27 +302,14 @@ router.route('/:type/:id/submit').post(async (req, res) => {
     }
 
     await ExerciseVerifier.deleteOne({ id: o_id, e_id: id });
-    if (isCorrect) {
-      res.send(
-        JSON.stringify({
-          points: pointsToAward,
-          answer,
-          correctAnswer: verifier.answer,
-          formula: exercise.data.formula,
-          msg: `Õigesti lahendatud! Teenisid <answer> punkti!`
-        })
-      );
-    } else {
-      // TODO: Info nagu peale quizi.
-      // TODO: Lisa lahendatud ülesannete andmed andmebaasi hiljemaks ülevaateks!
-      res.send({
-        answer,
-        correctAnswer: verifier.answer,
-        points: pointsToAward,
-        formula: exercise.data.formula,
-        msg: `Midagi oli valesti. Õige vastus oli: <answer>. Kaotasid <points> punkte.`
-      });
-    }
+    res.render('exercises/exercise_done', {
+      isCorrect,
+      points: pointsToAward,
+      answer,
+      correctAnswer: verifier.answer,
+      formula: exercise.data.formula,
+      exercise
+    });
   } else if (type == 'q') {
     const { qvid } = req.body;
     const verifier = await QuizVerifier.find({ id: qvid }).then(

@@ -55,7 +55,10 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
             <ol>
               <% for(i in category.topics) { _topic = category.topics[i]; %>
               <li>
-                <a href="/teemad/<%= category.id + '/' + _topic.id %>">
+                <a
+                  href="/teemad/<%= category.id + '/' + _topic.id %>"
+                  class="crop"
+                >
                   <%= _topic.title %>
                 </a>
               </li>

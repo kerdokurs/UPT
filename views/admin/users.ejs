@@ -7,10 +7,11 @@
         <th>UID</th>
         <th>Email</th>
         <th>Admin</th>
+        <th>Ülesanded</th>
       </tr>
     </thead>
     <tbody>
-      <% for(let {displayName, uid, email, admin} of users) { %>
+      <% for(let {displayName, uid, email, admin, metadata} of users) { %>
       <tr>
         <td><%= displayName %></td>
         <td><%= uid %></td>
@@ -28,6 +29,14 @@
               </label>
             </div>
           </form>
+        </td>
+        <td>
+          <p>
+            Lahendatud ülesandeid: <%= metadata != null ?
+            metadata.completed_exercises : '-' %><br />
+            Ülesandepunkte: <%= metadata != null ? metadata.exercise_points :
+            '-' %>
+          </p>
         </td>
       </tr>
       <% } %>

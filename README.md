@@ -4,7 +4,7 @@ See repositoorium hoiustab Kerdo UPT projekti faile.
 
 KerdoUPT on Kerdo praktilise töö projekt, mille eesmärgiks oli luua **füüsika õpikeskkond mehaanika kursusele**.
 
-Õpikeskkond on saadaval veebilehel: [KerdoUPT](http://kerdo.gymnaasium.ee).
+Õpikeskkond on saadaval veebilehel: [KerdoUPT](http://upt.kerdo.me).
 
 Vigade leidmisel on kõige lihtsam neist teada anda kas GitHub'is _Issues_ akna all või veebilehel kasutades all paremal nurgas asuvat juttumulli.
 
