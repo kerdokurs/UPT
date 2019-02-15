@@ -41,7 +41,28 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
     <% } %>
     <li><div class="divider"></div></li>
     <li>
-      <a href="/ulesanded"><i class="material-icons">assignment</i>Ülesanded</a>
+      <ul class="collapsible accordion">
+        <li>
+          <a href="#!" class="collapsible-header"
+            ><i class="material-icons">assignment</i>Ülesanded</a
+          >
+          <div class="collapsible-body">
+            <ul>
+              <li>
+                <a href="/ulesanded">Lahenda</a>
+              </li>
+              <li>
+                <a href="/ulesanded/edetabel">Edetabel</a>
+              </li>
+              <% if(user) { %>
+              <li>
+                <a href="/ulesanded/lahendatud">Lahendatud ülesanded</a>
+              </li>
+              <% } %>
+            </ul>
+          </div>
+        </li>
+      </ul>
     </li>
     <li><div class="divider"></div></li>
     <li class="no-padding">

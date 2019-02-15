@@ -70,9 +70,7 @@ router.route('/search').get(async (req, res) => {
           parent: new RegExp(query, 'gi')
         }
       ]
-    })
-      .then(data => data)
-      .catch(err => functions.handle(err, '/core/routers/misc.js'));
+    }).catch(err => functions.handle(err, '/core/routers/misc.js'));
 
     const foundCategories = await Category.find({
       $or: [
@@ -83,9 +81,7 @@ router.route('/search').get(async (req, res) => {
           title: new RegExp(query, 'gi')
         }
       ]
-    })
-      .then(data => data)
-      .catch(err => functions.handle(err, '/core/routers/misc.js'));
+    }).catch(err => functions.handle(err, '/core/routers/misc.js'));
 
     const foundExercises = await Exercise.find({
       $or: [
@@ -113,7 +109,7 @@ router.route('/search').get(async (req, res) => {
           category_id: new RegExp(query, 'gi')
         }
       ]
-    });
+    }).catch(err => functions.handle(err, '/core/routers/misc.js'));
 
     res.render('search', {
       foundTopics,

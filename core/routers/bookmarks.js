@@ -6,10 +6,12 @@ const functions = require('../functions');
 const Bookmark = require('../database/models/Bookmark');
 
 router.route('/set').post(async (req, res) => {
-  if (!authModule.isUserLoggedIn(req))
+  if (!authModule.isUserLoggedIn(req)) {
     res
       .status(400)
       .send(JSON.stringify({ status: 400, message: 'Not logged in!' }));
+    return;
+  }
 
   const { id, title, url } = req.body;
   const session = await authModule.getSession(req);

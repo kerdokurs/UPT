@@ -185,13 +185,18 @@ router.route('/').get(async (req, res) => {
 router.route('/add_cat').post(async (req, res) => {
   const { id, title } = req.body;
   if (id && title)
-    Category.create({ id, title }).then(() => res.redirect('/admin#sisu?s=1'));
-  else res.redirect('/admin#sisu?s=2');
+    Category.create({ id, title })
+      .then(() => res.redirect('/admin#sisu'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
+  else res.redirect('/admin#sisu');
 });
 
 router.route('/del_cat').post(async (req, res) => {
   const { id } = req.body;
-  if (id) Category.deleteOne({ id }).then(() => res.redirect('/admin#sisu'));
+  if (id)
+    Category.deleteOne({ id })
+      .then(() => res.redirect('/admin#sisu'))
+      .catch(err => functions.handle(err, '/core/routers/admin.js'));
   else res.redirect('/admin#sisu');
 });
 
@@ -212,13 +217,10 @@ router.route('/add_top').post(async (req, res) => {
 
 router.route('/edit_topic/:id').get(async (req, res) => {
   const { id } = req.params;
-  let data = await Topic.find({
+  let data = await Topic.findOne({
     id: id.split(':')[1],
     parent: id.split(':')[0]
-  })
-    .then(data => data)
-    .catch(err => functions.handle(err, '/core/routers/admin.js'));
-  data = data[0];
+  }).catch(err => functions.handle(err, '/core/routers/admin.js'));
 
   res.render('admin/edit_topic', { data });
 });
@@ -456,13 +458,15 @@ router.route('/edit_exercise/:id/:type').get(async (req, res) => {
       let exercise;
 
       if (type == 'e') {
-        exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
-          .then(data => data[0])
-          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+        exercise = await Exercise.findOne({
+          id: exe_id,
+          category_id: cat_id
+        }).catch(err => functions.handle(err, '/core/routers/admin.js'));
       } else if (type == 'q') {
-        exercise = await Quiz.find({ id: exe_id, category_id: cat_id })
-          .then(data => data[0])
-          .catch(err => functions.handle(err, '/core/routers/admin.js'));
+        exercise = await Quiz.findOne({
+          id: exe_id,
+          category_id: cat_id
+        }).catch(err => functions.handle(err, '/core/routers/admin.js'));
       }
 
       if (exercise === null || exercise === undefined)
@@ -511,18 +515,6 @@ router.route('/edit_exercise/:id/:type').post(async (req, res) => {
       }
 
       res.redirect(`/admin/edit_exercise/${id}/${type}`);
-
-      /* const exercise = await Exercise.find({ id: exe_id, category_id: cat_id })
-        .then(data => data[0])
-        .catch(err => functions.handle(err, '/core/routers/admin.js'));
-
-      if (exercise === null || exercise === undefined)
-        res.redirect('/admin/#ulesanded');
-
-      res.render('admin/edit_exercise', {
-        exercise,
-        cat_id
-      }); */
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
 });

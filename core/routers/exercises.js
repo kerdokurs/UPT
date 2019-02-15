@@ -39,8 +39,12 @@ router.route('/').get(async (req, res) => {
   for (const category of categories) {
     const { id, title } = category;
 
-    const exercises = await Exercise.find({ category_id: id });
-    const quizzes = await Quiz.find({ category_id: id });
+    const exercises = await Exercise.find({ category_id: id }).catch(err =>
+      functions.handle(err, '/core/routers/exercises.js')
+    );
+    const quizzes = await Quiz.find({ category_id: id }).catch(err =>
+      functions.handle(err, '/core/routers/exercises.js')
+    );
 
     data.push({
       id,
@@ -110,7 +114,7 @@ router.route('/astmed').post(async (req, res) => {
       title: 'Astmed',
       created_at: new Date(),
       data: { data, points }
-    });
+    }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
     await SolvedExercise.create({
       id: functions.randomString(24),
@@ -126,7 +130,7 @@ router.route('/astmed').post(async (req, res) => {
         corrects,
         total: 12
       }
-    });
+    }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
     await User.updateOne(
       { uid },
@@ -136,7 +140,7 @@ router.route('/astmed').post(async (req, res) => {
           'metadata.exercise_points': points
         }
       }
-    );
+    ).catch(err => functions.handle(err, '/core/routers/exercises.js'));
   }
 
   res.render('exercises/astmed_done', { data, points });
@@ -151,8 +155,10 @@ router.route('/lahendatud').get(async (req, res) => {
 
   const solvedExercises = await SolvedExercise.find({ uid })
     .sort({ timestamp: 'desc' })
-    .then(data => data);
-  const user = await User.findOne({ uid });
+    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+  const user = await User.findOne({ uid }).catch(err =>
+    functions.handle(err, '/core/routers/exercises.js')
+  );
 
   res.render('exercises/solved_exercises', {
     solvedExercises,
@@ -164,10 +170,11 @@ router.route('/edetabel').get(async (req, res) => {
   const { uid } = await authModule.getLoggedUser(req);
 
   const users = await User.find({
-    'metadata.exercise_points': { $ne: 0 }
+    'metadata.exercise_points': { $ne: null }
   })
     .sort({ 'metadata.exercise_points': -1 })
-    .limit(100);
+    .limit(100)
+    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
   res.render('exercises/leaderboard', { uid, users });
 });
@@ -175,7 +182,9 @@ router.route('/edetabel').get(async (req, res) => {
 router.route('/vaata/:id').get(async (req, res) => {
   const { id } = req.params;
 
-  const exerciseRevision = await ExerciseRevision.findOne({ id });
+  const exerciseRevision = await ExerciseRevision.findOne({ id }).catch(err =>
+    functions.handle(err, '/core/routers/exercises.js')
+  );
   res.send('<pre>' + JSON.stringify(exerciseRevision, null, 2) + '</pre>');
 });
 
@@ -187,9 +196,10 @@ router.route('/:type/:id').get(async (req, res) => {
     exe_id = ids[1];
 
   if (type == 'e') {
-    const exercise = await Exercise.find({ category_id: cat_id, id: exe_id })
-      .then(data => data[0])
-      .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+    const exercise = await Exercise.findOne({
+      category_id: cat_id,
+      id: exe_id
+    }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
     if (exercise != null) {
       if (!exercise.published) {
         res.status(400).render('exercises/not_published');
@@ -213,9 +223,7 @@ router.route('/:type/:id').get(async (req, res) => {
       res.render('exercises/index', { exercise, o_id });
     } else res.redirect('/');
   } else if (type == 'q') {
-    const quiz = await Quiz.find({ category_id: cat_id, id: exe_id }).then(
-      data => data[0]
-    );
+    const quiz = await Quiz.findOne({ category_id: cat_id, id: exe_id });
 
     if (quiz != null) {
       if (!quiz.published) {
@@ -232,7 +240,7 @@ router.route('/:type/:id').get(async (req, res) => {
         created_at: new Date(),
         valid_for: quiz.data.time_limit,
         data: quiz.data
-      });
+      }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
       res.render('exercises/quiz', { quiz, qvid });
     } else res.redirect('/');
@@ -256,9 +264,10 @@ router.route('/:type/:id/submit').post(async (req, res) => {
       return;
     }
 
-    const verifier = await ExerciseVerifier.find({ id: o_id, e_id: id })
-      .then(data => data[0])
-      .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+    const verifier = await ExerciseVerifier.findOne({
+      id: o_id,
+      e_id: id
+    }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
     const ids = verifier.e_id.split(':');
     const cat_id = ids[0],
@@ -286,7 +295,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
         points: pointsToAward,
         timestamp: new Date(),
         data: {}
-      });
+      }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
       await User.updateOne(
         { uid },
@@ -296,29 +305,33 @@ router.route('/:type/:id/submit').post(async (req, res) => {
             'metadata.exercise_points': pointsToAward
           }
         }
-      );
+      ).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
       await applyAchievements(uid);
     }
 
     await ExerciseVerifier.deleteOne({ id: o_id, e_id: id });
-    res.render('exercises/exercise_done', {
-      isCorrect,
-      points: pointsToAward,
-      answer,
-      correctAnswer: verifier.answer,
-      formula: exercise.data.formula,
-      exercise
-    });
+    res
+      .render('exercises/exercise_done', {
+        isCorrect,
+        points: pointsToAward,
+        answer,
+        correctAnswer: verifier.answer,
+        formula: exercise.data.formula,
+        exercise
+      })
+      .catch(err => functions.handle(err, '/core/routers/exercises.js'));
   } else if (type == 'q') {
     const { qvid } = req.body;
-    const verifier = await QuizVerifier.find({ id: qvid }).then(
-      data => data[0]
+    const verifier = await QuizVerifier.findOne({ id: qvid }).catch(err =>
+      functions.handle(err, '/core/routers/exercises.js')
     );
     const ids = verifier.e_id.split(':');
     const cat_id = ids[0],
       quiz_id = ids[1];
-    const quiz = await Quiz.findOne({ id: quiz_id, category_id: cat_id });
+    const quiz = await Quiz.findOne({ id: quiz_id, category_id: cat_id }).catch(
+      err => functions.handle(err, '/core/routers/exercises.js')
+    );
 
     if (verifier) {
       const data = exerciseModule.quiz.verify(verifier, req.body);
@@ -335,7 +348,9 @@ router.route('/:type/:id/submit').post(async (req, res) => {
 
       const se = functions.randomString(24);
 
-      await QuizVerifier.deleteOne({ id: qvid });
+      await QuizVerifier.deleteOne({ id: qvid }).catch(err =>
+        functions.handle(err, '/core/routers/exercises.js')
+      );
 
       if (uid) {
         await SolvedExercise.create({
@@ -351,7 +366,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
             corrects,
             total
           }
-        });
+        }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
         await User.updateOne(
           { uid },
@@ -361,7 +376,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
               'metadata.exercise_points': points
             }
           }
-        );
+        ).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
         await applyAchievements(uid);
       }

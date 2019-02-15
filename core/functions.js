@@ -49,7 +49,16 @@ const getCategories = async () => {
 };
 
 const handle = (err, path) => {
-  console.log(`Error: [${path}, ${parseDate(new Date())}] > ${err}`);
+  const date = parseDate(new Date());
+
+  console.log(`Error: [${path}, ${date}] > ${err}`);
+  fs.appendFile(
+    `../../errors/${currentDate()}.log`,
+    `${date} ${path} > ${err}\n`,
+    err => {
+      if (err) console.error(err);
+    }
+  );
 };
 
 const shuffleArray = array => {

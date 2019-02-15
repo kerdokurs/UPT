@@ -24,9 +24,11 @@ Sinu vastus: <%= provided %>
           >Lahenda uuesti</a
         >
       </p>
+      <% if(user) { %>
       <p>
         <a href="/ulesanded/lahendatud">Vaata kõiki lahendatud ülesandeid</a>
       </p>
+      <% } %>
     </div>
   </body>
 </html>
