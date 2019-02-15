@@ -27,6 +27,10 @@ router.route('/kusitlus').get(async (req, res) => {
   res.redirect('https://goo.gl/forms/coRZN3NIPSotfxGF2');
 });
 
+router.route('/github').get((req, res) => {
+  res.redirect('https://github.com/kerdokurs/UPT');
+});
+
 router.route('/feedback').post(async (req, res) => {
   const { name, text } = req.body;
   const { uid } = await authModule.getSession(req);
