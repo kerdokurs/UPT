@@ -3,3 +3,4 @@
 /data/creds.json
 /temp/
 .env
+/logs/

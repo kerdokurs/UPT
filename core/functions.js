@@ -94,6 +94,16 @@ const parseDate = date => {
   return `[${hours}:${minutes}:${seconds} ${day}/${month}/${year}]`;
 };
 
+const currentDate = () => {
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = now.getMonth() + parseInt(process.env.MONTH_OFFSET || 0);
+  const day = now.getDate();
+
+  return `${year}-${month}-${day}`;
+};
+
 const randomHexString = () => {
   const possible = '0123456789abcdef';
   let text = '';
@@ -113,6 +123,7 @@ const parseParams = (req, res, next) => {
 module.exports = {
   randomString,
   parseDate,
+  currentDate,
 
   getCategories,
 

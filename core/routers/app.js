@@ -11,7 +11,10 @@ const User = require('../database/models/User');
 
 router.route('/').get(async (req, res) => {
   if (!req.cookies['visited']) {
-    res.cookie('visited', 'true').redirect('/info');
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    res.cookie('visited', 'true', {expires}).redirect('/info');
   } else {
     if (await authModule.isUserLoggedIn(req)) {
       const session = await authModule.getSession(req);

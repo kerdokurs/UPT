@@ -76,7 +76,10 @@ module.exports = {
       for (const element of data.elements) {
         const { id, type, question, answer, points, options } = element;
 
-        const provided = body['field-' + id];
+        const provided = body['field-' + id]
+          .toString()
+          .trim()
+          .toLowerCase();
 
         if (!provided || provided == '') {
           returnData.push({

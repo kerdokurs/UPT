@@ -1,4 +1,5 @@
 const express = require('express');
+const fs = require('fs');
 
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -42,16 +43,25 @@ app.use(async (req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  console.log(
+  const log =
     functions.parseDate(new Date()) +
-      ' [WEB, ' +
-      req.method +
-      '] ' +
-      req.protocol +
-      '://' +
-      req.hostname +
-      req.url
-  );
+    ' [WEB, ' +
+    (req.method == 'GET' ? ' ' : '') +
+    req.method +
+    '] ' +
+    req.protocol +
+    '://' +
+    req.hostname +
+    req.url;
+
+  if (log.includes('favicon')) return;
+
+  fs.appendFile(`logs/${functions.currentDate()}.log`, `${log}\n`, err => {
+    if (err) console.error(err);
+  });
+
+  console.log(log);
+
   next();
 });
 
