@@ -70,7 +70,8 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
         <% for(let category of _categories) { %>
         <li class="<%= isSelected(category) %>">
           <a href="#!" class="collapsible-header">
-            <%= category.title %> <i class="material-icons">arrow_drop_down</i>
+            <%= category.title %>
+            <i class="material-icons">arrow_drop_down</i>
           </a>
           <div class="collapsible-body">
             <ol>

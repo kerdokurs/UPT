@@ -14,7 +14,7 @@ router.route('/').get(async (req, res) => {
     const expires = new Date();
     expires.setDate(expires.getDate() + 7);
 
-    res.cookie('visited', 'true', {expires}).redirect('/info');
+    res.cookie('visited', 'true', { expires }).redirect('/info');
   } else {
     if (await authModule.isUserLoggedIn(req)) {
       const session = await authModule.getSession(req);

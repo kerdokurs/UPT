@@ -54,13 +54,13 @@ app.use((req, res, next) => {
     req.hostname +
     req.url;
 
-  if (log.includes('favicon')) return;
+  if (!log.includes('favicon')) {
+    fs.appendFile(`logs/${functions.currentDate()}.log`, `${log}\n`, err => {
+      if (err) console.error(err);
+    });
 
-  fs.appendFile(`logs/${functions.currentDate()}.log`, `${log}\n`, err => {
-    if (err) console.error(err);
-  });
-
-  console.log(log);
+    console.log(log);
+  }
 
   next();
 });
