@@ -172,13 +172,17 @@ router.route('/').get(async (req, res) => {
     });
   }
 
+  const logFiles = [];
+  fs.readdirSync('logs').forEach(file => logFiles.push(file));
+
   res.render('admin/index', {
     categories,
     users,
     feedback,
     sessions,
     achievements,
-    exercise_categories
+    exercise_categories,
+    logFiles
   });
 });
 
@@ -567,6 +571,16 @@ router.route('/toggle_exe_published').post(async (req, res) => {
       }
     } else res.redirect('/admin/#ulesanded');
   } else res.redirect('/admin/#ulesanded');
+});
+
+router.route('/logs/:fn').get((req, res) => {
+  const { fn } = req.params;
+
+  if (fn) {
+    const data = fs.readFileSync(`logs/${fn}`).toString();
+
+    res.send('<pre>' + data + '</pre>');
+  } else res.redirect('/admin#logid');
 });
 
 module.exports = router;

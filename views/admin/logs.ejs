@@ -1,0 +1,8 @@
+<h4>Logid</h4>
+<div>
+  <ul>
+    <% for(logFile of logFiles) { %>
+    <li><a href="/admin/logs/<%= logFile %>"><%= logFile %></a></li>
+    <% } %>
+  </ul>
+</div>
