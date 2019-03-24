@@ -30,6 +30,26 @@ const applyAchievements = async uid => {
     await authModule.grantAchievement(uid, 'ulesanne100');
 };
 
+const updateUserRatio = async uid => {
+  const _user = await User.findOne({ uid }).catch(err =>
+    functions.handle(err, '/core/routers/exercises.js')
+  );
+
+  const ratio = (
+    parseFloat(_user.metadata.exercise_points) /
+    parseFloat(_user.metadata.completed_exercises)
+  ).toFixed(2);
+
+  await User.updateOne(
+    { uid },
+    {
+      $set: {
+        'metadata.ratio': ratio
+      }
+    }
+  );
+};
+
 router.use(authModule.loginGuard);
 
 router.route('/').get(async (req, res) => {
@@ -141,6 +161,8 @@ router.route('/astmed').post(async (req, res) => {
         }
       }
     ).catch(err => functions.handle(err, '/core/routers/exercises.js'));
+
+    await updateUserRatio(uid);
   }
 
   res.render('exercises/astmed_done', { data, points });
@@ -170,9 +192,9 @@ router.route('/edetabel').get(async (req, res) => {
   const { uid } = await authModule.getLoggedUser(req);
 
   const users = await User.find({
-    'metadata.exercise_points': { $ne: null }
+    'metadata.ratio': { $ne: null }
   })
-    .sort({ 'metadata.exercise_points': -1 })
+    .sort({ 'metadata.ratio': -1 })
     .limit(100)
     .catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
@@ -307,6 +329,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
         }
       ).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
+      await updateUserRatio(uid);
       await applyAchievements(uid);
     }
 
@@ -378,6 +401,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
           }
         ).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
+        await updateUserRatio(uid);
         await applyAchievements(uid);
       }
 

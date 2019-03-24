@@ -25,10 +25,17 @@
               ><% } %><%= user.displayName %><% if (user.uid == uid) { %></b
             ><% } %>
           </td>
-          <td><%= user.metadata.exercise_points %></td>
+          <td>
+            <%= user.metadata.ratio %>
+          </td>
         </tr>
         <% } %>
       </table>
+
+      <p>
+        * Punktid on arvutatud valemiga:
+        <i>punktid = ülesandepunktid / lahendatud ülesannete arv</i>.
+      </p>
     </div>
   </body>
 </html>
