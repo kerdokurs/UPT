@@ -37,7 +37,7 @@ router.route('/').get(async (req, res) => {
         title,
         id,
         data,
-        last_changed: functions.parseDate(last_changed)
+        last_changed
       });
 
     categories.push({
@@ -51,39 +51,13 @@ router.route('/').get(async (req, res) => {
     functions.handle(err, '/core/routers/admin.js')
   );
 
-  const _feedback = await Feedback.find({}, null, { sort: '-timestamp' }).catch(
+  const feedback = await Feedback.find({}, null, { sort: '-timestamp' }).catch(
     err => functions.handle(err, '/core/routers/admin.js')
   );
 
-  const feedback = _feedback.map(({ id, uid, timestamp, name, text }) => {
-    return {
-      id,
-      uid,
-      timestamp: functions.parseDate(timestamp),
-      name,
-      text
-    };
-  });
-
-  const _achievements = await Achievement.find({}, null, {
+  const achievements = await Achievement.find({}, null, {
     sort: '-timestamp'
   }).catch(err => functions.handle(err, '/core/routers/admin.js'));
-
-  const achievements = [];
-  for (const {
-    id,
-    title,
-    description,
-    last_changed,
-    published
-  } of _achievements)
-    achievements.push({
-      id,
-      title,
-      description,
-      last_changed: functions.parseDate(last_changed),
-      published
-    });
 
   const _sessions = await Session.find({}, null, { sort: '-timestamp' }).catch(
     err => functions.handle(err, '/core/routers/admin.js')
@@ -102,7 +76,7 @@ router.route('/').get(async (req, res) => {
     sessions.push({
       id,
       displayName,
-      created_at: functions.parseDate(created_at)
+      created_at
     });
   }
 
@@ -136,8 +110,8 @@ router.route('/').get(async (req, res) => {
         title,
         data,
         metadata,
-        created_at: functions.parseDate(created_at),
-        last_changed: functions.parseDate(last_changed),
+        created_at,
+        last_changed,
         published,
         type: 'e'
       });
@@ -157,8 +131,8 @@ router.route('/').get(async (req, res) => {
         title,
         data,
         metadata,
-        created_at: functions.parseDate(created_at),
-        last_changed: functions.parseDate(last_changed),
+        created_at,
+        last_changed,
         published,
         type: 'q'
       });
@@ -167,7 +141,7 @@ router.route('/').get(async (req, res) => {
     exercise_categories.push({
       title,
       id,
-      last_changed: functions.parseDate(last_changed),
+      last_changed,
       exercises: category_exercises
     });
   }

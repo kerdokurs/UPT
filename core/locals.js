@@ -1,6 +1,8 @@
 const functions = require('./functions');
 const authModule = require('./modules/authModule');
 
+const moment = require('moment');
+
 module.exports = {
   get: async req => {
     const session = (await authModule.getSession(req)) || {};
@@ -9,7 +11,7 @@ module.exports = {
     const _categories = (await functions.getCategories()) || [];
 
     let admin = false;
-    if (authModule.isUserLoggedIn(req))
+    if (await authModule.isUserLoggedIn(req))
       admin = (await authModule.isUserAdmin(req)) || false;
 
     return {
@@ -17,7 +19,8 @@ module.exports = {
 
       _categories,
       user,
-      admin
+      admin,
+      moment: time => '[' + moment(time).format('LTS L') + ']'
     };
   }
 };

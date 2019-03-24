@@ -107,7 +107,7 @@ router.route('/').get(async (req, res) => {
     functions.handle(err, '/core/routers/user.js')
   );
 
-  res.render('user/user', { data: user, parseDate: functions.parseDate });
+  res.render('user/user', { data: user });
 });
 
 router.route('/achievements').get(async (req, res) => {
@@ -127,8 +127,7 @@ router.route('/achievements').get(async (req, res) => {
   }
 
   res.render('user/achievements', {
-    achievements: _achievements,
-    parseDate: functions.parseDate
+    achievements: _achievements
   });
 });
 

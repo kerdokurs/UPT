@@ -21,7 +21,7 @@
             <% for(let exercise of exercises) { %>
             <tr>
               <td><%= exercise.title %></td>
-              <td><%= exercise.last_changed %></td>
+              <td><%= moment(exercise.last_changed) %></td>
               <td>
                 <a
                   href="/ulesanded/<%= exercise.type %>/<%= id %>:<%= exercise.id %>"

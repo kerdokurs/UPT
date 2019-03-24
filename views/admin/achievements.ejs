@@ -16,7 +16,7 @@
     <tr>
       <td><%= title %></td>
       <td><%= description.substring(0, 50) %></td>
-      <td><%= last_changed %></td>
+      <td><%= moment(last_changed) %></td>
       <td>
         <a
           href="/admin/edit_achievement/<%= id %>"

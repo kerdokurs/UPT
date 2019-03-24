@@ -21,7 +21,7 @@
             <tr>
               <td><%= topic.title %></td>
               <td><%= topic.id %></td>
-              <td><%= topic.last_changed %></td>
+              <td><%= moment(topic.last_changed) %></td>
               <td>
                 <a
                   href="/teemad/<%= id %>/<%= topic.id %>"

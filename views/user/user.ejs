@@ -22,7 +22,7 @@
           <h4><%= user.displayName %></h4>
           <p>
             Viimane sisselogimine:
-            <span><%= parseDate(data.last_sign_in) %></span>
+            <span><%= moment(data.last_sign_in) %></span>
           </p>
         </div>
       </div>

@@ -31,14 +31,10 @@ router.route('/').get(async (req, res) => {
         .catch(err => functions.handle(err, '/core/routers/app.js'));
 
       const { achievements } = user;
-      let recentAchievements = _.take(
+      const recentAchievements = _.take(
         _.orderBy(achievements, 'timestamp', 'desc'),
         5
       );
-      recentAchievements = recentAchievements.map(ach => {
-        ach.timestamp = functions.parseDate(ach.timestamp);
-        return ach;
-      });
 
       res.render('index', {
         recentBookmarks,

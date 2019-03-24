@@ -36,7 +36,7 @@
           <li id="achievement-<%= i %>">
             <p>
               <b><%= achievement.title %></b>
-              <span><%= achievement.timestamp %></span>
+              <span><%= moment(achievement.timestamp) %></span>
             </p>
           </li>
           <% } %>
