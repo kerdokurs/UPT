@@ -79,6 +79,7 @@ async function getCategoryData(categoryId) {
   );
 }
 
+//! Millegi tõttu esimese laadimise peal MathJax ei laadi.
 function generateMarkdown(data) {
   let markdown;
   try {
@@ -92,7 +93,6 @@ function generateMarkdown(data) {
     converter.setFlavor('github');
     markdown = converter.makeHtml(data);
 
-    //Parse MathJax and insert it into topic HTML markdown.
     const regex = /\$.*?\$/gs;
     const finds = [];
     let find;
@@ -117,7 +117,9 @@ function generateMarkdown(data) {
         }
       );
     }
-  } catch (err) {}
+  } catch (err) {
+    functions.handle(err, '/core/routers/topics.js');
+  }
   return markdown;
 }
 
