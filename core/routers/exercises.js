@@ -333,7 +333,9 @@ router.route('/:type/:id/submit').post(async (req, res) => {
       await applyAchievements(uid);
     }
 
-    await ExerciseVerifier.deleteOne({ id: o_id, e_id: id });
+    await ExerciseVerifier.deleteOne({ id: o_id, e_id: id })
+    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+
     res
       .render('exercises/exercise_done', {
         isCorrect,
@@ -342,8 +344,7 @@ router.route('/:type/:id/submit').post(async (req, res) => {
         correctAnswer: verifier.answer,
         formula: exercise.data.formula,
         exercise
-      })
-      .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+      });
   } else if (type == 'q') {
     const { qvid } = req.body;
     const verifier = await QuizVerifier.findOne({ id: qvid }).catch(err =>

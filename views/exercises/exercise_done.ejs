@@ -13,7 +13,9 @@
       <h4>Lahendasid ülesande <%= exercise.title %></h4>
       <p>
         <%= isCorrect ? 'Teenisid' : 'Kaotasid' %>
-        <font color="<%= isCorrect ? 'green' : 'red' %>"><%= points %></font>
+        <font color="<%= isCorrect ? 'green' : 'red' %>"
+          ><%= Math.abs(points) %></font
+        >
         punkti!
       </p>
       <p>
