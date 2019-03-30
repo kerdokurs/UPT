@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Sätted - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <h4>Sätted</h4>
+      <p><%= user.displayName %></p>
+      <p>
+        <label>
+          <% if(data.allow_leaderboard) { %>
+          <input
+            type="checkbox"
+            checked
+            onchange="window.location = '/user/settings/toggle_allow_leaderboard'"
+          />
+          <% } else { %>
+          <input
+            type="checkbox"
+            onchange="window.location = '/user/settings/toggle_allow_leaderboard'"
+          />
+          <% }%>
+          <span
+            >Luban näidata oma nime ja punktisummat ülesannete edetabelis.</span
+          >
+        </label>
+      </p>
+    </div>
+  </body>
+</html>

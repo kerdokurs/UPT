@@ -192,7 +192,8 @@ router.route('/edetabel').get(async (req, res) => {
   const { uid } = await authModule.getLoggedUser(req);
 
   const users = await User.find({
-    'metadata.ratio': { $ne: null }
+    'metadata.ratio': { $ne: null, $ne: 'NaN' },
+    allow_leaderboard: true
   })
     .sort({ 'metadata.ratio': -1 })
     .limit(100)
@@ -333,18 +334,18 @@ router.route('/:type/:id/submit').post(async (req, res) => {
       await applyAchievements(uid);
     }
 
-    await ExerciseVerifier.deleteOne({ id: o_id, e_id: id })
-    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+    await ExerciseVerifier.deleteOne({ id: o_id, e_id: id }).catch(err =>
+      functions.handle(err, '/core/routers/exercises.js')
+    );
 
-    res
-      .render('exercises/exercise_done', {
-        isCorrect,
-        points: pointsToAward,
-        answer,
-        correctAnswer: verifier.answer,
-        formula: exercise.data.formula,
-        exercise
-      });
+    res.render('exercises/exercise_done', {
+      isCorrect,
+      points: pointsToAward,
+      answer,
+      correctAnswer: verifier.answer,
+      formula: exercise.data.formula,
+      exercise
+    });
   } else if (type == 'q') {
     const { qvid } = req.body;
     const verifier = await QuizVerifier.findOne({ id: qvid }).catch(err =>

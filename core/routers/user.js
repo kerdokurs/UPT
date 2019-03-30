@@ -110,6 +110,26 @@ router.route('/').get(async (req, res) => {
   res.render('user/user', { data: user });
 });
 
+router.route('/settings').get(async (req, res) => {
+  const data = await authModule.getLoggedUser(req);
+  res.render('user/settings', { data });
+});
+
+router.route('/settings/toggle_allow_leaderboard').get(async (req, res) => {
+  const { uid } = await authModule.getSession(req);
+  const data = await User.findOne({ uid });
+  await User.updateOne(
+    { uid },
+    {
+      $set: {
+        allow_leaderboard: !data.allow_leaderboard
+      }
+    }
+  );
+
+  res.redirect('/user/settings/');
+});
+
 router.route('/achievements').get(async (req, res) => {
   if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const user = await authModule.getLoggedUser(req);

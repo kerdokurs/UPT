@@ -17,6 +17,10 @@ const userModel = new Schema(
     achievements: [],
     metadata: {
       type: Object
+    },
+    allow_leaderboard: {
+      type: Boolean,
+      default: false
     }
   },
   { collection: 'users' }

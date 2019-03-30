@@ -23,11 +23,11 @@ const Topic = require('../database/models/Topic');
 router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
   const { categoryId, topicId } = req.params;
 
-  if (categoryId && topicId) {
+  if (categoryId) {
     let topicData = await getTopicData(topicId, categoryId);
     let categoryData = await getCategoryData(categoryId);
 
-    if (!topicData || !categoryData) return res.redirect('/teemad/');
+    if (!categoryData) return res.redirect('/teemad/');
 
     let bookmarked = false;
 

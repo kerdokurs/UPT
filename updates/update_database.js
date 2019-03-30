@@ -14,7 +14,8 @@ const run = async () => {
         $set: {
           'metadata.ratio': (
             parseFloat(exercise_points) / parseFloat(completed_exercises)
-          ).toFixed(2)
+          ).toFixed(2),
+          allow_leaderboard: false
         }
       }
     );

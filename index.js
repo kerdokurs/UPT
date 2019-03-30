@@ -38,11 +38,11 @@ app.use(async (req, res, next) => {
   next();
 });
 
-app.use(async (req, res, next) => {
+/* app.use(async (req, res, next) => {
   const user = await authModule.getLoggedUser(req);
   if (user !== null) await authModule.loginStats(user);
   next();
-});
+}); */
 
 app.use((req, res, next) => {
   const log =
