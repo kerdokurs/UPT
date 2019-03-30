@@ -1,5 +1,5 @@
-require('./core/database/database');
-const User = require('./core/database/models/User');
+require('../core/database/database');
+const User = require('../core/database/models/User');
 
 const run = async () => {
   const users = await User.find();

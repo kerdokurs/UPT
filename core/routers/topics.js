@@ -23,47 +23,51 @@ const Topic = require('../database/models/Topic');
 router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
   const { categoryId, topicId } = req.params;
 
-  let topicData = await getTopicData(topicId, categoryId);
-  let categoryData = await getCategoryData(categoryId);
+  if (categoryId && topicId) {
+    let topicData = await getTopicData(topicId, categoryId);
+    let categoryData = await getCategoryData(categoryId);
 
-  let bookmarked = false;
+    if (!topicData || !categoryData) return res.redirect('/teemad/');
 
-  if (authModule.isUserLoggedIn(req)) {
-    const bookmarkId = categoryId + '-' + topicId;
-    const session = await authModule.getSession(req);
-    const { uid } = session || {};
+    let bookmarked = false;
 
-    const data = await Bookmark.find({ uid, id: bookmarkId }).catch(err =>
-      functions.handle(err, '/core/routers/topics.js')
-    );
-    bookmarked = data.length > 0;
-  }
+    if (authModule.isUserLoggedIn(req)) {
+      const bookmarkId = categoryId + '-' + topicId;
+      const session = await authModule.getSession(req);
+      const { uid } = session || {};
 
-  const _category = res.locals._categories.filter(
-    cat => cat.id == categoryId
-  )[0];
+      const data = await Bookmark.find({ uid, id: bookmarkId }).catch(err =>
+        functions.handle(err, '/core/routers/topics.js')
+      );
+      bookmarked = data.length > 0;
+    }
 
-  if (_category == null) return res.redirect('/');
+    const _category = res.locals._categories.filter(
+      cat => cat.id == categoryId
+    )[0];
 
-  categoryData.topics = _category.topics;
+    categoryData.topics = _category.topics;
 
-  if (categoryData && topicData) {
-    const markdown = generateMarkdown(topicData.data);
-    res.render('topics/topic', {
-      category: categoryData,
-      topic: topicData,
-      markdown,
-      bookmarked,
-      pathname: req.path
-    });
-  } else if (categoryData && !topicData) {
-    res.render('topics/topics', {
-      category: categoryData
-    });
+    if (categoryData && topicData) {
+      const markdown = generateMarkdown(topicData.data);
+      res.render('topics/topic', {
+        category: categoryData,
+        topic: topicData,
+        markdown,
+        bookmarked,
+        pathname: req.path
+      });
+    } else if (categoryData && !topicData) {
+      res.render('topics/topics', {
+        category: categoryData
+      });
+    } else {
+      res.render('topics/topics', {
+        category: {}
+      });
+    }
   } else {
-    res.render('topics/topics', {
-      category: {}
-    });
+    res.render('topics/index');
   }
 });
 
@@ -87,7 +91,6 @@ function generateMarkdown(data) {
       optionKey: 'value',
       customizedHeaderId: true,
       tables: true,
-      openLinksInNewWindow: true,
       headerLevelStart: 3
     });
     converter.setFlavor('github');

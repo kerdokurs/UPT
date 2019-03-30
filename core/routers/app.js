@@ -12,7 +12,7 @@ const User = require('../database/models/User');
 router.route('/').get(async (req, res) => {
   if (!req.cookies['visited']) {
     const expires = new Date();
-    expires.setDate(expires.getDate() + 7);
+    expires.setDate(expires.getDate() + 14);
 
     res.cookie('visited', 'true', { expires }).redirect('/info');
   } else {

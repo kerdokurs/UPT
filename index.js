@@ -1,6 +1,8 @@
 const express = require('express');
 const fs = require('fs');
 
+const moment = require('moment');
+
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 
@@ -44,7 +46,11 @@ app.use(async (req, res, next) => {
 
 app.use((req, res, next) => {
   const log =
-    functions.parseDate(new Date()) +
+    '[' +
+    moment(new Date().getTime())
+      .locale('et')
+      .format('LTS L') +
+    ']' +
     ' [WEB, ' +
     (req.method == 'GET' ? ' ' : '') +
     req.method +

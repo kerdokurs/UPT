@@ -1,0 +1,5 @@
+.joonis_shell { text-align: center; }
+
+.joonis_shell img { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+
+img[alt='kiiruse_jaotumine'] { width: 40%; }

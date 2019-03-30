@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <title>Teema muutmine</title>
+    <script src="/js/admin.min.js"></script>
+    <title><%= data.title %> - Teema - <%= pageTitle %></title>
   </head>
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
@@ -16,6 +17,7 @@
       <form
         action="/admin/edit_topic/<%= data.parent %>:<%= data.id %>"
         method="POST"
+        id="edit-topic"
       >
         <input type="submit" value="Salvesta" class="btn green" />
         <input type="text" name="title" value="<%= data.title %>" />
@@ -25,8 +27,15 @@
           cols="30"
           rows="10"
           class="materialize-textarea"
-        ><%= data.data %></textarea>
+        >
+<%= data.data %></textarea
+        >
       </form>
     </div>
+    <script>
+      ctrlEnterSave('#edit-topic-data', () => {
+        $('#edit-topic').submit();
+      });
+    </script>
   </body>
 </html>

@@ -20,7 +20,12 @@ module.exports = {
       _categories,
       user,
       admin,
-      moment: time => '[' + moment(time).format('LTS L') + ']'
+      moment: time =>
+        '[' +
+        moment(time)
+          .locale('et')
+          .format('LTS L') +
+        ']'
     };
   }
 };

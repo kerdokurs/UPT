@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
+    <script src="/js/admin.min.js"></script>
     <title>Saavutuse muutmine</title>
   </head>
   <body>
@@ -13,6 +14,7 @@
       <form
         action="/admin/edit_achievement/<%= achievement.id %>"
         method="POST"
+        id="edit-ach"
       >
         <input type="submit" value="Salvesta" class="btn green" />
         <input type="text" name="title" value="<%= achievement.title %>" />
@@ -22,8 +24,15 @@
           cols="30"
           rows="10"
           class="materialize-textarea"
-        ><%= achievement.description %></textarea>
+        >
+<%= achievement.description %></textarea
+        >
       </form>
     </div>
+    <script>
+      ctrlEnterSave('#edit-ach-data', () => {
+        $('#edit-ach').submit();
+      });
+    </script>
   </body>
 </html>

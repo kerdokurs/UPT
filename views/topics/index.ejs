@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Teemad - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/navbar.ejs %> <% include ../imports/sidenav.ejs %>
+    <div class="container">
+      <h6>Õpikeskkonna teemad</h6>
+      <ul>
+        <% for(let category of _categories) { %>
+        <li>
+          <h6>
+            <a href="/teemad/<%= category.id %>">
+              <%= category.title %>
+            </a>
+          </h6>
+          <ol>
+            <% for(i in category.topics) { _topic = category.topics[i]; %>
+            <li>
+              <a href="/teemad/<%= category.id + '/' + _topic.id %>">
+                <%= _topic.title %>
+              </a>
+            </li>
+            <% } %>
+          </ol>
+        </li>
+        <% } %>
+      </ul>
+    </div>
+  </body>
+</html>

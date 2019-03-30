@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <script src="/js/feedback.js"></script>
+    <script src="/js/feedback.min.js"></script>
     <title>
-      Tagasiside -
-      <%= pageTitle %>
+      Tagasiside - <%= pageTitle %>
     </title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %>
-    <% include ../imports/navbar.ejs %>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
       <form onsubmit="feedback(this); return false;">
         <div class="row">
@@ -21,20 +19,27 @@
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">account_circle</i>
-                <input type="text" id="form-name" name="name" required>
+                <input type="text" id="form-name" name="name" required />
                 <label for="form-name">Nimi</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
                 <i class="material-icons prefix">textsms</i>
-                <textarea name="text" id="form-text" cols="30" rows="10" class="materialize-textarea" required></textarea>
+                <textarea
+                  name="text"
+                  id="form-text"
+                  cols="30"
+                  rows="10"
+                  class="materialize-textarea"
+                  required
+                ></textarea>
                 <label for="form-text">Sõnum</label>
               </div>
             </div>
             <div class="row">
               <div class="input-field col s12">
-                <input type="submit" value="Saada" class="btn green">
+                <input type="submit" value="Saada" class="btn green" />
               </div>
             </div>
           </div>

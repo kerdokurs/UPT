@@ -7,7 +7,8 @@
     "live": "nodemon index.js --watch ./core/",
     "mongo": "mongod --dbpath ./mongo/ --bind_ip 127.0.0.1",
     "start": "node ./index.js",
-    "dump": "mongodump -d upt --excludeCollection sessions --excludeCollection exercise_verifiers --excludeCollection quiz_verifiers",
+    "dump": "mongodump -d upt --excludeCollection sessions --excludeCollection exercise_verifiers --excludeCollection quiz_verifiers --excludeCollection users --excludeCollection solved_exercises --excludeCollection exercise_revisions",
+    "backup": "mongodump -d upt -o backup",
     "restore": "mongorestore -d upt dump/upt",
     "clean": "rm -r dump"
   },

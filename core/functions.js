@@ -1,9 +1,8 @@
 const fs = require('fs');
+const moment = require('moment');
 
 const Category = require('./database/models/Category');
 const Topic = require('./database/models/Topic');
-
-const User = require('./database/models/User');
 
 const randomString = length => {
   let text = '';
@@ -49,7 +48,12 @@ const getCategories = async () => {
 };
 
 const handle = (err, path) => {
-  const date = parseDate(new Date());
+  const date =
+    '[' +
+    moment(new Date().getTime())
+      .locale('et')
+      .format('LTS L') +
+    ']';
 
   console.log(`Error: [${path}, ${date}] > ${err}`);
   fs.appendFile(
@@ -76,31 +80,6 @@ const shuffleArray = array => {
   }
 
   return array;
-};
-
-const parseDate = date => {
-  let hours = parseInt(date.getHours());
-  if (parseInt(hours) < 10) hours = '0' + hours;
-
-  let minutes = date.getMinutes();
-  if (parseInt(minutes) < 10) minutes = '0' + minutes;
-
-  let seconds = date.getSeconds();
-  if (parseInt(seconds) < 10) seconds = '0' + seconds;
-
-  let day = date.getDate();
-  if (parseInt(day) < 10) day = '0' + day;
-
-  let month = date.getMonth() + parseInt(process.env.MONTH_OFFSET || 0);
-  if (parseInt(month) < 10) month = '0' + month;
-
-  let year = date
-    .getFullYear()
-    .toString()
-    .substr(2, 2);
-  if (parseInt(year) < 10) year = '0' + year;
-
-  return `[${hours}:${minutes}:${seconds} ${day}/${month}/${year}]`;
 };
 
 const currentDate = () => {
@@ -131,7 +110,6 @@ const parseParams = (req, res, next) => {
 
 module.exports = {
   randomString,
-  parseDate,
   currentDate,
 
   getCategories,
