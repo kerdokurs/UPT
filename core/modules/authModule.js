@@ -13,7 +13,7 @@ const getUser = uid => {
 
 const isUserLoggedIn = async req => {
   const session = await getSession(req);
-  return session !== null;
+  return session != null;
 };
 
 const adminGuard = async (req, res, next) => {
@@ -30,20 +30,9 @@ const adminGuard = async (req, res, next) => {
   }
 };
 
-const teacherGuard = async (req, res, next) => {
-  if (!(await isUserLoggedIn(req))) res.redirect('/user/login');
-
-  const session = await getSession(req);
-  const user = await User.findOne({ uid: session.uid }).catch(err =>
-    functions.handle(err, '/core/modules/authModule.js')
-  );
-
-  if (user && user.teacher) next();
-  else res.redirect('/');
-};
-
 const loginGuard = async (req, res, next) => {
-  if (!isUserLoggedIn(req)) res.redirect('/user/login');
+  if (!(await isUserLoggedIn(req)))
+    return res.redirect('/user/login?next=' + req.baseUrl + req.path);
   next();
 };
 
@@ -138,7 +127,6 @@ module.exports = {
   isUserAdmin,
   adminGuard,
   loginGuard,
-  teacherGuard,
 
   getSession,
   getLoggedUser,

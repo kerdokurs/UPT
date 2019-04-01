@@ -18,23 +18,27 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
         <a href="/user">
           <span class="white-text name"> <%= user.displayName %> </span>
         </a>
-        <span class="white-text email"> <%= user.email %> </span> <% if(admin) {
-        %>
+        <span class="white-text email"> <%= user.email %> </span>
+        <% if(admin) { %>
         <span>
-          <a href="/admin" rel="noopener noreferrer" class="btn green">Admin</a>
+          <a href="/admin/" rel="noopener noreferrer" class="btn green"
+            >Admin</a
+          >
         </span>
         <% } %>
       </div>
     </li>
-    <!--<li>
-      <a href="/user/settings"><i class="material-icons">settings</i>Sätted</a>
-    </li>-->
     <li>
-      <a href="/user/logout"><i class="material-icons">meeting_room</i>Välju</a>
+      <a href="/user/settings/"><i class="material-icons">settings</i>Sätted</a>
+    </li>
+    <li>
+      <a href="/user/logout?next/"
+        ><i class="material-icons">meeting_room</i>Välju</a
+      >
     </li>
     <% } else { %>
     <li>
-      <a href="/user/login"
+      <a href="/user/login?next=/"
         ><i class="material-icons">account_circle</i>Sisene</a
       >
     </li>

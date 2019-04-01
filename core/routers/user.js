@@ -101,7 +101,6 @@ router.route('/post-login').get(async (req, res) => {
 router.use(authModule.loginGuard);
 
 router.route('/').get(async (req, res) => {
-  if (!(await authModule.isUserLoggedIn(req))) res.redirect('/user/login');
   const session = (await authModule.getSession(req)) || {};
   let user = await User.findOne({ uid: session.uid }).catch(err =>
     functions.handle(err, '/core/routers/user.js')

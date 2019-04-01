@@ -3,7 +3,13 @@
 
 body { background-color: #dedede; font-family: 'Google Sans'; }
 
-.container { background-color: #fff; padding: 20px; }
+.container { background-color: #fff; padding: 20px; padding-bottom: 5px; margin-bottom: 10px; }
+
+.topic p { text-indent: 20px; }
+
+.topic blockquote p { text-indent: 0; }
+
+.no-indent p { text-indent: 0; }
 
 .user-profile { display: -ms-grid; display: grid; -ms-grid-columns: 20% auto; grid-template-columns: 20% auto; }
 
