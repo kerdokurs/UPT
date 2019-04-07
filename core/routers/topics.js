@@ -50,6 +50,7 @@ router.route('/:categoryId?/:topicId*?').get(async (req, res) => {
 
     if (categoryData && topicData) {
       const markdown = generateMarkdown(topicData.data);
+
       res.render('topics/topic', {
         category: categoryData,
         topic: topicData,

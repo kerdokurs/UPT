@@ -14,7 +14,7 @@
   </head>
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
-    <div class="container topic">
+    <div class="container topic z-depth-1">
       <% if(admin) { %>
       <a
         href="/admin/edit_topic/<%= topic.parent %>:<%= topic.id %>"
