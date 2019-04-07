@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Kustuta konto - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <h3>Konto kustutamine</h3>
+      <a href="#delete" class="btn modal-trigger red">Kustuta konto</a>
+      <div class="modal" id="delete">
+        <p>
+          Oled sa kindel, et tahad oma konto ja kogu sellega seonduva info
+          kustutada? Seda tagasi võtta ei saa! Kui oled 100% nõus ja kindel, et
+          tahad oma konto jäädavalt kustutada, kirjuta järgmisesse kasti oma
+          konto nimi: <%= user.displayName %>.
+        </p>
+        <form method="POST" action="">
+          <input
+            type="text"
+            name="name"
+            id="name"
+            pattern="<%= user.displayName %>"
+            required
+          />
+          <input type="submit" value="Kustuta konto" class="btn red" />
+        </form>
+      </div>
+      <a href="#nohikutele" class="btn modal-trigger green">Nohikutele</a>
+      <div class="modal" id="nohikutele">
+        Google'i autentimisteenuse informatsioon
+        <pre style="font-size: .8em;">
+<%= JSON.stringify(user, null, 2); %></pre
+        >
+      </div>
+    </div>
+  </body>
+</html>

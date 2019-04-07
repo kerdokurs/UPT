@@ -159,4 +159,12 @@ router.route('/bookmarks').get(async (req, res) => {
   res.render('user/bookmarks', { bookmarks });
 });
 
+router.route('/delete').get(async (req, res) => {
+  res.render('user/delete');
+});
+
+router.route('/delete').post(async (req, res) => {
+  res.send('KUSTUTAMINE');
+});
+
 module.exports = router;

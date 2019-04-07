@@ -128,4 +128,12 @@ router.route('/search').get(async (req, res) => {
     });
 });
 
+router.route('/tos').get((req, res) => {
+  res.render('misc/tos');
+});
+
+router.route('/pp').get((req, res) => {
+  res.render('misc/pp');
+});
+
 module.exports = router;
