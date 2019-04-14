@@ -11,6 +11,9 @@ const Bookmark = require('../database/models/Bookmark');
 const Session = require('../database/models/Session');
 const Achievement = require('../database/models/Achievement');
 
+const ExerciseRevision = require('../database/models/ExerciseRevision');
+const SolvedExercise = require('../database/models/SolvedExercise');
+
 router.route('/login').get(async (req, res) => {
   if (await authModule.isUserLoggedIn(req)) res.redirect('/user');
   else {
@@ -164,7 +167,20 @@ router.route('/delete').get(async (req, res) => {
 });
 
 router.route('/delete').post(async (req, res) => {
-  res.send('KUSTUTAMINE');
+  const { uid } = await authModule.getLoggedUser(req);
+
+  await Promise.all([
+    Bookmark.deleteMany({ uid }),
+    ExerciseRevision.deleteMany({ uid }),
+    Session.deleteMany({ uid }),
+    SolvedExercise.deleteMany({ uid }),
+    User.deleteOne({ uid })
+  ]).catch(err => functions.handler(err, '/core/routers/user.js'));
+
+  res
+    .cookie('logged_in', '', { expires: new Date() })
+    .cookie('_sid', '', { expires: new Date() })
+    .redirect(req.redir);
 });
 
 module.exports = router;

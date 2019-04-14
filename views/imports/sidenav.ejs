@@ -19,15 +19,15 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
           <span class="white-text name"> <%= user.displayName %> </span>
         </a>
         <span class="white-text email"> <%= user.email %> </span>
-        <% if(admin) { %>
-        <span>
-          <a href="/admin/" rel="noopener noreferrer" class="btn green"
-            >Admin</a
-          >
-        </span>
-        <% } %>
       </div>
     </li>
+    <% if(admin) { %>
+    <li>
+      <a href="/admin/" rel="noopener noreferrer"
+        ><i class="material-icons">build</i>Admin</a
+      >
+    </li>
+    <% } %>
     <li>
       <a href="/user/settings/"><i class="material-icons">settings</i>Sätted</a>
     </li>
@@ -110,11 +110,6 @@ if(category.id === _cat.id) return 'active'; } return ''; }%>
     <li>
       <a href="/info" class="btn-floating orange">
         <i class="material-icons">info</i>
-      </a>
-    </li>
-    <li>
-      <a href="/kusitlus" class="btn-floating blue">
-        <i class="material-icons">description</i>
       </a>
     </li>
   </ul>

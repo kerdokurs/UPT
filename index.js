@@ -1,6 +1,9 @@
 const express = require('express');
 const fs = require('fs');
 
+const sm = require('sitemap');
+const surls = require('./core/surls');
+
 const moment = require('moment');
 
 const cookieParser = require('cookie-parser');
@@ -15,8 +18,6 @@ const admin = require('./core/routers/admin');
 const exercises = require('./core/routers/exercises');
 
 const functions = require('./core/functions');
-
-const authModule = require('./core/modules/authModule');
 
 require('dotenv').config();
 require('./core/database/database');
@@ -36,6 +37,12 @@ app.use(express.static(__dirname + '/static'));
 app.use(async (req, res, next) => {
   res.locals = await locals.get(req);
   next();
+});
+
+sitemap = sm.createSitemap({
+  hostname: 'http://upt.kerdo.me',
+  cacheTime: 600000, //* (sec)
+  urls: surls
 });
 
 /* app.use(async (req, res, next) => {
@@ -84,6 +91,17 @@ app.use('/bookmarks', bookmarks);
 app.use(misc);
 app.use('/admin', admin);
 app.use('/ulesanded', exercises);
+
+app.route('/sitemap.xml').get(async (req, res) => {
+  sitemap.toXML((err, xml) => {
+    if (err) {
+      functions.handle(err, '/index.js');
+      return res.status(500).end();
+    }
+    res.header('Content-Type', 'application/xml');
+    res.send(xml);
+  });
+});
 
 app.all('**', async (req, res) => {
   res.render('404', { path: req.path });
