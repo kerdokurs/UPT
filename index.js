@@ -41,7 +41,7 @@ app.use(async (req, res, next) => {
 
 sitemap = sm.createSitemap({
   hostname: 'http://upt.kerdo.me',
-  cacheTime: 600000, //* (sec)
+  cacheTime: 600000,
   urls: surls
 });
 

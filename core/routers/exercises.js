@@ -50,8 +50,6 @@ const updateUserRatio = async uid => {
   );
 };
 
-router.use(authModule.loginGuard);
-
 router.route('/').get(async (req, res) => {
   const categories = await ExerciseCategory.find();
 
@@ -186,29 +184,6 @@ router.route('/lahendatud').get(async (req, res) => {
     solvedExercises,
     user
   });
-});
-
-router.route('/edetabel').get(async (req, res) => {
-  const { uid } = await authModule.getLoggedUser(req);
-
-  const users = await User.find({
-    'metadata.ratio': { $ne: null, $ne: 'NaN' },
-    allow_leaderboard: true
-  })
-    .sort({ 'metadata.ratio': -1 })
-    .limit(100)
-    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
-
-  res.render('exercises/leaderboard', { uid, users });
-});
-
-router.route('/vaata/:id').get(async (req, res) => {
-  const { id } = req.params;
-
-  const exerciseRevision = await ExerciseRevision.findOne({ id }).catch(err =>
-    functions.handle(err, '/core/routers/exercises.js')
-  );
-  res.send('<pre>' + JSON.stringify(exerciseRevision, null, 2) + '</pre>');
 });
 
 router.route('/:type/:id').get(async (req, res) => {
@@ -414,6 +389,31 @@ router.route('/:type/:id/submit').post(async (req, res) => {
       });
     } else res.redirect('/');
   } else res.redirect('/');
+});
+
+router.use(authModule.loginGuard);
+
+router.route('/edetabel').get(async (req, res) => {
+  const { uid } = await authModule.getLoggedUser(req);
+
+  const users = await User.find({
+    'metadata.ratio': { $ne: null, $ne: 'NaN' },
+    allow_leaderboard: true
+  })
+    .sort({ 'metadata.ratio': -1 })
+    .limit(100)
+    .catch(err => functions.handle(err, '/core/routers/exercises.js'));
+
+  res.render('exercises/leaderboard', { uid, users });
+});
+
+router.route('/vaata/:id').get(async (req, res) => {
+  const { id } = req.params;
+
+  const exerciseRevision = await ExerciseRevision.findOne({ id }).catch(err =>
+    functions.handle(err, '/core/routers/exercises.js')
+  );
+  res.send('<pre>' + JSON.stringify(exerciseRevision, null, 2) + '</pre>');
 });
 
 module.exports = router;
