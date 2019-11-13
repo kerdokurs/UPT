@@ -1,27 +1,16 @@
-<% function getUser(uid) { for(let __user of users) { if(__user.uid === uid) {
-return __user; } } return null; } %>
-
 <!DOCTYPE html>
 <html lang="et">
   <head>
-    <% include ../imports/gtm_head.ejs %>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <% include ../imports/head.ejs %>
-    <script src="/js/admin.min.js"></script>
     <title>Admin</title>
   </head>
   <body>
     <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container">
-      <div id="menu" class="row"><% include ./menu %></div>
-      <div id="sisu"><% include ./content %></div>
-      <div id="kasutajad"><% include ./users %></div>
-      <div id="tagasiside"><% include ./feedback %></div>
-      <div id="saavutused"><% include ./achievements %></div>
-      <div id="ulesanded"><% include ./exercises %></div>
-      <div id="logid"><% include ./logs %></div>
+      <a href="/admin/content">Sisu</a>
     </div>
   </body>
 </html>

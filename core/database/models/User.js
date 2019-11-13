@@ -12,6 +12,7 @@ const userModel = new Schema(
     photoURL: { type: String, required: true },
     email: { type: String, required: true },
     admin: { type: Boolean, default: false },
+    role: { type: Number, default: 0 },
     sign_up: { type: Date, default: Date.now },
     last_sign_in: { type: Date, default: Date.now },
     achievements: [],

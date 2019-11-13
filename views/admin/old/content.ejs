@@ -1,0 +1,116 @@
+<h4>Sisu</h4>
+<div>
+  <ul class="collapsible">
+    <% for(let {title, id, last_changed, topics} of categories) { %>
+    <li>
+      <div class="collapsible-header"><h6 class="left"><%= title %></h6></div>
+      <div class="collapsible-body table">
+        <table>
+          <thead>
+            <tr>
+              <th>Teema</th>
+              <th>ID</th>
+              <th>Muutmise aeg</th>
+              <th>Vaata</th>
+              <th>Redigeeri</th>
+              <th>Kustuta</th>
+            </tr>
+          </thead>
+          <tbody class="collapsible">
+            <% for(let topic of topics) { %>
+            <tr>
+              <td><%= topic.title %></td>
+              <td><%= topic.id %></td>
+              <td><%= moment(topic.last_changed) %></td>
+              <td>
+                <a
+                  href="/teemad/<%= id %>/<%= topic.id %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn green"
+                  >Vaata</a
+                >
+              </td>
+              <td>
+                <a
+                  href="/admin/edit_topic/<%= id %>:<%= topic.id %>"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn orange"
+                  >Redigeeri</a
+                >
+              </td>
+              <td>
+                <form
+                  method="POST"
+                  action="/admin/del_top"
+                  onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')"
+                >
+                  <input
+                    type="hidden"
+                    name="id"
+                    value="<%= id %>:<%= topic.id %>"
+                  />
+                  <input type="submit" value="Kustuta" class="btn red" />
+                </form>
+              </td>
+            </tr>
+            <% } %>
+          </tbody>
+        </table>
+      </div>
+    </li>
+    <% } %>
+  </ul>
+</div>
+<a class="btn modal-trigger green" href="#add_cat_modal">
+  Lisa uus kategooria
+</a>
+<a class="btn modal-trigger green" href="#add_top_modal"> Lisa uus teema</a>
+<div class="modal" id="add_cat_modal">
+  <h5>Lisa uus kategooria</h5>
+  <form method="POST" action="/admin/add_cat">
+    <table>
+      <tr>
+        <td>Kategooria</td>
+        <td><input type="text" name="title" id="add-cat-title" required /></td>
+      </tr>
+      <tr>
+        <td>ID</td>
+        <td><input type="text" name="id" id="add-cat-id" required /></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Lisa" class="btn green" /></td>
+      </tr>
+    </table>
+  </form>
+</div>
+<div class="modal" id="add_top_modal">
+  <h5>Lisa uus teema</h5>
+  <form action="/admin/add_top" method="POST">
+    <table>
+      <tr>
+        <td>Pealkiri</td>
+        <td><input type="text" name="title" id="add-top-title" required /></td>
+      </tr>
+      <tr>
+        <td>ID</td>
+        <td><input type="text" name="id" id="add-top-id" required /></td>
+      </tr>
+      <tr>
+        <td>Kategooria</td>
+        <td>
+          <select name="category" id="add-top-cat" required>
+            <option value="" disabled selected>Vali kategooria</option>
+            <% for(let category of categories) { %>
+            <option value="<%= category.id %>"> <%= category.title %> </option>
+            <% } %>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Lisa" class="btn green" /></td>
+      </tr>
+    </table>
+  </form>
+</div>
