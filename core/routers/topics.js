@@ -96,31 +96,6 @@ function generateMarkdown(data) {
     });
     converter.setFlavor('github');
     markdown = converter.makeHtml(data);
-
-    const regex = /\$.*?\$/gs;
-    const finds = [];
-    let find;
-
-    do {
-      find = regex.exec(markdown);
-      if (find) finds.push(find);
-    } while (find);
-
-    for (let find of finds) {
-      let string = find[0];
-      string = string.substring(1, string.length - 1);
-
-      mathjax.typeset(
-        {
-          math: string,
-          format: 'inline-TeX',
-          svg: true
-        },
-        data => {
-          markdown = markdown.toString().replace(find[0], data.svg);
-        }
-      );
-    }
   } catch (err) {
     functions.handle(err, '/core/routers/topics.js');
   }
