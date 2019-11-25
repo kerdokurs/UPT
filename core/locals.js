@@ -15,7 +15,7 @@ module.exports = {
       admin = (await authModule.isUserAdmin(req)) || false;
 
     return {
-      pageTitle: 'Kerdo UPT',
+      pageTitle: 'Õppekeskkond',
 
       _categories,
       user,
