@@ -48,9 +48,11 @@ router.route('/post-login').get(async (req, res) => {
       const user = users[0];
       const { uid } = user;
 
-      await Session.create({ id: sid, uid, created_at: new Date() }).catch(
-        err => functions.handle(err, '/core/routers/user.js')
-      );
+      await Session.create({
+        id: sid,
+        uid,
+        created_at: new Date()
+      }).catch(err => functions.handle(err, '/core/routers/user.js'));
 
       User.updateOne({ uid }, { $set: { last_sign_in: new Date() } })
         .then(() => {
