@@ -77,7 +77,7 @@ router.route('/post-login').get(async (req, res) => {
         created_at: new Date()
       }).catch(err => functions.handle(err, '/core/routers/user.js'));
 
-      User.create({
+      await User.create({
         uid,
         displayName,
         photoURL,
@@ -90,15 +90,12 @@ router.route('/post-login').get(async (req, res) => {
           solved_exercises: 0,
           exercise_points: 0
         }
-      })
-        .then(async () => {
-          await authModule.grantAchievement(uid, 'login');
-          res
-            .cookie('logged_in', true, { expires })
-            .cookie('_sid', sid, { expires })
-            .redirect(req.redir);
-        })
-        .catch(err => functions.handle(err, '/core/routers/user.js'));
+      });
+      await authModule.grantAchievement(uid, 'login');
+      res
+        .cookie('logged_in', true, { expires })
+        .cookie('_sid', sid, { expires })
+        .redirect(req.redir);
     }
   }
 });
