@@ -1,1 +1,29 @@
-<pre><%= JSON.stringify(categories, null, 2); %></pre>
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Sisu > Admin > <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <% for(let category of categories) { %>
+      <h2><%= category.title %></h2>
+      <p><%= category.id %></p>
+      <h3>Teemad</h3>
+      <% for(let topic of category.topics) { %>
+      <h4><%= topic.title %></h4>
+      <p><%= topic.id %></p>
+      <% } %>
+      <h3>Ülesanded</h3>
+      <% for(let exercise of category.exercises) { %>
+      <h4><%= exercise.title %></h4>
+      <p><%= exercise.id %></p>
+      <pre><%= JSON.stringify(exercise.data, null, 2) %></pre>
+      <% } %> <% } %>
+    </div>
+  </body>
+</html>

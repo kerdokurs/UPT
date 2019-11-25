@@ -1,8 +1,7 @@
 const express = require('express');
-const fs = require('fs');
 
-const sm = require('sitemap');
-const surls = require('./core/surls');
+require('dotenv').config();
+require('./core/database/database');
 
 const moment = require('moment');
 
@@ -18,9 +17,6 @@ const admin = require('./core/routers/admin');
 const exercises = require('./core/routers/exercises');
 
 const functions = require('./core/functions');
-
-require('dotenv').config();
-require('./core/database/database');
 
 const port = process.env.PORT || 80;
 
