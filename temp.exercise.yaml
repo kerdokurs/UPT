@@ -1,0 +1,25 @@
+exercise:
+  id: String
+  title: String
+  category_id: String
+  variables:
+    time:
+      type: Int
+      unit: s
+      min: 5
+      max: 20
+    speed:
+      type: Float
+      unit: m/s
+      min: 2.0
+      max: 8.0
+  variants:
+    0:
+      text: Auto sõitis kiirusega <speed> <speed>. Kui suure vahemaa ta läbis?
+      formula: <speed> * <time>
+  points: 20
+  created_at: Date
+  last_changed: Date
+  published: Boolean
+
+  //TODO: TOPICULE KA PUBLISHED!!!!

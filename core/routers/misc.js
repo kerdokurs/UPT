@@ -8,7 +8,7 @@ const Feedback = require('../database/models/Feedback');
 const Topic = require('../database/models/Topic');
 const Category = require('../database/models/Category');
 const Exercise = require('../database/models/Exercise');
-const Quiz = require('../database/models/Quiz');
+// const Quiz = require('../database/models/Quiz');
 
 const authModule = require('../modules/authModule');
 

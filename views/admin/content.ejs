@@ -1,29 +1,96 @@
 <!DOCTYPE html>
 <html lang="et">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <% include ../imports/head.ejs %>
-    <title>Sisu > Admin > <%= pageTitle %></title>
-  </head>
-  <body>
-    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
-    <div class="container">
-      <% for(let category of categories) { %>
-      <h2><%= category.title %></h2>
-      <p><%= category.id %></p>
-      <h3>Teemad</h3>
-      <% for(let topic of category.topics) { %>
-      <h4><%= topic.title %></h4>
-      <p><%= topic.id %></p>
-      <% } %>
-      <h3>Ülesanded</h3>
-      <% for(let exercise of category.exercises) { %>
-      <h4><%= exercise.title %></h4>
-      <p><%= exercise.id %></p>
-      <pre><%= JSON.stringify(exercise.data, null, 2) %></pre>
-      <% } %> <% } %>
-    </div>
-  </body>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<% include ../imports/head.ejs %>
+  <link rel="stylesheet" href="/css/admin.css">
+	<title>Sisu > Admin > <%= pageTitle %></title>
+</head>
+
+<body>
+	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+	<div class="container">
+		<ul class="collapsible">
+			<% for(const category of categories) { %>
+			<li>
+				<div class="collapsible-header">
+					<h6 class="left"><%= category.title %></h6>
+				</div>
+				<div class="collapsible-body table">
+					<div>
+						<h5>Sisu</h5>
+						<table>
+							<thead>
+								<tr>
+									<th>Teema</th>
+									<th>Viimane muutmine</th>
+									<th>Halda</th>
+								</tr>
+							</thead>
+							<tbody class="collapsible">
+								<% for(let topic of category.topics) { %>
+								<tr>
+									<td><%= topic.title %></td>
+									<td><%= moment(topic.last_changed) %></td>
+									<td>
+										<a href="/teemad/<%= category.id %>/<%= topic.id %>" target="_blank"
+											rel="noopener noreferrer">
+											<i class="material-icons manage-launch">launch</i>
+										</a>
+										<a href="/admin/edit_topic/<%= category.id %>/<%= topic.id %>" target="_blank"
+											rel="noopener noreferrer">
+											<i class="material-icons manage-edit">create</i>
+										</a>
+										<a href="/admin/delete_topic/<%= category.id %>/<%= topic.id %>" target="_blank"
+											rel="noopener noreferrer">
+											<i class="material-icons manage-delete">clear</i>
+										</a>
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+            <h5>Ülesanded</h5>
+						<table>
+							<thead>
+								<tr>
+									<th>Pealkiri</th>
+									<th>Viimane muutmine</th>
+									<th>Halda</th>
+								</tr>
+							</thead>
+							<tbody class="collapsible">
+								<% for(let exercise of category.exercises) { %>
+								<tr>
+									<td><%= exercise.title %></td>
+									<td><%= moment(exercise.last_changed) %></td>
+									<td>
+										<a href="/teemad/<%= category.id %>/<%= exercise.id %>" target="_blank"
+											rel="noopener noreferrer">
+											<i class="material-icons manage-launch">launch</i>
+										</a>
+										<a href="/admin/edit_exercise/<%= category.id %>/<%= exercise.id %>" target="_blank"
+											rel="noopener noreferrer">
+											<i class="material-icons manage-edit">create</i>
+										</a>
+										<a href="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>" target="_blank"
+											rel="noopener noreferrer">
+											<i class="material-icons manage-delete">clear</i>
+										</a>
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</li>
+			<% } %>
+		</ul>
+	</div>
+</body>
+
 </html>

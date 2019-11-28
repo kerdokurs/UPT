@@ -6,12 +6,6 @@ const authModule = require('../modules/authModule');
 const exerciseModule = require('../modules/exerciseModule');
 
 const Exercise = require('../database/models/Exercise');
-const Quiz = require('../database/models/Quiz');
-const QuizVerifier = require('../database/models/QuizVerifier');
-const SolvedExercise = require('../database/models/SolvedExercise');
-const ExerciseVerifier = require('../database/models/ExerciseVerifier');
-const ExerciseRevision = require('../database/models/ExerciseRevision');
-const ExerciseCategory = require('../database/models/ExerciseCategory');
 
 const User = require('../database/models/User');
 

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/css/admin.css">
+	<% include ../imports/head.ejs %>
+	<title><%= exercise.title %> > Admin > <%= pageTitle %></title>
+	<script src="/js/admin.min.js"></script>
+</head>
+<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+
+<body>
+	<div class="container">
+		<h5>Ülesanne: <%= exercise.title %></h5>
+		<div>
+			<p>Andmed</p>
+			<table>
+				<thead>
+					<th>Nimi</th>
+					<th>Ühik</th>
+					<th>Min</th>
+					<th>Max</th>
+					<th>Halda</th>
+				</thead>
+				<tbody>
+					<% for(let variable of exercise.variables) { %>
+					<tr id="variable-details-<%= variable.name %>">
+						<td id="variable-name-<%= variable.name %>"><%= variable.name %></td>
+						<td id="variable-unit-<%= variable.name %>"><%= variable.unit %></td>
+						<td id="variable-min-<%= variable.name %>"><%= variable.min %></td>
+						<td id="variable-max-<%= variable.name %>"><%= variable.max %></td>
+						<td>
+							<a onclick="updateVariable('<%= variable.name %>');" class="manage-button">
+								<i class="material-icons manage-edit">edit</i>
+							</a>
+							<a onclick="deleteVariable('<%= variable.name %>');" class="manage-button">
+								<i class="material-icons manage-delete">delete</i>
+							</a>
+						</td>
+					</tr>
+					<% } %>
+				</tbody>
+			</table>
+			<a onclick="newVariable()" class="manage-button">
+				<i class="material-icons manage-launch">add</i>
+			</a>
+		</div>
+		<div>
+			<p>Variandid</p>
+			<table>
+				<thead>
+					<th>Tekst</th>
+					<th>Valem</th>
+					<th>Halda</th>
+				</thead>
+				<tbody>
+					<% for(let variant of exercise.variants) { %>
+					<td><%= variant.text.length > 20 ? (variant.text.substring(0, 20) + '...') : variant.text %></td>
+					<td><%= variant.formula %></td>
+					<td>
+						<a onclick="updateVariant('<%= variant.id %>');" class="manage-button">
+							<i class="material-icons manage-edit">edit</i>
+						</a>
+						<a onclick="deleteVariant('<%= variant.id %>');" class="manage-button">
+							<i class="material-icons manage-delete">delete</i>
+						</a>
+					</td>
+					<% } %>
+				</tbody>
+			</table>
+			<a onclick="newVariant()" class="manage-button">
+				<i class="material-icons manage-launch">add</i>
+			</a>
+			<p>
+				<input type="button" class="btn green" value="Salvesta" onclick="save()">
+      </p>
+		</div>
+	</div>
+</body>
+
+</html>

@@ -11,8 +11,8 @@ const Bookmark = require('../database/models/Bookmark');
 const Session = require('../database/models/Session');
 const Achievement = require('../database/models/Achievement');
 
-const ExerciseRevision = require('../database/models/ExerciseRevision');
-const SolvedExercise = require('../database/models/SolvedExercise');
+// const ExerciseRevision = require('../database/models/ExerciseRevision');
+// const SolvedExercise = require('../database/models/SolvedExercise');
 
 router.route('/login').get(async (req, res) => {
   if (await authModule.isUserLoggedIn(req)) res.redirect('/user');

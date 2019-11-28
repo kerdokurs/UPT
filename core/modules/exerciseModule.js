@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const functions = require('../functions');
 
+/*
 const QuizVerifier = require('../database/models/QuizVerifier');
 const ExerciseVerifier = require('../database/models/ExerciseVerifier');
 
@@ -123,3 +124,4 @@ module.exports = {
     );
   }
 };
+*/

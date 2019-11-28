@@ -1,0 +1,15 @@
+.manage-launch {
+  color: green;
+}
+
+.manage-edit {
+  color: orange;
+}
+
+.manage-delete {
+  color: red;
+}
+
+.manage-button {
+  cursor: pointer;
+}

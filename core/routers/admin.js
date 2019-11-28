@@ -20,22 +20,13 @@ router.route('/content').get(async (req, res) => {
   const categories = [];
 
   for (const { id, title } of _categories) {
-    const _topics = await Topic.find({ parent: id }, null, {
+    const topics = await Topic.find({ parent: id }, null, {
       sort: '-last_changed'
     }).catch(err => functions.handle(err, '/core/routers/admin.js'));
 
     const exercises = await Exercise.find({ category_id: id }, null, {
       sort: '-last_changed'
     }).catch(err => functions.handle(err, '/core/routers/admin.js'));
-
-    const topics = [];
-    for (let { title, id, data, last_changed } of _topics)
-      topics.push({
-        title,
-        id,
-        data,
-        last_changed
-      });
 
     categories.push({
       title,
@@ -46,6 +37,28 @@ router.route('/content').get(async (req, res) => {
   }
 
   res.render('admin/content', { categories });
+});
+
+router.route('/edit_topic/:categoryId*/:topicId*').get(async (req, res) => {
+  const { categoryId, topicId } = req.params;
+  const topic = await Topic.findOne({ parent: categoryId, id: topicId });
+  const exercises = await Exercise.find({ category_id: categoryId });
+
+  res.render('admin/edit_topic', { topic, exercises, categoryId });
+});
+
+router.route('/save_topic/:categoryId*/:topicId*').post(async (req, res) => {
+  const { categoryId, topicId } = req.params;
+  const { title, data } = req.body;
+  await Topic.updateOne({ parent: categoryId, id: topicId }, { $set: { title, data, last_changed: new Date() } });
+  res.redirect(`/admin/edit_topic/${categoryId}/${topicId}`);
+});
+
+router.route('/edit_exercise/:categoryId*/:exerciseId*').get(async (req, res) => {
+  const { categoryId, exerciseId } = req.params;
+  const exercise = await Exercise.findOne({ category_id: categoryId, id: exerciseId });
+
+  res.render('admin/edit_exercise', { exercise });
 });
 
 module.exports = router;

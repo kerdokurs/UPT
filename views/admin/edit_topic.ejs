@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<% include ../imports/head.ejs %>
+	<title><%= topic.title %> > Admin > <%= pageTitle %></title>
+	<script src="/js/admin.min.js"></script>
+</head>
+<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+
+<body>
+	<div class="container">
+		<h5>Teema <%= topic.title %></h5>
+		<form action="/admin/save_topic/<%= categoryId %>/<%= topic.id %>" method="POST">
+			<input type="submit" value="Salvesta" class="btn green" />
+			<input type="text" name="title" value="<%= topic.title %>" />
+			<textarea
+          name="data"
+          id="edit-topic-data"
+          cols="30"
+          rows="10"
+          class="materialize-textarea"
+        ><%= topic.data %></textarea>
+		</form>
+	</div>
+</body>
+
+</html>

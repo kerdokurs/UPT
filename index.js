@@ -12,7 +12,7 @@ const index = require('./core/routers/app');
 const user = require('./core/routers/user');
 const topics = require('./core/routers/topics');
 const bookmarks = require('./core/routers/bookmarks');
-const misc = require('./core/routers/misc');
+// const misc = require('./core/routers/misc');
 const admin = require('./core/routers/admin');
 const exercises = require('./core/routers/exercises');
 
@@ -82,7 +82,7 @@ app.use('/', index);
 app.use('/user', user);
 app.use('/teemad', topics);
 app.use('/bookmarks', bookmarks);
-app.use(misc);
+// app.use(misc);
 app.use('/admin', admin);
 app.use('/ulesanded', exercises);
 

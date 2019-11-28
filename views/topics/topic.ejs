@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="et">
-  <head>
-    <% include ../imports/gtm_head.ejs %>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <% include ../imports/head.ejs %>
-    <link rel="stylesheet" href="/css/joonised.min.css" />
-    <script src="/js/bookmarks.js"></script>
-    <script type="text/x-mathjax-config">
-      MathJax.Hub.Config({
+
+<head>
+	<% include ../imports/gtm_head.ejs %>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<% include ../imports/head.ejs %>
+	<link rel="stylesheet" href="/css/joonised.min.css" />
+	<script src="/js/bookmarks.js"></script>
+	<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
         jax: ["input/TeX", "output/HTML-CSS"],
         extensions: ["tex2jax.js"],
         "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] },
@@ -18,58 +19,44 @@
         messageStyle: "none"
       });
     </script>
-    <script
-      type="text/javascript"
-      src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"
-    ></script>
-    <title>
-      <%= (topic.title ? topic.title + ' - ' : '') + (category.title ?
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+	<title>
+		<%= (topic.title ? topic.title + ' - ' : '') + (category.title ?
       category.title + ' - ' : '') + pageTitle %>
-    </title>
-  </head>
-  <body>
-    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
-    <div class="container topic z-depth-1">
-      <% if(admin) { %>
-      <a
-        href="/admin/edit_topic/<%= topic.parent %>:<%= topic.id %>"
-        rel="noopener noreferrer"
-        class="btn right orange"
-        >Redigeeri</a
-      >
-      <% } %> <% if(user != null) { %> <% if(bookmarked) { %>
-      <a href="#!" onclick="bookmark(0)" id="bookmark-action"
-        ><i class="material-icons" id="bookmark-icon">bookmark</i></a
-      >
-      <% } else { %>
-      <a href="#!" onclick="bookmark(1)" id="bookmark-action"
-        ><i class="material-icons" id="bookmark-icon">bookmark_border</i></a
-      >
-      <% } %> <% } %> <%- markdown %>
-    </div>
-    <div class="modal" id="bookmark-saved-modal">
-      <h4>Järjehoidja salvestatud!</h4>
-      <a
-        href="javascript:$('#bookmark-saved-modal').modal('close');"
-        class="btn green"
-        >OK</a
-      >
-    </div>
-    <div class="modal" id="bookmark-removed-modal">
-      <h4>Järjehoidja eemaldatud!</h4>
-      <a
-        href="javascript:$('#bookmark-removed-modal').modal('close');"
-        class="btn green"
-        >OK</a
-      >
-    </div>
-    <div class="modal" id="bookmark-exists-modal">
-      <h4>Järjehoidja on juba olemas!</h4>
-      <a
-        href="javascript:$('#bookmark-removed-modal').modal('close');"
-        class="btn green"
-        >OK</a
-      >
-    </div>
-  </body>
+	</title>
+</head>
+
+<body>
+	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+	<div class="container topic z-depth-1">
+		<% if(admin) { %>
+		<a href="/admin/edit_topic/<%= topic.parent %>:<%= topic.id %>" rel="noopener noreferrer"
+			class="btn right orange">Redigeeri</a>
+		<% } %> <% if(user != null) { %> <% if(bookmarked) { %>
+		<a href="#!" onclick="bookmark(0)"
+			id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark</i></a>
+		<% } else { %>
+		<a href="#!" onclick="bookmark(1)"
+			id="bookmark-action"><i class="material-icons" id="bookmark-icon">bookmark_border</i></a>
+		<% } %> <% } %> <div><%- markdown %></div>
+		<div>
+		<% if(topic.last_changed) { %>
+			<span>Viimati muudetud: <%= moment(topic.last_changed) %></span>
+			<% } %>
+		</div>
+	</div>
+	<div class="modal" id="bookmark-saved-modal">
+		<h4>Järjehoidja salvestatud!</h4>
+		<a href="javascript:$('#bookmark-saved-modal').modal('close');" class="btn green">OK</a>
+	</div>
+	<div class="modal" id="bookmark-removed-modal">
+		<h4>Järjehoidja eemaldatud!</h4>
+		<a href="javascript:$('#bookmark-removed-modal').modal('close');" class="btn green">OK</a>
+	</div>
+	<div class="modal" id="bookmark-exists-modal">
+		<h4>Järjehoidja on juba olemas!</h4>
+		<a href="javascript:$('#bookmark-removed-modal').modal('close');" class="btn green">OK</a>
+	</div>
+</body>
+
 </html>

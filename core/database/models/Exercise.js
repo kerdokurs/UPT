@@ -16,13 +16,18 @@ const exerciseModel = new Schema(
       type: String,
       required: true
     },
-    data: {
-      type: Object,
+    variables: {
+      type: Array,
+      required: false
+    },
+    variants: {
+      type: Array,
       required: true
     },
-    metadata: {
-      type: Object,
-      required: false
+    points: {
+      type: Number,
+      required: false,
+      default: 0
     },
     created_at: {
       type: Date,
