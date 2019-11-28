@@ -4,6 +4,11 @@ if(category.id === _cat.id) return 'active'; } return ''; }%> <% include
 <div>
   <ul id="sidenav" class="sidenav">
     <li>
+      <a href="/admin/" rel="noopener noreferrer"
+        ><i class="material-icons">build</i>Admin</a
+      >
+    </li>
+    <li>
       <% if(user !== null) { %>
       <div class="user-view">
         <div class="background">
