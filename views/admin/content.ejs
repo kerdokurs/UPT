@@ -6,7 +6,11 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<% include ../imports/head.ejs %>
-  <link rel="stylesheet" href="/css/admin.css">
+	<link rel="stylesheet" href="/css/admin.css">
+	<script>
+		const createTopic = (id) => { document.getElementById('new_topic_modal_category').value=id; };
+    const confirmDelete = (name) => { return confirm('Kas kustutada teema ' + name + '?'); }
+	</script>
 	<title>Sisu > Admin > <%= pageTitle %></title>
 </head>
 
@@ -44,16 +48,19 @@
 											rel="noopener noreferrer">
 											<i class="material-icons manage-edit">create</i>
 										</a>
-										<a href="/admin/delete_topic/<%= category.id %>/<%= topic.id %>" target="_blank"
-											rel="noopener noreferrer">
-											<i class="material-icons manage-delete">clear</i>
-										</a>
-									</td>
+										<form method="GET"
+											action="/admin/delete_topic/<%= category.id %>/<%= topic.id %>"
+											onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
+											<button type="submit" class="manage-launch"><i class="material-icons manage-delete">delete</i></button>
+                    </form>
 								</tr>
 								<% } %>
 							</tbody>
 						</table>
-            <h5>Ülesanded</h5>
+						<a class="modal-trigger" href="#new_topic_modal" onclick="createTopic('<%= category.id %>')">
+							<i class="material-icons manage-launch">add</i>
+						</a>
+						<h5>Ülesanded</h5>
 						<table>
 							<thead>
 								<tr>
@@ -72,14 +79,15 @@
 											rel="noopener noreferrer">
 											<i class="material-icons manage-launch">launch</i>
 										</a>
-										<a href="/admin/edit_exercise/<%= category.id %>/<%= exercise.id %>" target="_blank"
-											rel="noopener noreferrer">
+										<a href="/admin/edit_exercise/<%= category.id %>/<%= exercise.id %>"
+											target="_blank" rel="noopener noreferrer">
 											<i class="material-icons manage-edit">create</i>
 										</a>
-										<a href="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>" target="_blank"
-											rel="noopener noreferrer">
-											<i class="material-icons manage-delete">clear</i>
-										</a>
+										<form method="GET"
+											action="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>"
+											onsubmit="return confirm('Kindel, et kustutada <%= exercise.title %>?')">
+											<button type="submit" class="manage-launch"><i class="material-icons manage-delete">delete</i></button>
+                    </form>
 									</td>
 								</tr>
 								<% } %>
@@ -90,6 +98,27 @@
 			</li>
 			<% } %>
 		</ul>
+	</div>
+	<div class="modal" id="new_topic_modal">
+		<h5>Uus teema</h5>
+		<form action="/admin/new_topic" method="post">
+			<input type="hidden" name="category" id="new_topic_modal_category" value="uldine">
+			<table>
+				<tr>
+					<td>Teema</td>
+					<td><input type="text" name="title" id="new_topic_modal_title" required /></td>
+				</tr>
+				<tr>
+					<td>ID</td>
+					<td><input type="text" name="id" id="new_topic_modal_id" required /></td>
+				</tr>
+			</table>
+			<!-- Tee see lisamine korda! -->
+			<button type="submit" class="manage-launch"><i class="material-icons manage-launch">done</i></button>
+			<a class="modal-close" href="#new_topic_modal" onclick="discardTopic()">
+				<i class="material-icons manage-delete">clear</i>
+			</a>
+		</form>
 	</div>
 </body>
 

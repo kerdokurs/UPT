@@ -54,11 +54,26 @@ router.route('/save_topic/:categoryId*/:topicId*').post(async (req, res) => {
   res.redirect(`/admin/edit_topic/${categoryId}/${topicId}`);
 });
 
+router.route('/delete_topic/:categoryId*/:topicId*').get(async (req, res) => {
+  const { categoryId, topicId } = req.params;
+  await Topic.deleteOne({ parent: categoryId, id: topicId });
+  res.redirect('/admin/content');
+});
+
 router.route('/edit_exercise/:categoryId*/:exerciseId*').get(async (req, res) => {
   const { categoryId, exerciseId } = req.params;
   const exercise = await Exercise.findOne({ category_id: categoryId, id: exerciseId });
 
   res.render('admin/edit_exercise', { exercise });
+});
+
+router.route('/new_topic').post(async (req, res) => {
+  const { title, id, category } = req.body;
+
+  if (title && id && category)
+    await Topic.create({ title, id, parent: category, last_changed: new Date(), data: '# ' + title });
+
+  res.redirect('/admin/edit_topic/' + category + '/' + id);
 });
 
 module.exports = router;
