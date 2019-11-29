@@ -10,10 +10,18 @@
     "dump": "mongodump -d upt --excludeCollection sessions --excludeCollection exercise_verifiers --excludeCollection quiz_verifiers --excludeCollection users --excludeCollection solved_exercises --excludeCollection exercise_revisions",
     "backup": "mongodump -d upt -o backup",
     "restore": "mongorestore -d upt dump/upt",
-    "clean": "rm -r dump"
+    "clean": "rm -r dump",
+    "pretty": "prettier --write --tab-width 2 \"core/**/*.js\"",
+    "precommit": "lint-staged"
   },
   "author": "Kerdo",
   "license": "ISC",
+  "lint-staged": {
+    "*.js": [
+      "npm run pretty",
+      "git add"
+    ]
+  },
   "dependencies": {
     "body-parser": "^1.18.3",
     "cookie-parser": "^1.4.3",
@@ -33,6 +41,9 @@
     "sitemap": "^2.1.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.1"
+    "husky": "^3.1.0",
+    "lint-staged": "^9.5.0",
+    "nodemon": "^2.0.1",
+    "prettier": "^1.19.1"
   }
 }

@@ -52,7 +52,9 @@ router.route('/post-login').get(async (req, res) => {
         id: sid,
         uid,
         created_at: new Date()
-      }).catch(err => functions.handle(err, '/core/routers/user.js:Session.create'));
+      }).catch(err =>
+        functions.handle(err, '/core/routers/user.js:Session.create')
+      );
 
       User.updateOne({ uid }, { $set: { last_sign_in: new Date() } })
         .then(() => {
@@ -61,13 +63,17 @@ router.route('/post-login').get(async (req, res) => {
             .cookie('_sid', sid, { expires })
             .redirect(req.redir);
         })
-        .catch(err => functions.handle(err, '/core/routers/user.js:User.updateOne'));
+        .catch(err =>
+          functions.handle(err, '/core/routers/user.js:User.updateOne')
+        );
     } else {
       const user = await admin
         .auth()
         .getUser(uid)
         .then(data => data)
-        .catch(err => functions.handle(err, '/core/routers/user.js:admin.auth()'));
+        .catch(err =>
+          functions.handle(err, '/core/routers/user.js:admin.auth()')
+        );
 
       const { email, displayName, photoURL } = user;
 
@@ -75,7 +81,9 @@ router.route('/post-login').get(async (req, res) => {
         id: sid,
         uid,
         created_at: new Date()
-      }).catch(err => functions.handle(err, '/core/routers/user.js:Session.create-2'));
+      }).catch(err =>
+        functions.handle(err, '/core/routers/user.js:Session.create-2')
+      );
 
       await User.create({
         uid,

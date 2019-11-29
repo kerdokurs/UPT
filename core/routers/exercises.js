@@ -323,9 +323,10 @@ router.route('/:type/:id/submit').post(async (req, res) => {
     const ids = verifier.e_id.split(':');
     const cat_id = ids[0],
       quiz_id = ids[1];
-    const quiz = await Quiz.findOne({ id: quiz_id, category_id: cat_id }).catch(
-      err => functions.handle(err, '/core/routers/exercises.js')
-    );
+    const quiz = await Quiz.findOne({
+      id: quiz_id,
+      category_id: cat_id
+    }).catch(err => functions.handle(err, '/core/routers/exercises.js'));
 
     if (verifier) {
       const data = exerciseModule.quiz.verify(verifier, req.body);
