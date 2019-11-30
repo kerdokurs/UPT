@@ -10,6 +10,10 @@
 	<title><%= exercise.title %> > Admin > <%= pageTitle %></title>
 	<script src="/js/admin.min.js"></script>
 	<script src="/js/edit_exercise.js"></script>
+	<script>
+    <% const data = JSON.stringify(exercise);%>
+		const exercise = JSON.parse('<%- data %>');
+	</script>
 </head>
 <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
 

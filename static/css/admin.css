@@ -13,3 +13,9 @@
 .manage-button {
   cursor: pointer;
 }
+
+.manage-default, .manage-default:active {
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+}

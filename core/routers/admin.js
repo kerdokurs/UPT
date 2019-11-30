@@ -39,6 +39,21 @@ router.route('/content').get(async (req, res) => {
   res.render('admin/content', { categories });
 });
 
+router.route('/new_topic').post(async (req, res) => {
+  const { title, id, category } = req.body;
+
+  if (title && id && category)
+    await Topic.create({
+      title,
+      id,
+      parent: category,
+      last_changed: new Date(),
+      data: '# ' + title
+    });
+
+  res.redirect('/admin/edit_topic/' + category + '/' + id);
+});
+
 router.route('/edit_topic/:categoryId*/:topicId*').get(async (req, res) => {
   const { categoryId, topicId } = req.params;
   const topic = await Topic.findOne({ parent: categoryId, id: topicId });
@@ -63,6 +78,24 @@ router.route('/delete_topic/:categoryId*/:topicId*').get(async (req, res) => {
   res.redirect('/admin/content');
 });
 
+router.route('/new_exercise').post(async (req, res) => {
+  const { title, id, category } = req.body;
+
+  await Exercise.create({
+    title,
+    id,
+    category_id: category,
+    variables: [],
+    variants: [],
+    points: 0,
+    published: false,
+    last_changed: new Date(),
+    created_at: new Date()
+  });
+
+  res.redirect('/admin/edit_exercise/' + category + '/' + id);
+});
+
 router
   .route('/edit_exercise/:categoryId*/:exerciseId*')
   .get(async (req, res) => {
@@ -75,19 +108,24 @@ router
     res.render('admin/edit_exercise', { exercise });
   });
 
-router.route('/new_topic').post(async (req, res) => {
-  const { title, id, category } = req.body;
+router.route('/save_exercise').post(async (req, res) => {
+  const { exercise: _exercise } = req.body;
+  const exercise = JSON.parse(_exercise);
+  const { category_id, id, title, variables, variants, points } = exercise;
 
-  if (title && id && category)
-    await Topic.create({
-      title,
-      id,
-      parent: category,
-      last_changed: new Date(),
-      data: '# ' + title
-    });
-
-  res.redirect('/admin/edit_topic/' + category + '/' + id);
+  await Exercise.updateOne(
+    { id, category_id },
+    { $set: { title, variables, variants, points } }
+  );
+  res.redirect('/admin/edit_exercise/' + category_id + '/' + id);
 });
+
+router
+  .route('/delete_exercise/:categoryId*/:exerciseId*')
+  .get(async (req, res) => {
+    const { categoryId, exerciseId } = req.params;
+    await Exercise.deleteOne({ category_id: categoryId, id: exerciseId });
+    res.redirect('/admin/content');
+  });
 
 module.exports = router;

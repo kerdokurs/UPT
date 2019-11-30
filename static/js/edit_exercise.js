@@ -1,6 +1,6 @@
 // TODO: Lisa kõik ühte Javascript-objekti!
 
-const updateVariable = (id) => {
+const updateVariable = id => {
   const name = document.getElementById('variable-name-' + id).innerText;
   const unit = document.getElementById('variable-unit-' + id).innerText;
   const min = document.getElementById('variable-min-' + id).innerText;
@@ -11,10 +11,11 @@ const updateVariable = (id) => {
   document.getElementById('update_variable_modal_min').value = min;
   document.getElementById('update_variable_modal_max').value = max;
 
-  document.getElementById('update_variable_modal_save').onclick = () => saveVariable(id);
+  document.getElementById('update_variable_modal_save').onclick = () =>
+    saveVariable(id);
 };
 
-const saveVariable = (id) => {
+const saveVariable = id => {
   const name = document.getElementById('update_variable_modal_name').value;
   const unit = document.getElementById('update_variable_modal_unit').value;
   const min = document.getElementById('update_variable_modal_min').value;
@@ -30,8 +31,20 @@ const saveVariable = (id) => {
   document.getElementById('update_variable_modal_min').value = '';
   document.getElementById('update_variable_modal_max').value = '';
 
-  document.getElementById('update_variable_modal_save').onclick = () => saveVariable();
-}
+  document.getElementById('update_variable_modal_save').onclick = () =>
+    saveVariable();
+
+  for (let vid in exercise.variables) {
+    if (exercise.variables[vid].id == id) {
+      exercise.variables[vid] = {
+        name,
+        unit,
+        min,
+        max
+      };
+    }
+  }
+};
 
 const discardVariable = () => {
   document.getElementById('update_variable_modal_name').value = '';
@@ -44,23 +57,29 @@ const discardVariable = () => {
   document.getElementById('new_variable_modal_min').value = '';
   document.getElementById('new_variable_modal_max').value = '';
 
-  document.getElementById('update_variable_modal_save').onclick = () => saveVariable();
-  document.getElementById('new_variable_modal_save').onclick = () => createVariable();
+  document.getElementById('update_variable_modal_save').onclick = () =>
+    saveVariable();
+  document.getElementById('new_variable_modal_save').onclick = () =>
+    createVariable();
 };
 
 const newVariable = () => {
   const id = Math.floor(Math.random() * 5000);
 
-  document.getElementById('new_variable_modal_save').onclick = () => createVariable(id);
+  document.getElementById('new_variable_modal_save').onclick = () =>
+    createVariable(id);
 };
 
-const createVariable = (id) => {
+const createVariable = id => {
   const data = {
     name: document.getElementById('new_variable_modal_name').value,
     unit: document.getElementById('new_variable_modal_unit').value,
     min: document.getElementById('new_variable_modal_min').value,
-    max: document.getElementById('new_variable_modal_max').value
+    max: document.getElementById('new_variable_modal_max').value,
+    id
   };
+
+  exercise.variables.push(data);
 
   const tr = document.createElement('tr');
   tr.id = 'variable-details-' + id;
@@ -96,7 +115,8 @@ const createVariable = (id) => {
 
   document.getElementById('variables_body').appendChild(tr);
 
-  document.getElementById('new_variable_modal_save').onclick = () => createVariable();
+  document.getElementById('new_variable_modal_save').onclick = () =>
+    createVariable();
 
   document.getElementById('new_variable_modal_name').value = '';
   document.getElementById('new_variable_modal_unit').value = '';
@@ -104,22 +124,32 @@ const createVariable = (id) => {
   document.getElementById('new_variable_modal_max').value = '';
 };
 
-const deleteVariable = (id) => {
+const deleteVariable = id => {
   const tr = document.getElementById('variable-details-' + id);
   document.getElementById('variables_body').removeChild(tr);
+
+  const variables = [];
+  for (let vid in exercise.variables) {
+    if (exercise.variables[vid].id != id) {
+      variables.push(exercise.variables[vid]);
+    }
+  }
+
+  exercise.variables = variables;
 };
 
-const updateVariant = (id) => {
+const updateVariant = id => {
   const text = document.getElementById('variant-text-' + id).innerText;
   const formula = document.getElementById('variant-formula-' + id).innerText;
 
   document.getElementById('update_variant_modal_text').value = text;
   document.getElementById('update_variant_modal_formula').value = formula;
 
-  document.getElementById('update_variant_modal_save').onclick = () => saveVariant(id);
+  document.getElementById('update_variant_modal_save').onclick = () =>
+    saveVariant(id);
 };
 
-const saveVariant = (id) => {
+const saveVariant = id => {
   const text = document.getElementById('update_variant_modal_text').value;
   const formula = document.getElementById('update_variant_modal_formula').value;
 
@@ -129,7 +159,17 @@ const saveVariant = (id) => {
   document.getElementById('update_variant_modal_text').value = '';
   document.getElementById('update_variant_modal_formula').value = '';
 
-  document.getElementById('update_variant_modal_save').onclick = () => saveVariant();
+  document.getElementById('update_variant_modal_save').onclick = () =>
+    saveVariant();
+
+  for (let vid in exercise.variants) {
+    if (exercise.variants[vid].id == id) {
+      exercise.variants[vid] = {
+        name,
+        formula
+      };
+    }
+  }
 };
 
 const discardVariant = () => {
@@ -139,21 +179,27 @@ const discardVariant = () => {
   document.getElementById('new_variant_modal_text').value = '';
   document.getElementById('new_variant_modal_formula').value = '';
 
-  document.getElementById('update_variant_modal_save').onclick = () => saveVariant();
-  document.getElementById('new_variant_modal_save').onclick = () => createVariant();
+  document.getElementById('update_variant_modal_save').onclick = () =>
+    saveVariant();
+  document.getElementById('new_variant_modal_save').onclick = () =>
+    createVariant();
 };
 
 const newVariant = () => {
   const id = Math.floor(Math.random() * 5000);
 
-  document.getElementById('new_variant_modal_save').onclick = () => createVariant(id);
+  document.getElementById('new_variant_modal_save').onclick = () =>
+    createVariant(id);
 };
 
-const createVariant = (id) => {
+const createVariant = id => {
   const data = {
     text: document.getElementById('new_variant_modal_text').value,
-    formula: document.getElementById('new_variant_modal_formula').value
+    formula: document.getElementById('new_variant_modal_formula').value,
+    id
   };
+
+  exercise.variants.push(data);
 
   const tr = document.createElement('tr');
   tr.id = 'variant-details-' + id;
@@ -189,13 +235,39 @@ const createVariant = (id) => {
 
   document.getElementById('variants_body').appendChild(tr);
 
-  document.getElementById('new_variant_modal_save').onclick = () => createVariable();
+  document.getElementById('new_variant_modal_save').onclick = () =>
+    createVariable();
 
   document.getElementById('new_variant_modal_text').value = '';
   document.getElementById('new_variant_modal_formula').value = '';
 };
 
-const deleteVariant = (id) => {
+const deleteVariant = id => {
   const tr = document.getElementById('variant-details-' + id);
   document.getElementById('variants_body').removeChild(tr);
+
+  const variants = [];
+  for (let vid in exercise.variants) {
+    if (exercise.variants[vid].id != id) {
+      variants.push(exercise.variants[vid]);
+    }
+  }
+
+  exercise.variants = variants;
+};
+
+const save = () => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/admin/save_exercise';
+
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  (input.name = 'exercise'), (input.value = JSON.stringify(exercise));
+
+  form.appendChild(input);
+
+  document.getElementsByTagName('body')[0].appendChild(form);
+
+  form.submit();
 };
