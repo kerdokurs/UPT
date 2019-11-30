@@ -16,6 +16,7 @@
 
 .manage-default, .manage-default:active {
   border: none;
+  color: black;
   background-color: #fff;
   cursor: pointer;
 }

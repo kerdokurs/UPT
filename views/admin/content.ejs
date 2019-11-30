@@ -42,23 +42,23 @@
 									<td><%= moment(topic.last_changed) %></td>
 									<td>
 										<a href="/teemad/<%= category.id %>/<%= topic.id %>" target="_blank"
-											rel="noopener noreferrer">
+											rel="noopener noreferrer" title="Vaata">
 											<i class="material-icons manage-launch">launch</i>
 										</a>
 										<a href="/admin/edit_topic/<%= category.id %>/<%= topic.id %>" target="_blank"
-											rel="noopener noreferrer">
+											rel="noopener noreferrer" title="Muuda">
 											<i class="material-icons manage-edit">create</i>
 										</a>
 										<form method="GET"
 											action="/admin/delete_topic/<%= category.id %>/<%= topic.id %>"
 											onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
-											<button type="submit" class="manage manage-default"><i class="material-icons manage-delete">delete</i></button>
+											<button type="submit" class="manage manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
                     </form>
 								</tr>
 								<% } %>
 							</tbody>
 						</table>
-						<a class="modal-trigger" href="#new_topic_modal" onclick="createTopic('<%= category.id %>')">
+						<a class="modal-trigger" href="#new_topic_modal" onclick="createTopic('<%= category.id %>')" title="Uus">
 							<i class="material-icons manage-launch">add</i>
 						</a>
 						<h5>Ülesanded</h5>
@@ -77,24 +77,24 @@
 									<td><%= moment(exercise.last_changed) %></td>
 									<td>
 										<a href="/teemad/<%= category.id %>/<%= exercise.id %>" target="_blank"
-											rel="noopener noreferrer">
+											rel="noopener noreferrer" title="Vaata">
 											<i class="material-icons manage-launch">launch</i>
 										</a>
 										<a href="/admin/edit_exercise/<%= category.id %>/<%= exercise.id %>"
-											target="_blank" rel="noopener noreferrer">
+											target="_blank" rel="noopener noreferrer" title="Muuda">
 											<i class="material-icons manage-edit">create</i>
 										</a>
 										<form method="GET"
 											action="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>"
 											onsubmit="return confirm('Kindel, et kustutada <%= exercise.title %>?')">
-											<button type="submit" class="manage-default"><i class="material-icons manage-delete">delete</i></button>
+											<button type="submit" class="manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
                     </form>
 									</td>
 								</tr>
 								<% } %>
 							</tbody>
 						</table>
-            <a class="modal-trigger" href="#new_exercise_modal" onclick="createExercise('<%= category.id %>')">
+            <a class="modal-trigger" href="#new_exercise_modal" onclick="createExercise('<%= category.id %>')" title="Uus">
 							<i class="material-icons manage-launch">add</i>
 						</a>
 					</div>

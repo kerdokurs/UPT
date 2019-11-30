@@ -111,11 +111,28 @@ router
 router.route('/save_exercise').post(async (req, res) => {
   const { exercise: _exercise } = req.body;
   const exercise = JSON.parse(_exercise);
-  const { category_id, id, title, variables, variants, points } = exercise;
+  const {
+    category_id,
+    id,
+    title,
+    variables,
+    variants,
+    points,
+    published
+  } = exercise;
 
   await Exercise.updateOne(
     { id, category_id },
-    { $set: { title, variables, variants, points } }
+    {
+      $set: {
+        title,
+        variables,
+        variants,
+        points,
+        published,
+        last_changed: new Date()
+      }
+    }
   );
   res.redirect('/admin/edit_exercise/' + category_id + '/' + id);
 });

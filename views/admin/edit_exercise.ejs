@@ -11,7 +11,7 @@
 	<script src="/js/admin.min.js"></script>
 	<script src="/js/edit_exercise.js"></script>
 	<script>
-    <% const data = JSON.stringify(exercise);%>
+		<% const data = JSON.stringify(exercise);%>
 		const exercise = JSON.parse('<%- data %>');
 	</script>
 </head>
@@ -85,6 +85,13 @@
 			<a class="modal-trigger" href="#new_variant_modal" onclick="newVariant()">
 				<i class="material-icons manage-launch">add</i>
 			</a>
+			<p>Avalik: <br>
+				<a onclick="switchPublished()" class="<%= exercise.published ? 'manage-launch' : 'manage-delete' %>"
+					id="published_toggle_a">
+					<i class="material-icons" id="published_toggle"><%= exercise.published ? 'toggle_on' : 'toggle_off' %></i>
+				</a>
+			</p>
+			<p>Punktid: <%= exercise.points %></p>
 			<p>
 				<input type="button" class="btn green" value="Salvesta" onclick="save()">
       </p>

@@ -271,3 +271,13 @@ const save = () => {
 
   form.submit();
 };
+
+const switchPublished = () => {
+  exercise.published = !exercise.published;
+  document.getElementById('published_toggle').innerText = exercise.published
+    ? 'toggle_on'
+    : 'toggle_off';
+  document.getElementById('published_toggle_a').className = exercise.published
+    ? 'manage-launch'
+    : 'manage-delete';
+};
