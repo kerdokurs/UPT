@@ -9,6 +9,10 @@
 	<% include ../imports/head.ejs %>
 	<title><%= quiz.title %> > Admin > <%= pageTitle %></title>
 	<script src="/js/admin.min.js"></script>
+	<script>
+		<% const data = JSON.stringify(quiz); %>
+		const quiz = JSON.parse('<%- data %>');
+	</script>
 </head>
 
 <body>
