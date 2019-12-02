@@ -79,14 +79,13 @@ router.route('/delete_topic/:categoryId*/:topicId*').get(async (req, res) => {
 });
 
 router.route('/new_exercise').post(async (req, res) => {
-  const { title, id, category } = req.body;
+  const { title, id, category, type } = req.body;
 
   await Exercise.create({
     title,
     id,
+    type,
     category_id: category,
-    variables: [],
-    variants: [],
     points: 0,
     published: false,
     last_changed: new Date(),
@@ -105,7 +104,9 @@ router
       id: exerciseId
     });
 
-    res.render('admin/edit_exercise', { exercise });
+    if (exercise.type == 'exercise' || !exercise.type)
+      res.render('admin/edit_exercise', { exercise });
+    else res.render('admin/edit_quiz', { quiz: exercise });
   });
 
 router.route('/save_exercise').post(async (req, res) => {

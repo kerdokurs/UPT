@@ -53,12 +53,13 @@
 											action="/admin/delete_topic/<%= category.id %>/<%= topic.id %>"
 											onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
 											<button type="submit" class="manage manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
-                    </form>
+										</form>
 								</tr>
 								<% } %>
 							</tbody>
 						</table>
-						<a class="modal-trigger" href="#new_topic_modal" onclick="createTopic('<%= category.id %>')" title="Uus">
+						<a class="modal-trigger" href="#new_topic_modal" onclick="createTopic('<%= category.id %>')"
+							title="Uus">
 							<i class="material-icons manage-launch">add</i>
 						</a>
 						<h5>Ülesanded</h5>
@@ -88,13 +89,14 @@
 											action="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>"
 											onsubmit="return confirm('Kindel, et kustutada <%= exercise.title %>?')">
 											<button type="submit" class="manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
-                    </form>
+										</form>
 									</td>
 								</tr>
 								<% } %>
 							</tbody>
 						</table>
-            <a class="modal-trigger" href="#new_exercise_modal" onclick="createExercise('<%= category.id %>')" title="Uus">
+						<a class="modal-trigger" href="#new_exercise_modal"
+							onclick="createExercise('<%= category.id %>')" title="Uus">
 							<i class="material-icons manage-launch">add</i>
 						</a>
 					</div>
@@ -123,7 +125,7 @@
 			</a>
 		</form>
 	</div>
-  <div class="modal" id="new_exercise_modal">
+	<div class="modal" id="new_exercise_modal">
 		<h5>Uus ülesanne</h5>
 		<form action="/admin/new_exercise" method="post">
 			<input type="hidden" name="category" id="new_exercise_modal_category" value="uldine">
@@ -135,6 +137,19 @@
 				<tr>
 					<td>ID</td>
 					<td><input type="text" name="id" id="new_exercise_modal_id" required /></td>
+				</tr>
+				<tr>
+					<td>Tüüp</td>
+					<td>
+						<label>
+              <input type="radio" name="type" id="new_exercise_modal_type" value="exercise" required>
+              <span>Ülesanne</span>
+            </label>
+						<label>
+              <input type="radio" name="type" id="new_exercise_modal_type" value="quiz" required>
+              <span>Küsitlus</span>
+            </label>
+					</td>
 				</tr>
 			</table>
 			<button type="submit" class="manage-default"><i class="material-icons manage-launch">done</i></button>

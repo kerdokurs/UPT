@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link rel="stylesheet" href="/css/admin.css">
+	<% include ../imports/head.ejs %>
+	<title><%= quiz.title %> > Admin > <%= pageTitle %></title>
+	<script src="/js/admin.min.js"></script>
+</head>
+
+<body>
+	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+	<div class="container">
+		<h5>Ülesanne: <%= quiz.title %></h5>
+		<div>
+			<p>Küsimused</p>
+			<% for(let question of quiz.questions) { %>
+			<div id="question-<%= question.id %>">
+				<h5><%= question.question %></h5>
+				<p>Punktid: <%= question.points %></p>
+				<% if(question.type == 'radio') { %>
+				<div id="question-<%= question.id %>-options">
+					<% for(let option of question.options) { %>
+						<span> >
+              <span contenteditable="true" id="question-<%= question.id %>-option-<%= option.id %>-text">
+                <%= option.text %>
+              </span>
+						</span>
+						<span>
+              <a onclick="radioCorrect(<%= question.id %>, <%= option.id %>)" class="manage-default">
+                <i class="material-icons manage-<%= option.id == question.answer ? 'launch' : 'delete' %>"><%= option.id == question.answer ? 'check_circle' : 'check_circle_outline' %></i>
+              </a>
+            </span><br>
+					<% } %>
+				</div>
+				<% } else { %>
+				<p>> <span  contenteditable="true"><%= question.answer %></span></p>
+        <a onclick="switchCaseSensitive()" class="manage-<%= question.case_sensitive ? 'launch' : 'delete' %>"
+					id="question-<%= question.id %>-case_sensitive">
+					<i class="material-icons" id="question-<%= question.id %>-case_sensitive_toggle"><%= question.case_sensitive ? 'toggle_on' : 'toggle_off' %></i>
+				</a>
+				<% } %>
+				<hr>
+			</div>
+			<% } %>
+      <a class="modal-trigger" href="#new_question_modal" onclick="newQuestion()">
+				<i class="material-icons manage-launch">add</i>
+			</a>
+      <p>
+				<input type="button" class="btn green" value="Salvesta" onclick="save()">
+      </p>
+		</div>
+	</div>
+</body>
+
+</html>

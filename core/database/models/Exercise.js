@@ -16,13 +16,24 @@ const exerciseModel = new Schema(
       type: String,
       required: true
     },
+    type: {
+      type: String,
+      required: true
+    },
     variables: {
       type: Array,
-      required: false
+      required: false,
+      default: new Array()
     },
     variants: {
       type: Array,
-      required: true
+      required: false,
+      default: new Array()
+    },
+    questions: {
+      type: Array,
+      required: false,
+      default: new Array()
     },
     points: {
       type: Number,

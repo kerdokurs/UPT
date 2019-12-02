@@ -263,7 +263,8 @@ const save = () => {
 
   const input = document.createElement('input');
   input.type = 'hidden';
-  (input.name = 'exercise'), (input.value = JSON.stringify(exercise));
+  input.name = 'exercise';
+  input.value = JSON.stringify(exercise);
 
   form.appendChild(input);
 
