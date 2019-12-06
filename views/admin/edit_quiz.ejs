@@ -9,6 +9,7 @@
 	<% include ../imports/head.ejs %>
 	<title><%= quiz.title %> > Admin > <%= pageTitle %></title>
 	<script src="/js/admin.min.js"></script>
+	<script src="/js/edit_quiz.js"></script>
 	<script>
 		<% const data = JSON.stringify(quiz); %>
 		const quiz = JSON.parse('<%- data %>');
@@ -28,36 +29,51 @@
 				<% if(question.type == 'radio') { %>
 				<div id="question-<%= question.id %>-options">
 					<% for(let option of question.options) { %>
-						<span> >
-              <span contenteditable="true" id="question-<%= question.id %>-option-<%= option.id %>-text">
-                <%= option.text %>
-              </span>
-						</span>
-						<span>
-              <a onclick="radioCorrect(<%= question.id %>, <%= option.id %>)" class="manage-default">
-                <i class="material-icons manage-<%= option.id == question.answer ? 'launch' : 'delete' %>"><%= option.id == question.answer ? 'check_circle' : 'check_circle_outline' %></i>
-              </a>
-            </span><br>
+					<span>
+            <span contenteditable="true" id="question-<%= question.id %>-option-<%= option.id %>-text">
+              <%= option.text %>
+            </span>
+					</span>
+					<span>
+            <a onclick="radioCorrect(<%= question.id %>, <%= option.id %>)" class="manage-default"
+              id="question-<%= question.id %>-option-<%= option.id %>-correct">
+              <i class="material-icons manage-<%= option.id == question.answer ? 'launch' : 'delete' %>"
+                id="question-<%= question.id %>-option-<%= option.id %>-correct_toggle">check_circle_outline</i>
+            </a>
+          </span><br>
 					<% } %>
 				</div>
-				<% } else { %>
-				<p>> <span  contenteditable="true"><%= question.answer %></span></p>
-        <a onclick="switchCaseSensitive()" class="manage-<%= question.case_sensitive ? 'launch' : 'delete' %>"
-					id="question-<%= question.id %>-case_sensitive">
-					<i class="material-icons" id="question-<%= question.id %>-case_sensitive_toggle"><%= question.case_sensitive ? 'toggle_on' : 'toggle_off' %></i>
-				</a>
+					<% } else { %>
+					<div>
+						<p>
+							<span contenteditable="true" id="question-<%= question.id %>-answer-text"><%= question.answer %></span>
+						</p>
+						<span>
+            <span title="(case-sensitive)">Tõstutundlik</span>
+						<a onclick="switchCaseSensitive(<%= question.id %>)" class="manage-default"
+							id="question-<%= question.id %>-case_sensitive">
+							<i class="material-icons manage-<%= question.case_sensitive ? 'launch' : 'delete' %>" id="question-<%= question.id %>-case_sensitive_toggle"><%= question.case_sensitive ? 'toggle_on' : 'toggle_off' %></i>
+						</a>
+						</span>
+						<% } %>
+					</div>
+					<hr>
+				</div>
 				<% } %>
-				<hr>
-			</div>
-			<% } %>
-      <a class="modal-trigger" href="#new_question_modal" onclick="newQuestion()">
-				<i class="material-icons manage-launch">add</i>
-			</a>
-      <p>
-				<input type="button" class="btn green" value="Salvesta" onclick="save()">
+				<p>Avalik: <br>
+					<a onclick="switchPublished()" class="manage-default"
+						id="published_toggle_a">
+						<i class="material-icons manage-<%= quiz.published ? 'launch' : 'delete' %>" id="published_toggle"><%= quiz.published ? 'toggle_on' : 'toggle_off' %></i>
+					</a>
+				</p>
+				<a class="modal-trigger" href="#new_question_modal" onclick="newQuestion()">
+					<i class="material-icons manage-launch">add</i>
+				</a>
+				<p>
+					<input type="button" class="btn green" value="Salvesta" onclick="save()">
       </p>
+			</div>
 		</div>
-	</div>
 </body>
 
 </html>

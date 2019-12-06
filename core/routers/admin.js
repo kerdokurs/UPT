@@ -119,7 +119,8 @@ router.route('/save_exercise').post(async (req, res) => {
     variables,
     variants,
     points,
-    published
+    published,
+    questions
   } = exercise;
 
   await Exercise.updateOne(
@@ -131,6 +132,7 @@ router.route('/save_exercise').post(async (req, res) => {
         variants,
         points,
         published,
+        questions,
         last_changed: new Date()
       }
     }
