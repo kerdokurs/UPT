@@ -43,26 +43,26 @@
           </span><br>
 					<% } %>
 				</div>
+					<a class="manage-default" onclick="newOption(<%= question.id %>)">
+						<i class="material-icons manage-launch">add</i>
+					</a>
 					<% } else { %>
 					<div>
 						<p>
 							<span contenteditable="true" id="question-<%= question.id %>-answer-text"><%= question.answer %></span>
 						</p>
-						<span>
-            <span title="(case-sensitive)">Tõstutundlik</span>
+						<span title="(case-sensitive)">Tõstutundlik</span>
 						<a onclick="switchCaseSensitive(<%= question.id %>)" class="manage-default"
 							id="question-<%= question.id %>-case_sensitive">
 							<i class="material-icons manage-<%= question.case_sensitive ? 'launch' : 'delete' %>" id="question-<%= question.id %>-case_sensitive_toggle"><%= question.case_sensitive ? 'toggle_on' : 'toggle_off' %></i>
 						</a>
-						</span>
 						<% } %>
 					</div>
 					<hr>
+					<% } %>
 				</div>
-				<% } %>
 				<p>Avalik: <br>
-					<a onclick="switchPublished()" class="manage-default"
-						id="published_toggle_a">
+					<a onclick="switchPublished()" class="manage-default" id="published_toggle_a">
 						<i class="material-icons manage-<%= quiz.published ? 'launch' : 'delete' %>" id="published_toggle"><%= quiz.published ? 'toggle_on' : 'toggle_off' %></i>
 					</a>
 				</p>
@@ -73,6 +73,35 @@
 					<input type="button" class="btn green" value="Salvesta" onclick="save()">
       </p>
 			</div>
+		</div>
+		<div class="modal" id="new_question_modal">
+			<h5>Uus küsimus</h5>
+			<table>
+				<tr>
+					<td>Küsimus</td>
+					<td><input type="text" name="question" id="new_question_modal_question" required /></td>
+				</tr>
+				<tr>
+					<td>Tüüp</td>
+					<td>
+						<select name="type" id="new_question_modal_type" required>
+            <option value="none" selected disabled>Vali tüüp</option>
+            <option value="field">Lünk</option>
+            <option value="radio">Mitmikvalik</option>
+          </select>
+					</td>
+				</tr>
+				<tr>
+					<td>Punktid</td>
+					<td><input type="text" id="new_question_modal_points" required></td>
+				</tr>
+			</table>
+			<a class="modal-close" id="new_question_modal_save" href="#new_question_modal" onclick="createQuestion()">
+				<i class="material-icons manage-launch">done</i>
+			</a>
+			<a class="modal-close" href="#new_question_modal" onclick="discardQuestion()">
+				<i class="material-icons manage-delete">clear</i>
+			</a>
 		</div>
 </body>
 
