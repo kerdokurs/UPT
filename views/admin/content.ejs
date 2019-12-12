@@ -49,11 +49,13 @@
 											rel="noopener noreferrer" title="Muuda">
 											<i class="material-icons manage-edit">create</i>
 										</a>
-										<form method="GET"
+										<% if(role >= ROLES.MODERATOR) { %>
+                    <form method="GET"
 											action="/admin/delete_topic/<%= category.id %>/<%= topic.id %>"
 											onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
 											<button type="submit" class="manage manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
 										</form>
+                    <% } %>
 								</tr>
 								<% } %>
 							</tbody>
@@ -85,11 +87,13 @@
 											target="" rel="noopener noreferrer" title="Muuda">
 											<i class="material-icons manage-edit">create</i>
 										</a>
+										<% if(role >= ROLES.MODERATOR) { %>
 										<form method="GET"
 											action="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>"
 											onsubmit="return confirm('Kindel, et kustutada <%= exercise.title %>?')">
 											<button type="submit" class="manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
 										</form>
+                    <% } %>
 									</td>
 								</tr>
 								<% } %>

@@ -150,6 +150,8 @@ const updateVariant = id => {
 };
 
 const saveVariant = id => {
+  if (!id) return;
+
   const text = document.getElementById('update_variant_modal_text').value;
   const formula = document.getElementById('update_variant_modal_formula').value;
 
@@ -165,6 +167,7 @@ const saveVariant = id => {
   for (let vid in exercise.variants) {
     if (exercise.variants[vid].id == id) {
       exercise.variants[vid] = {
+        id,
         name,
         formula
       };

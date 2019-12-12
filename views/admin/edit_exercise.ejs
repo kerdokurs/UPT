@@ -66,7 +66,7 @@
 					<% for(let variant of exercise.variants) { %>
 					<tr id="variant-details-<%= variant.id %>">
 						<td id="variant-text-<%= variant.id %>">
-							<%= variant.text.length > 20 ? (variant.text.substring(0, 20) + '...') : variant.text %>
+						  <%= variant.text %>
 						</td>
 						<td id="variant-formula-<%= variant.id %>"><%= variant.formula %></td>
 						<td>

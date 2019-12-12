@@ -14,7 +14,6 @@ const generateExercise = (variables, variants) => {
     const max = parseFloat(_max);
 
     const value = Math.floor(Math.random() * (max - min) + min);
-    console.log(value);
 
     const regex = new RegExp('<' + name + '>', 'gi');
     text = text.replace(regex, `<b>${value} ${unit}</b>`);
