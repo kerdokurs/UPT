@@ -168,7 +168,7 @@ const saveVariant = id => {
     if (exercise.variants[vid].id == id) {
       exercise.variants[vid] = {
         id,
-        name,
+        text,
         formula
       };
     }

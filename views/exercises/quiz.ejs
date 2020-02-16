@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title><%= exercise.title %> > Ülesanne > <%= pageTitle %></title>
+	<% include ../imports/head.ejs %>
+</head>
+
+<body>
+	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+	<div class="container">
+		<h3>Ülesanne: <%= exercise.title %></h3>
+		<p>Punktid: <%= exercise.points %></p>
+		<p><%- data.text %></p>
+		<p><i>Vastus ümarda <%= data.precision %> tüvenumbrini.</i></p>
+		<form action="/ulesanded/submit" method="POST">
+			<input type="hidden" name="correct_answer" value="<%= data.answer %>">
+			<label for="answer_field">Vastus</label>
+			<input placeholder="Vastus" name="answer" id="answer_field" type="text" class="validate" required>
+			<input type="submit" class="btn green" value="Esita">
+		</form>
+	</div>
+</body>
+
+</html>

@@ -51,7 +51,8 @@ router.route('/post-login').get(async (req, res) => {
       await Session.create({
         id: sid,
         uid,
-        created_at: new Date()
+        created_at: new Date(),
+        role: user.role || 0
       }).catch(err =>
         functions.handle(err, '/core/routers/user.js:Session.create')
       );

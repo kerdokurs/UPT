@@ -5,20 +5,18 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Ülesanne > <%= pageTitle %></title>
 	<% include ../imports/head.ejs %>
-	<title>Ülesanded > <%= pageTitle %></title>
 </head>
 
 <body>
 	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
 	<div class="container">
-		<h3>Ülesanded</h3>
-		<!-- TODO: Eemalda see filter, kui tööle saad. -->
-		<% for(let exercise of exercises) { if(exercise.type != 'exercise') continue; %>
-		<p>
-			<a href="/ulesanded/<%= exercise.category_id %>/<%= exercise.id %>"><%= exercise.title %></a>
-		</p>
-		<% } %>
+		<h4>
+			<font color="<%= correct_answer == answer ? 'green' : 'red' %>">
+				<%= correct_answer == answer ? 'Õige' : 'Vale' %>!
+			</font>
+		</h4>
 	</div>
 </body>
 

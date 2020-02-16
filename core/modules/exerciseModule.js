@@ -25,7 +25,10 @@ const generateExercise = (variables, variants) => {
     };
   }
 
+  console.log(formula);
+
   const answer = parseFloat(eval(formula)).toFixed(precision);
+  console.log(answer);
 
   return {
     variantId,

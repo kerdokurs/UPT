@@ -13,7 +13,7 @@ module.exports = {
     const _categories = (await functions.getCategories()) || [];
 
     let admin = false;
-    let role = user ? user.role : 0;
+    let role = session ? session.role : 0;
     if (await authModule.isUserLoggedIn(req)) {
       admin = (await authModule.isUserAdmin(req)) || false;
     }

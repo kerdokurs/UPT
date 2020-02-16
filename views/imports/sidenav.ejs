@@ -2,61 +2,56 @@
 if(category.id === _cat.id) return 'active'; } return ''; }%> <% include
 ./gtm_body.ejs %>
 <div>
-  <ul id="sidenav" class="sidenav">
-    <li>
-      <% if(user !== null) { %>
-      <div class="user-view">
-        <div class="background">
-          <img
+	<ul id="sidenav" class="sidenav">
+		<li>
+			<% if(user !== null) { %>
+			<div class="user-view">
+				<div class="background">
+					<img
             src="https://www.sciencemag.org/sites/default/files/styles/inline__450w__no_aspect/public/Taiwan_16x9.jpg?itok=uXcThZKL"
           />
         </div>
-        <a href="/user"
-          ><img
+					<a href="/user"><img
             class="circle"
             src="<%= user !== null ? user.photoURL : '/img/default_profile.png'; %>"
         /></a>
-        <a href="/user">
-          <span class="white-text name"> <%= user.displayName %> </span>
-        </a>
-        <span class="white-text email"> <%= user.email %> </span>
-      </div>
-    </li>
-    <% if(admin) { %>
-    <li>
-      <a href="/admin/" rel="noopener noreferrer"
-        ><i class="material-icons">build</i>Admin</a
-      >
-    </li>
-    <% } %>
-    <li>
-      <a href="/user/settings/"><i class="material-icons">settings</i>Sätted</a>
-    </li>
-    <li>
-      <a href="/user/logout?next=/"
-        ><i class="material-icons">meeting_room</i>Välju</a
-      >
-    </li>
-    <% } else { %>
-    <li>
+						<a href="/user">
+							<span class="white-text name"> <%= user.displayName %> </span>
+						</a>
+						<span class="white-text email"> <%= user.email %> </span>
+				</div>
+		</li>
+		<% if(admin) { %>
+		<li>
+			<a href="/admin/" rel="noopener noreferrer"><i class="material-icons">build</i>Admin</a>
+		</li>
+		<% } %>
+		<li>
+			<a href="/user/settings/"><i class="material-icons">settings</i>Sätted</a>
+		</li>
+		<li>
+			<a href="/user/logout?next=/"><i class="material-icons">meeting_room</i>Välju</a>
+		</li>
+		<% } else { %>
+		<!--<li>
       <a href="/user/login?next=/"
         ><i class="material-icons">account_circle</i>Sisene</a
       >
-    </li>
-    <% } %>
-    <li><div class="divider"></div></li>
-    <li>
-      <ul class="collapsible accordion">
-        <li>
-          <a href="#!" class="collapsible-header"
-            ><i class="material-icons">assignment</i>Ülesanded</a
-          >
-          <div class="collapsible-body">
-            <ul>
-              <li>
-                <a href="/ulesanded">Lahenda</a>
-              </li>
-              <!-- <li>
+    </li>-->
+		<% } %>
+		<li>
+			<div class="divider"></div>
+		</li>
+		<li>
+			<ul class="collapsible accordion">
+				<li>
+					<a href="#!" class="collapsible-header"><i class="material-icons">assignment</i>Ülesanded</a>
+					<div class="collapsible-body">
+						<ul>
+							<li>
+								<a href="/ulesanded">Lahenda</a>
+							</li>
+							<!-- <li>
                 <a href="/ulesanded/edetabel">Edetabel</a>
               </li>
               <% if(user) { %>
@@ -64,54 +59,53 @@ if(category.id === _cat.id) return 'active'; } return ''; }%> <% include
                 <a href="/ulesanded/lahendatud">Lahendatud ülesanded</a>
               </li>
               <% } %> -->
-            </ul>
-          </div>
-        </li>
-      </ul>
-    </li>
-    <li><div class="divider"></div></li>
-    <li class="no-padding">
-      <ul class="collapsible collapsible-accordion">
-        <% for(let category of _categories) { %>
-        <li class="<%= isSelected(category) %>">
-          <a href="#!" class="collapsible-header">
-            <%= category.title %>
-            <i class="material-icons">arrow_drop_down</i>
-          </a>
-          <div class="collapsible-body">
-            <ol>
-              <% for(i in category.topics) { _topic = category.topics[i]; %>
-              <li>
-                <a
-                  href="/teemad/<%= category.id + '/' + _topic.id %>"
-                  class="crop"
-                >
-                  <%= _topic.title %>
-                </a>
-              </li>
-              <% } %>
-            </ol>
-          </div>
-        </li>
-        <% } %>
-      </ul>
-    </li>
-  </ul>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<div class="divider"></div>
+		</li>
+		<li class="no-padding">
+			<ul class="collapsible collapsible-accordion">
+				<% for(let category of _categories) { %>
+				<li class="<%= isSelected(category) %>">
+					<a href="#!" class="collapsible-header">
+						<%= category.title %>
+						<i class="material-icons">arrow_drop_down</i>
+					</a>
+					<div class="collapsible-body">
+						<ol>
+							<% for(i in category.topics) { _topic = category.topics[i]; %>
+							<li>
+								<a href="/teemad/<%= category.id + '/' + _topic.id %>" class="crop">
+									<%= _topic.title %>
+								</a>
+							</li>
+							<% } %>
+						</ol>
+					</div>
+				</li>
+				<% } %>
+			</ul>
+		</li>
+	</ul>
 </div>
 <div class="fixed-action-btn">
-  <a class="btn-floating btn-large red">
-    <i class="large material-icons">menu</i>
-  </a>
-  <ul>
-    <li>
-      <a href="/feedback" class="btn-floating green">
-        <i class="material-icons">feedback</i>
-      </a>
-    </li>
-    <li>
-      <a href="/info" class="btn-floating orange">
-        <i class="material-icons">info</i>
-      </a>
-    </li>
-  </ul>
+	<a class="btn-floating btn-large red">
+		<i class="large material-icons">menu</i>
+	</a>
+	<ul>
+		<li>
+			<a href="/feedback" class="btn-floating green">
+				<i class="material-icons">feedback</i>
+			</a>
+		</li>
+		<li>
+			<a href="/info" class="btn-floating orange">
+				<i class="material-icons">info</i>
+			</a>
+		</li>
+	</ul>
 </div>

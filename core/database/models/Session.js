@@ -15,6 +15,10 @@ const sessionModel = new Schema(
     created_at: {
       type: Date,
       required: true
+    },
+    role: {
+      type: Number,
+      default: 0
     }
   },
   {

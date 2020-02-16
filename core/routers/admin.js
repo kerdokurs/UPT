@@ -10,6 +10,7 @@ const allowed = (role, security) => role >= security;
 
 router.route('/').get((req, res) => {
   const { role } = res.locals;
+  console.log(role);
   if (allowed(role, ROLES.EDITOR)) res.render('admin/index');
   else res.redirect('/');
 });

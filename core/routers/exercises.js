@@ -20,13 +20,17 @@ router.route('/:categoryId*/:exerciseId*').get(async (req, res) => {
 
   if (exercise != null) {
     if (exercise.published) {
-      const data = exerciseModule.generateExercise(
-        exercise.variables,
-        exercise.variants
-      );
-      data.answer = Buffer.from(data.answer.toString()).toString('base64');
+      if (exercise.type == 'exercise') {
+        const data = exerciseModule.generateExercise(
+          exercise.variables,
+          exercise.variants
+        );
+        data.answer = Buffer.from(data.answer.toString()).toString('base64');
 
-      res.render(`exercises/${exercise.type}.ejs`, { exercise, data });
+        res.render(`exercises/${exercise.type}.ejs`, { exercise, data });
+      } else {
+        res.render(`exercises/quiz.ejs`, { exercise });
+      }
     } else {
       res.render('exercises/not_published.ejs');
     }
@@ -41,7 +45,7 @@ router.route('/submit').post(async (req, res) => {
     );
     const answer = _answer.replace(/,/g, '.');
 
-    res.send(correct_answer == answer);
+    res.send({ correct: correct_answer == answer, correct_answer, answer });
   } else res.status(400).send('Valesti saadetud andmed!');
 });
 
