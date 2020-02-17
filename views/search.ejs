@@ -49,7 +49,7 @@
 		<ul>
 			<% for(let exercise of foundExercises) { %>
 			<li>
-				<a href="/ulesanded/e/<%= exercise.category_id %>:<%= exercise.id %>"><%= exercise.title %></a>
+				<a href="/ulesanded/<%= exercise.category_id %>/<%= exercise.id %>"><%= exercise.title %></a>
 			</li>
 			<% } %>
 		</ul>
