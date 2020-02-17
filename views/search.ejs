@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="et">
-  <head>
-    <% include ./imports/gtm_head.ejs %>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <% include ./imports/head.ejs %>
-    <title><%= pageTitle %></title>
-  </head>
-  <body>
-    <% include ./imports/sidenav.ejs %> <% include ./imports/navbar.ejs %>
-    <div class="container">
-      <div class="left white">
-        <form action="/search" method="get">
-          <input
+
+<head>
+	<% include ./imports/gtm_head.ejs %>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<% include ./imports/head.ejs %>
+	<title><%= pageTitle %></title>
+</head>
+
+<body>
+	<% include ./imports/sidenav.ejs %> <% include ./imports/navbar.ejs %>
+	<div class="container">
+		<div class="left white">
+			<form action="/search" method="get">
+				<input
             type="text"
             name="query"
             id="search-query"
@@ -22,46 +24,37 @@
             required
           />
         </form>
-      </div>
-      <br /><br />
-      <h5>Leitud kategooriad</h5>
-      <% if(foundCategories.length > 0) { %>
-      <ul>
-        <% for(let category of foundCategories) { %>
-        <li><a href="/teemad/<%= category.id %>"><%= category.title %></a></li>
-        <% } %>
-      </ul>
-      <% } else { %> Ei leitud ühtegi vastavat kategooriat <% } %>
-      <h5>Leitud teemad</h5>
-      <% if(foundTopics.length > 0) { %>
-      <ul>
-        <% for(let topic of foundTopics) { %>
-        <li>
-          <a href="/teemad/<%= topic.parent %>/<%= topic.id %>"
-            ><%= topic.title %></a
-          >
-        </li>
-        <% } %>
-      </ul>
-      <% } else { %> Ei leitud ühtegi vastavat teemat <% } %>
-      <h5>Leitud ülesanded</h5>
-      <% if(foundExercises.length > 0 || foundQuizzes.length > 0) { %>
-      <ul>
-        <% for(let exercise of foundExercises) { %>
-        <li>
-          <a href="/ulesanded/e/<%= exercise.category_id %>:<%= exercise.id %>"
-            ><%= exercise.title %></a
-          >
-        </li>
-        <% } %> <% for(let quiz of foundQuizzes) { %>
-        <li>
-          <a href="/ulesanded/q/<%= quiz.category_id %>:<%= quiz.id %>"
-            ><%= quiz.title %></a
-          >
-        </li>
-        <% } %>
-      </ul>
-      <% } else { %> Ei leitud ühtegi vastavat ülesannet <% } %>
-    </div>
-  </body>
+		</div>
+		<br /><br />
+		<h5>Leitud kategooriad</h5>
+		<% if(foundCategories.length > 0) { %>
+		<ul>
+			<% for(let category of foundCategories) { %>
+			<li><a href="/teemad/<%= category.id %>"><%= category.title %></a></li>
+			<% } %>
+		</ul>
+		<% } else { %> Ei leitud ühtegi vastavat kategooriat <% } %>
+		<h5>Leitud teemad</h5>
+		<% if(foundTopics.length > 0) { %>
+		<ul>
+			<% for(let topic of foundTopics) { %>
+			<li>
+				<a href="/teemad/<%= topic.parent %>/<%= topic.id %>"><%= topic.title %></a>
+			</li>
+			<% } %>
+		</ul>
+		<% } else { %> Ei leitud ühtegi vastavat teemat <% } %>
+		<h5>Leitud ülesanded</h5>
+		<% if(foundExercises.length > 0) { %>
+		<ul>
+			<% for(let exercise of foundExercises) { %>
+			<li>
+				<a href="/ulesanded/e/<%= exercise.category_id %>:<%= exercise.id %>"><%= exercise.title %></a>
+			</li>
+			<% } %>
+		</ul>
+		<% } else { %> Ei leitud ühtegi vastavat ülesannet <% } %>
+	</div>
+</body>
+
 </html>

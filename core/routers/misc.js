@@ -97,7 +97,7 @@ router.route('/search').get(async (req, res) => {
       ]
     });
 
-    const foundQuizzes = await Quiz.find({
+    /* const foundQuizzes = await Quiz.find({
       $or: [
         {
           id: new RegExp(query, 'gi')
@@ -109,21 +109,21 @@ router.route('/search').get(async (req, res) => {
           category_id: new RegExp(query, 'gi')
         }
       ]
-    }).catch(err => functions.handle(err, '/core/routers/misc.js'));
+    }).catch(err => functions.handle(err, '/core/routers/misc.js')); */
 
     res.render('search', {
       foundTopics,
       foundCategories,
       searched: query,
-      foundExercises,
-      foundQuizzes
+      foundExercises
+      /* foundQuizzes */
     });
   } else
     res.render('search', {
       foundTopics: [],
       foundCategories: [],
       foundExercises: [],
-      foundQuizzes: [],
+      /* foundQuizzes: [], */
       searched: query
     });
 });
