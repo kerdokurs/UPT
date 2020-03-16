@@ -27,7 +27,7 @@
     "cookie-parser": "^1.4.4",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
-    "ejs-lint": "^0.3.0",
+    "ejs-lint": "^1.0.1",
     "express": "^4.17.1",
     "firebase": "^7.5.0",
     "firebase-admin": "^8.8.0",
