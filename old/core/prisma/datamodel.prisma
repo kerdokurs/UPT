@@ -1,0 +1,39 @@
+type User {
+  id: ID! @id
+
+  uid: String! @unique
+
+  displayName: String!
+  photoURL: String!
+  email: String!
+
+  admin: Boolean @default(value: false)
+
+  sign_up: DateTime!
+  last_sign_in: DateTime!
+  createdAt: DateTime! @createdAt
+}
+
+type Category {
+  id: ID! @id
+
+  displayId: String! @unique
+  title: String!
+  topics: [Topic!]
+  index: Int!
+
+  createdAt: DateTime! @createdAt
+}
+
+type Topic {
+  id: ID! @id
+
+  displayId: String! @unique
+
+  category: Category!
+
+  title: String!
+  index: Int!
+
+  createdAt: DateTime! @createdAt
+}

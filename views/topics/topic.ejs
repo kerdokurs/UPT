@@ -9,21 +9,21 @@
     <link rel="stylesheet" href="/css/joonised.min.css" />
     <script src="/js/bookmarks.js"></script>
     <title>
-      <%= (topic.title ? topic.title + ' - ' : '') + (category.title ?
-      category.title + ' - ' : '') + pageTitle %>
+      <%= (topic.title ? topic.title + ' - ' : '') + (topic.category.title ?
+      topic.category.title + ' - ' : '') + 'Kerdo UPT' %>
     </title>
   </head>
   <body>
-    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
     <div class="container topic z-depth-1">
-      <% if(admin) { %>
+      <% admin = true; user = null; %> <% if(admin) { %>
       <a
         href="/admin/edit_topic/<%= topic.parent %>:<%= topic.id %>"
         rel="noopener noreferrer"
         class="btn right orange"
         >Redigeeri</a
       >
-      <% } %> <% if(user != null) { %> <% if(bookmarked) { %>
+      <% } %>
+      <!--<% if(user != null) { %> <% if(bookmarked) { %>
       <a href="#!" onclick="bookmark(0)" id="bookmark-action"
         ><i class="material-icons" id="bookmark-icon">bookmark</i></a
       >
@@ -31,7 +31,8 @@
       <a href="#!" onclick="bookmark(1)" id="bookmark-action"
         ><i class="material-icons" id="bookmark-icon">bookmark_border</i></a
       >
-      <% } %> <% } %> <%- markdown %>
+      <% } %> <% } %> -->
+      <%- html %>
     </div>
     <div class="modal" id="bookmark-saved-modal">
       <h4>Järjehoidja salvestatud!</h4>

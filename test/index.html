@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+    <title>Quill test</title>
+  </head>
+  <body>
+    <div id="editor"></div>
+    <div id="counter"></div>
+    <button onclick="save()" id="save">Salvesta</button>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+    <script>
+      let text = '';
+
+      Quill.register('modules/counter', function(quill, options) {
+        const container = document.querySelector('#counter');
+        quill.on('text-change', function() {
+          text = quill.container.firstChild.innerHTML;
+        });
+      });
+
+      const quill = new Quill('#editor', {
+        theme: 'snow',
+        modules: {
+          counter: true
+        }
+      });
+
+      function save() {
+        console.log(text);
+      }
+    </script>
+  </body>
+</html>

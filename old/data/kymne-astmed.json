@@ -1,0 +1,62 @@
+[
+  {
+    "token": "T",
+    "power": 12,
+    "name": "tera"
+  },
+  {
+    "token": "G",
+    "power": 9,
+    "name": "giga"
+  },
+  {
+    "token": "M",
+    "power": 6,
+    "name": "mega"
+  },
+  {
+    "token": "k",
+    "power": 3,
+    "name": "kilo"
+  },
+  {
+    "token": "h",
+    "power": 2,
+    "name": "hekto"
+  },
+  {
+    "token": "da",
+    "power": 1,
+    "name": "deka"
+  },
+  {
+    "token": "d",
+    "power": -1,
+    "name": "detsi"
+  },
+  {
+    "token": "c",
+    "power": -2,
+    "name": "senti"
+  },
+  {
+    "token": "m",
+    "power": -3,
+    "name": "milli"
+  },
+  {
+    "token": "u",
+    "power": -6,
+    "name": "mikro"
+  },
+  {
+    "token": "n",
+    "power": -9,
+    "name": "nano"
+  },
+  {
+    "token": "p",
+    "power": -12,
+    "name": "piko"
+  }
+]
