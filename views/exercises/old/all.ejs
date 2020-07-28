@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <% include ../imports/gtm_head.ejs %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <title>Ülesanded - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <h3>Kõik ülesanded</h3>
+      <p><a href="/ulesanded/astmed">Kümneastmed</a></p>
+      <% for(const category of data) { %>
+      <div id="category-<%= category.id %>">
+        <h5><%= category.title %></h5>
+        <ul>
+          <% for(const exercise of category.exercises) { %>
+          <li>
+            <a href="/ulesanded/e/<%= category.id %>:<%= exercise.id %>"
+              ><%= exercise.title %></a
+            >
+          </li>
+          <% } %> <% for(const quiz of category.quizzes) { %>
+          <li>
+            <a href="/ulesanded/q/<%= category.id %>:<%= quiz.id %>"
+              ><%= quiz.title %></a
+            >
+          </li>
+          <% } %>
+        </ul>
+      </div>
+      <% } %>
+    </div>
+  </body>
+</html>

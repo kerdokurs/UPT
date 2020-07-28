@@ -1,12 +1,8 @@
 const mongoose = require('mongoose');
 
-const url =
-  (process.env.DB_URL || 'mongodb://upt:uptupt@127.0.0.1:27017/') + 'upt';
+const url = process.env.DB_URL || 'mongodb://upt:uptupt@127.0.0.1:27017/';
 
-mongoose.connect(
-  url,
-  { useNewUrlParser: true }
-);
+mongoose.connect(url, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 
 const db = mongoose.connection;

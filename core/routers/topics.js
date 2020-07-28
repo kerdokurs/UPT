@@ -4,15 +4,6 @@ const fs = require('fs');
 
 const showdown = require('showdown');
 
-const mathjax = require('mathjax-node');
-mathjax.config({
-  MathJax: {
-    fontURL:
-      'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/fonts/HTML-CSS'
-  }
-});
-mathjax.start();
-
 const functions = require('../functions');
 const authModule = require('../modules/authModule');
 
@@ -84,7 +75,6 @@ async function getCategoryData(categoryId) {
   );
 }
 
-//! Millegi tõttu esimese laadimise peal MathJax ei laadi.
 function generateMarkdown(data) {
   let markdown;
   try {
@@ -96,31 +86,6 @@ function generateMarkdown(data) {
     });
     converter.setFlavor('github');
     markdown = converter.makeHtml(data);
-
-    const regex = /\$.*?\$/gs;
-    const finds = [];
-    let find;
-
-    do {
-      find = regex.exec(markdown);
-      if (find) finds.push(find);
-    } while (find);
-
-    for (let find of finds) {
-      let string = find[0];
-      string = string.substring(1, string.length - 1);
-
-      mathjax.typeset(
-        {
-          math: string,
-          format: 'inline-TeX',
-          svg: true
-        },
-        data => {
-          markdown = markdown.toString().replace(find[0], data.svg);
-        }
-      );
-    }
   } catch (err) {
     functions.handle(err, '/core/routers/topics.js');
   }

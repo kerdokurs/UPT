@@ -11,8 +11,8 @@ const Bookmark = require('../database/models/Bookmark');
 const Session = require('../database/models/Session');
 const Achievement = require('../database/models/Achievement');
 
-const ExerciseRevision = require('../database/models/ExerciseRevision');
-const SolvedExercise = require('../database/models/SolvedExercise');
+// const ExerciseRevision = require('../database/models/ExerciseRevision');
+// const SolvedExercise = require('../database/models/SolvedExercise');
 
 router.route('/login').get(async (req, res) => {
   if (await authModule.isUserLoggedIn(req)) res.redirect('/user');
@@ -36,7 +36,7 @@ router.route('/post-login').get(async (req, res) => {
   const { uid } = req.query;
   if (uid) {
     const users = await User.find({ uid }).catch(err =>
-      functions.handle(err, '/core/routers/user.js')
+      functions.handle(err, '/core/routers/user.js:User.find')
     );
 
     let expires = new Date();
@@ -48,8 +48,13 @@ router.route('/post-login').get(async (req, res) => {
       const user = users[0];
       const { uid } = user;
 
-      await Session.create({ id: sid, uid, created_at: new Date() }).catch(
-        err => functions.handle(err, '/core/routers/user.js')
+      await Session.create({
+        id: sid,
+        uid,
+        created_at: new Date(),
+        role: user.role || 0
+      }).catch(err =>
+        functions.handle(err, '/core/routers/user.js:Session.create')
       );
 
       User.updateOne({ uid }, { $set: { last_sign_in: new Date() } })
@@ -59,13 +64,17 @@ router.route('/post-login').get(async (req, res) => {
             .cookie('_sid', sid, { expires })
             .redirect(req.redir);
         })
-        .catch(err => functions.handle(err, '/core/routers/user.js'));
+        .catch(err =>
+          functions.handle(err, '/core/routers/user.js:User.updateOne')
+        );
     } else {
       const user = await admin
         .auth()
         .getUser(uid)
         .then(data => data)
-        .catch(err => functions.handle(err, '/core/routers/user.js'));
+        .catch(err =>
+          functions.handle(err, '/core/routers/user.js:admin.auth()')
+        );
 
       const { email, displayName, photoURL } = user;
 
@@ -73,9 +82,11 @@ router.route('/post-login').get(async (req, res) => {
         id: sid,
         uid,
         created_at: new Date()
-      }).catch(err => functions.handle(err, '/core/routers/user.js'));
+      }).catch(err =>
+        functions.handle(err, '/core/routers/user.js:Session.create-2')
+      );
 
-      User.create({
+      await User.create({
         uid,
         displayName,
         photoURL,
@@ -88,15 +99,12 @@ router.route('/post-login').get(async (req, res) => {
           solved_exercises: 0,
           exercise_points: 0
         }
-      })
-        .then(async () => {
-          await authModule.grantAchievement(uid, 'login');
-          res
-            .cookie('logged_in', true, { expires })
-            .cookie('_sid', sid, { expires })
-            .redirect(req.redir);
-        })
-        .catch(err => functions.handle(err, '/core/routers/user.js'));
+      });
+      await authModule.grantAchievement(uid, 'login');
+      res
+        .cookie('logged_in', true, { expires })
+        .cookie('_sid', sid, { expires })
+        .redirect(req.redir);
     }
   }
 });

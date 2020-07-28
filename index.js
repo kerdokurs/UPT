@@ -1,8 +1,7 @@
 const express = require('express');
-const fs = require('fs');
 
-const sm = require('sitemap');
-const surls = require('./core/surls');
+require('dotenv').config();
+require('./core/database/database');
 
 const moment = require('moment');
 
@@ -18,9 +17,6 @@ const admin = require('./core/routers/admin');
 const exercises = require('./core/routers/exercises');
 
 const functions = require('./core/functions');
-
-require('dotenv').config();
-require('./core/database/database');
 
 const port = process.env.PORT || 80;
 
@@ -39,11 +35,11 @@ app.use(async (req, res, next) => {
   next();
 });
 
-sitemap = sm.createSitemap({
+/* sitemap = sm.createSitemap({
   hostname: 'http://upt.kerdo.me',
   cacheTime: 600000,
   urls: surls
-});
+}); */
 
 /* app.use(async (req, res, next) => {
   const user = await authModule.getLoggedUser(req);
@@ -71,9 +67,7 @@ app.use((req, res, next) => {
     return res.status(400).send();
   } else {
     if (!log.includes('favicon')) {
-      fs.appendFile(`logs/${functions.currentDate()}.log`, `${log}\n`, err => {
-        if (err) console.error(err);
-      });
+      // TODO: Logging
 
       console.log(log);
     }
@@ -92,7 +86,7 @@ app.use(misc);
 app.use('/admin', admin);
 app.use('/ulesanded', exercises);
 
-app.route('/sitemap.xml').get(async (req, res) => {
+/* app.route('/sitemap.xml').get(async (req, res) => {
   sitemap.toXML((err, xml) => {
     if (err) {
       functions.handle(err, '/index.js');
@@ -101,7 +95,7 @@ app.route('/sitemap.xml').get(async (req, res) => {
     res.header('Content-Type', 'application/xml');
     res.send(xml);
   });
-});
+}); */
 
 app.all('**', async (req, res) => {
   res.render('404', { path: req.path });

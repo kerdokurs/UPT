@@ -28,3 +28,6 @@ TEHA:
   ☐ Ülesannete läbivaatus, lahendusaeg @high
   ☐ Sorteeri kategooriad @low
   ☐ Ülesannete edetabelis ei ole kasutajad õigesti sorteeritud @high
+  ☐ Adminivaatele uus kood (moderaatori, toimetaja roll) ja välimus. @critical
+  ☐ Ülesannete süsteem korda (ülesanded ja küsimustikud ühe tüübi alla, ülesannete järelvaade, punktidesüsteem korda, ülesannete genereerimine korda, dünaamilised muutujad (tüübid (Int, Float) jne), kontrollimine korda (tüvenumbrite arv, ümardusmääramatus)). @critical
+  ☐ Sisule ja ülesannetele indeks-järjekorrad, mida administraator või moderaator muutab saab, et üldist järjekorda administraatorivaates ning kogu lehel muuta. @high

@@ -10,10 +10,18 @@
     "dump": "mongodump -d upt --excludeCollection sessions --excludeCollection exercise_verifiers --excludeCollection quiz_verifiers --excludeCollection users --excludeCollection solved_exercises --excludeCollection exercise_revisions",
     "backup": "mongodump -d upt -o backup",
     "restore": "mongorestore -d upt dump/upt",
-    "clean": "rm -r dump"
+    "clean": "rm -r dump",
+    "pretty": "prettier --write --tab-width 2 \"core/**/*.js\"",
+    "precommit": "lint-staged"
   },
-  "author": "",
+  "author": "Kerdo",
   "license": "ISC",
+  "lint-staged": {
+    "*.js": [
+      "npm run pretty",
+      "git add"
+    ]
+  },
   "dependencies": {
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.5",
@@ -22,14 +30,20 @@
     "ejs-lint": "^1.1.0",
     "express": "^4.17.1",
     "firebase": "^7.17.1",
-    "firebase-admin": "^9.0.0",
+    "firebase-admin": "^8.8.0",
     "lodash": "^4.17.19",
     "mathjax-node": "^2.1.1",
-    "moment": "^2.27.0",
+    "moment": "^2.24.0",
     "mongodb": "^3.5.9",
-    "mongoose": "^5.9.26",
+    "mongoose": "^5.7.5",
     "request": "^2.88.2",
     "showdown": "^1.9.1",
-    "sitemap": "^6.2.0"
+    "sitemap": "^2.1.0"
+  },
+  "devDependencies": {
+    "husky": "^4.2.3",
+    "lint-staged": "^9.5.0",
+    "nodemon": "^2.0.4",
+    "prettier": "^1.19.1"
   }
 }

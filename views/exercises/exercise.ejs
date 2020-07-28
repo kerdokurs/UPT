@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title><%= exercise.title %> > Ülesanne > <%= pageTitle %></title>
+	<% include ../imports/head.ejs %>
+</head>
+
+<body>
+	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+	<div class="container">
+		<h3>Ülesanne: <%= exercise.title %></h3>
+		<p>Punktid: <%= exercise.points %></p>
+		<p><%- data.text %></p>
+		<p><i>Vastus anna <%= data.precision %> komakohani (nt 20.00).</i></p>
+
+		<label for="answer_field">Vastus</label>
+		<input placeholder="Vastus" name="answer" id="answer_field" type="text" class="validate" required>
+		<input type="submit" class="btn green" value="Esita" onclick="submit()">
+	</div>
+		<script>
+			const submit = () => {
+        const correct_answer = '<%- data.answer %>';
+        const answer = document.getElementById('answer_field').value;
+
+        if(answer.length < 1)
+          return;
+
+        var http = new XMLHttpRequest();
+        var params = `correct_answer=${correct_answer}&answer=${answer}`;
+        http.open('POST', '/ulesanded/submit', true);
+        
+        http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        
+        http.onreadystatechange = () => {
+          if(http.readyState == 4 && http.status == 200) {
+            const data = JSON.parse(http.responseText);
+            document.getElementById('answer-message').innerHTML = `
+            <font color="${data.correct ? 'green' : 'red'}">
+              ${data.correct ? 'Õige' : 'Vale'}!
+            </font>
+            `;
+
+            if(!data.correct)
+              document.getElementById('correct-answer').innerText = `Õige vastus: ${data.correct_answer}`;
+
+            $('#answer_modal').modal();
+            $('#answer_modal').modal('open');
+          }
+        }
+        http.send(params);
+      };
+		</script>
+		<div class="modal" id="answer_modal">
+			<h4>
+				<span id="answer-message"></span>
+			</h4>
+			<p id="correct-answer"></p>
+			<a href="#" onclick="window.location.reload()">Proovi uuesti</a>
+		</div>
+</body>
+
+</html>

@@ -1,6 +1,8 @@
 const functions = require('./functions');
 const authModule = require('./modules/authModule');
 
+const ROLES = require('./roles');
+
 const moment = require('moment');
 
 module.exports = {
@@ -11,11 +13,13 @@ module.exports = {
     const _categories = (await functions.getCategories()) || [];
 
     let admin = false;
-    if (await authModule.isUserLoggedIn(req))
+    let role = session ? session.role : 0;
+    if (await authModule.isUserLoggedIn(req)) {
       admin = (await authModule.isUserAdmin(req)) || false;
+    }
 
     return {
-      pageTitle: 'Kerdo UPT',
+      pageTitle: 'Õppekeskkond',
 
       _categories,
       user,
@@ -25,7 +29,9 @@ module.exports = {
         moment(time)
           .locale('et')
           .format('LTS L') +
-        ']'
+        ']',
+      ROLES,
+      role
     };
   }
 };

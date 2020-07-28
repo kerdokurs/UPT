@@ -1,0 +1,49 @@
+exercise:
+  id: String
+  title: String
+  category_id: String
+  variables:
+    time:
+      type: Int
+      unit: s
+      min: 5
+      max: 20
+    speed:
+      type: Float
+      unit: m/s
+      min: 2.0
+      max: 8.0
+  variants:
+    0:
+      text: Auto sõitis kiirusega <speed> <speed>. Kui suure vahemaa ta läbis?
+      formula: <speed> * <time>
+  questions:
+    0:
+      type: field
+      id: 2147
+      question: Milline on liikumine sirgjoonelise trajektoori korral?
+      points: 10
+      answer: sirgjooneline
+      case_sensitive: false
+    1:
+      type: radio
+      id: 2124
+      question: Milline on liikumine?
+      points: 10
+      answer: 2379
+      options:
+        0:
+          text: sümmeetriline
+          id: 2379
+        1:
+          text: oluline
+          id: 2148
+        2:
+          text: suhteline
+          id: 2178
+  points: 20
+  created_at: Date
+  last_changed: Date
+  published: Boolean
+
+  //TODO: TOPICULE KA PUBLISHED!!!!

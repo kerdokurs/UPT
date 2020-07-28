@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="et">
+  <head>
+    <% include ../imports/gtm_head.ejs %>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <% include ../imports/head.ejs %>
+    <script src="/js/admin.min.js"></script>
+    <title><%= data.title %> - Teema - <%= pageTitle %></title>
+  </head>
+  <body>
+    <% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+    <div class="container">
+      <a href="/teemad/<%= data.parent %>/<%= data.id %>" class="btn green">
+        Vaata
+      </a>
+      <form
+        action="/admin/edit_topic/<%= data.parent %>:<%= data.id %>"
+        method="POST"
+        id="edit-topic"
+      >
+        <input type="submit" value="Salvesta" class="btn green" />
+        <input type="text" name="title" value="<%= data.title %>" />
+        <textarea
+          name="data"
+          id="edit-topic-data"
+          cols="30"
+          rows="10"
+          class="materialize-textarea"
+        >
+<%= data.data %></textarea
+        >
+      </form>
+    </div>
+    <script>
+      ctrlEnterSave('#edit-topic-data', () => {
+        $('#edit-topic').submit();
+      });
+    </script>
+  </body>
+</html>

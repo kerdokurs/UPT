@@ -8,7 +8,7 @@ const Feedback = require('../database/models/Feedback');
 const Topic = require('../database/models/Topic');
 const Category = require('../database/models/Category');
 const Exercise = require('../database/models/Exercise');
-const Quiz = require('../database/models/Quiz');
+// const Quiz = require('../database/models/Quiz');
 
 const authModule = require('../modules/authModule');
 
@@ -20,12 +20,12 @@ router.route('/feedback').get((req, res) => {
   res.render('misc/feedback');
 });
 
-router.route('/kusitlus').get(async (req, res) => {
+/* router.route('/kusitlus').get(async (req, res) => {
   const user = await authModule.getLoggedUser(req);
   if (user) await authModule.grantAchievement(user.uid, 'tagasiside-kysitlus');
 
   res.redirect('https://goo.gl/forms/coRZN3NIPSotfxGF2');
-});
+}); */
 
 router.route('/github').get((req, res) => {
   res.redirect('https://github.com/kerdokurs/UPT');
@@ -97,7 +97,7 @@ router.route('/search').get(async (req, res) => {
       ]
     });
 
-    const foundQuizzes = await Quiz.find({
+    /* const foundQuizzes = await Quiz.find({
       $or: [
         {
           id: new RegExp(query, 'gi')
@@ -109,21 +109,21 @@ router.route('/search').get(async (req, res) => {
           category_id: new RegExp(query, 'gi')
         }
       ]
-    }).catch(err => functions.handle(err, '/core/routers/misc.js'));
+    }).catch(err => functions.handle(err, '/core/routers/misc.js')); */
 
     res.render('search', {
       foundTopics,
       foundCategories,
       searched: query,
-      foundExercises,
-      foundQuizzes
+      foundExercises
+      /* foundQuizzes */
     });
   } else
     res.render('search', {
       foundTopics: [],
       foundCategories: [],
       foundExercises: [],
-      foundQuizzes: [],
+      /* foundQuizzes: [], */
       searched: query
     });
 });

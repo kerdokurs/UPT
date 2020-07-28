@@ -1,116 +1,167 @@
-<h4>Sisu</h4>
-<div>
-  <ul class="collapsible">
-    <% for(let {title, id, last_changed, topics} of categories) { %>
-    <li>
-      <div class="collapsible-header"><h6 class="left"><%= title %></h6></div>
-      <div class="collapsible-body table">
-        <table>
-          <thead>
-            <tr>
-              <th>Teema</th>
-              <th>ID</th>
-              <th>Muutmise aeg</th>
-              <th>Vaata</th>
-              <th>Redigeeri</th>
-              <th>Kustuta</th>
-            </tr>
-          </thead>
-          <tbody class="collapsible">
-            <% for(let topic of topics) { %>
-            <tr>
-              <td><%= topic.title %></td>
-              <td><%= topic.id %></td>
-              <td><%= moment(topic.last_changed) %></td>
-              <td>
-                <a
-                  href="/teemad/<%= id %>/<%= topic.id %>"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn green"
-                  >Vaata</a
-                >
-              </td>
-              <td>
-                <a
-                  href="/admin/edit_topic/<%= id %>:<%= topic.id %>"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn orange"
-                  >Redigeeri</a
-                >
-              </td>
-              <td>
-                <form
-                  method="POST"
-                  action="/admin/del_top"
-                  onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')"
-                >
-                  <input
-                    type="hidden"
-                    name="id"
-                    value="<%= id %>:<%= topic.id %>"
-                  />
-                  <input type="submit" value="Kustuta" class="btn red" />
-                </form>
-              </td>
-            </tr>
-            <% } %>
-          </tbody>
-        </table>
-      </div>
-    </li>
-    <% } %>
-  </ul>
-</div>
-<a class="btn modal-trigger green" href="#add_cat_modal">
-  Lisa uus kategooria
-</a>
-<a class="btn modal-trigger green" href="#add_top_modal"> Lisa uus teema</a>
-<div class="modal" id="add_cat_modal">
-  <h5>Lisa uus kategooria</h5>
-  <form method="POST" action="/admin/add_cat">
-    <table>
-      <tr>
-        <td>Kategooria</td>
-        <td><input type="text" name="title" id="add-cat-title" required /></td>
-      </tr>
-      <tr>
-        <td>ID</td>
-        <td><input type="text" name="id" id="add-cat-id" required /></td>
-      </tr>
-      <tr>
-        <td><input type="submit" value="Lisa" class="btn green" /></td>
-      </tr>
-    </table>
-  </form>
-</div>
-<div class="modal" id="add_top_modal">
-  <h5>Lisa uus teema</h5>
-  <form action="/admin/add_top" method="POST">
-    <table>
-      <tr>
-        <td>Pealkiri</td>
-        <td><input type="text" name="title" id="add-top-title" required /></td>
-      </tr>
-      <tr>
-        <td>ID</td>
-        <td><input type="text" name="id" id="add-top-id" required /></td>
-      </tr>
-      <tr>
-        <td>Kategooria</td>
-        <td>
-          <select name="category" id="add-top-cat" required>
-            <option value="" disabled selected>Vali kategooria</option>
-            <% for(let category of categories) { %>
-            <option value="<%= category.id %>"> <%= category.title %> </option>
-            <% } %>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td><input type="submit" value="Lisa" class="btn green" /></td>
-      </tr>
-    </table>
-  </form>
-</div>
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
+	<% include ../imports/head.ejs %>
+	<link rel="stylesheet" href="/css/admin.css">
+	<script>
+		const createTopic = (id) => { document.getElementById('new_topic_modal_category').value = id; };
+		const createExercise = (id) => { document.getElementById('new_exercise_modal_category').value = id; };
+    const confirmDelete = (name) => { return confirm('Kas kustutada teema ' + name + '?'); }
+	</script>
+	<title>Sisu > Admin > <%= pageTitle %></title>
+</head>
+
+<body>
+	<% include ../imports/sidenav.ejs %> <% include ../imports/navbar.ejs %>
+	<div class="container">
+		<ul class="collapsible">
+			<% for(const category of categories) { %>
+			<li>
+				<div class="collapsible-header">
+					<h6 class="left"><%= category.title %></h6>
+				</div>
+				<div class="collapsible-body table">
+					<div>
+						<h5>Sisu</h5>
+						<table>
+							<thead>
+								<tr>
+									<th>Teema</th>
+									<th>Viimane muutmine</th>
+									<th>Halda</th>
+								</tr>
+							</thead>
+							<tbody class="collapsible">
+								<% for(let topic of category.topics) { %>
+								<tr>
+									<td><%= topic.title %></td>
+									<td><%= moment(topic.last_changed) %></td>
+									<td>
+										<a href="/teemad/<%= category.id %>/<%= topic.id %>" target="_blank"
+											rel="noopener noreferrer" title="Vaata">
+											<i class="material-icons manage-launch">launch</i>
+										</a>
+										<a href="/admin/edit_topic/<%= category.id %>/<%= topic.id %>" target="_blank"
+											rel="noopener noreferrer" title="Muuda">
+											<i class="material-icons manage-edit">create</i>
+										</a>
+										<% if(role >= ROLES.MODERATOR) { %>
+                    <form method="GET"
+											action="/admin/delete_topic/<%= category.id %>/<%= topic.id %>"
+											onsubmit="return confirm('Kindel, et kustutada <%= topic.title %>?')">
+											<button type="submit" class="manage manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
+										</form>
+                    <% } %>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+						<a class="modal-trigger" href="#new_topic_modal" onclick="createTopic('<%= category.id %>')"
+							title="Uus">
+							<i class="material-icons manage-launch">add</i>
+						</a>
+						<h5>Ülesanded</h5>
+						<table>
+							<thead>
+								<tr>
+									<th>Pealkiri</th>
+									<th>Viimane muutmine</th>
+									<th>Halda</th>
+								</tr>
+							</thead>
+							<tbody class="collapsible">
+								<% for(let exercise of category.exercises) { %>
+								<tr>
+									<td><%= exercise.title %></td>
+									<td><%= moment(exercise.last_changed) %></td>
+									<td>
+										<a href="/ulesanded/<%= category.id %>/<%= exercise.id %>" target="_blank"
+											rel="noopener noreferrer" title="Vaata">
+											<i class="material-icons manage-launch">launch</i>
+										</a>
+										<a href="/admin/edit_exercise/<%= category.id %>/<%= exercise.id %>"
+											target="" rel="noopener noreferrer" title="Muuda">
+											<i class="material-icons manage-edit">create</i>
+										</a>
+										<% if(role >= ROLES.MODERATOR) { %>
+										<form method="GET"
+											action="/admin/delete_exercise/<%= category.id %>/<%= exercise.id %>"
+											onsubmit="return confirm('Kindel, et kustutada <%= exercise.title %>?')">
+											<button type="submit" class="manage-default" title="Kustuta"><i class="material-icons manage-delete">delete</i></button>
+										</form>
+                    <% } %>
+									</td>
+								</tr>
+								<% } %>
+							</tbody>
+						</table>
+						<a class="modal-trigger" href="#new_exercise_modal"
+							onclick="createExercise('<%= category.id %>')" title="Uus">
+							<i class="material-icons manage-launch">add</i>
+						</a>
+					</div>
+				</div>
+			</li>
+			<% } %>
+		</ul>
+	</div>
+	<div class="modal" id="new_topic_modal">
+		<h5>Uus teema</h5>
+		<form action="/admin/new_topic" method="post">
+			<input type="hidden" name="category" id="new_topic_modal_category" value="uldine">
+			<table>
+				<tr>
+					<td>Teema</td>
+					<td><input type="text" name="title" id="new_topic_modal_title" required /></td>
+				</tr>
+				<tr>
+					<td>ID</td>
+					<td><input type="text" name="id" id="new_topic_modal_id" required /></td>
+				</tr>
+			</table>
+			<button type="submit" class="manage-default"><i class="material-icons manage-launch">done</i></button>
+			<a class="modal-close" href="#new_topic_modal" onclick="discardTopic()">
+				<i class="material-icons manage-delete">clear</i>
+			</a>
+		</form>
+	</div>
+	<div class="modal" id="new_exercise_modal">
+		<h5>Uus ülesanne</h5>
+		<form action="/admin/new_exercise" method="post">
+			<input type="hidden" name="category" id="new_exercise_modal_category" value="uldine">
+			<table>
+				<tr>
+					<td>Nimi</td>
+					<td><input type="text" name="title" id="new_exercise_modal_title" required /></td>
+				</tr>
+				<tr>
+					<td>ID</td>
+					<td><input type="text" name="id" id="new_exercise_modal_id" required /></td>
+				</tr>
+				<tr>
+					<td>Tüüp</td>
+					<td>
+						<label>
+              <input type="radio" name="type" id="new_exercise_modal_type" value="exercise" required>
+              <span>Ülesanne</span>
+            </label>
+						<label>
+              <input type="radio" name="type" id="new_exercise_modal_type" value="quiz" required>
+              <span>Küsitlus</span>
+            </label>
+					</td>
+				</tr>
+			</table>
+			<button type="submit" class="manage-default"><i class="material-icons manage-launch">done</i></button>
+			<a class="modal-close" href="#new_exercise_modal" onclick="discardExercise()">
+				<i class="material-icons manage-delete">clear</i>
+			</a>
+		</form>
+	</div>
+</body>
+
+</html>
