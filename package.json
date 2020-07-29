@@ -38,7 +38,7 @@
     "mongoose": "^5.7.5",
     "request": "^2.88.2",
     "showdown": "^1.9.1",
-    "sitemap": "^2.1.0"
+    "sitemap": "^6.2.0"
   },
   "devDependencies": {
     "husky": "^4.2.3",
