@@ -41,7 +41,7 @@
     "sitemap": "^6.2.0"
   },
   "devDependencies": {
-    "husky": "^4.2.3",
+    "husky": "^4.2.5",
     "lint-staged": "^9.5.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.0.5"
