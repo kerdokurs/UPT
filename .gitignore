@@ -1,8 +1,4 @@
-/node_modules/
-/mongo/
-/data/creds.json
-/temp/
+node_modules/
 .env
-/logs/
-/errors/
 .gitpod.yml
+creds.json
