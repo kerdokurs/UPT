@@ -18,7 +18,7 @@ export const onCategoryCreate = functions.firestore
     const { id, title, order } = data;
     const uusKategooria = { id, title, order, teemad: {} };
 
-    await db.runTransaction(async transaction => {
+    await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(indexRef);
 
       if (doc.exists) {
@@ -42,7 +42,7 @@ export const onCategoryDelete = functions.firestore
 
     const { id } = data;
 
-    await db.runTransaction(async transaction => {
+    await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(indexRef);
 
       if (doc.exists) {
@@ -62,7 +62,7 @@ export const onCategoryUpdate = functions.firestore
 
     const { id, title, order } = data;
 
-    await db.runTransaction(async transaction => {
+    await db.runTransaction(async (transaction) => {
       const doc = await transaction.get(indexRef);
 
       if (doc.exists) {
@@ -82,7 +82,7 @@ export const onCategoryUpdate = functions.firestore
     });
   });
 
-/* export const onTopicCreate = functions.firestore
+export const onTopicCreate = functions.firestore
   .document('sisu/{kategooria}/teemad/{teema}')
   .onCreate((snap, context) => {
     const data: any = snap.data();
@@ -92,8 +92,8 @@ export const onCategoryUpdate = functions.firestore
     if (shared) {
       const indexRef = db.collection('index').doc('index');
 
-      return db.runTransaction(transaction => {
-        return transaction.get(indexRef).then(doc => {
+      return db.runTransaction((transaction) => {
+        return transaction.get(indexRef).then((doc) => {
           const { sisu }: any = doc.data();
           const uusSisu: any = { ...sisu };
 
@@ -104,20 +104,17 @@ export const onCategoryUpdate = functions.firestore
         });
       });
     } else return null;
-  }); */
+  });
 
-export const newUser = functions.auth.user().onCreate(user => {
+export const newUser = functions.auth.user().onCreate((user) => {
   const { displayName, email, uid, photoURL } = user;
 
-  return db
-    .collection('kasutajad')
-    .doc(uid)
-    .set({
-      uid,
-      email,
-      displayName,
-      photoURL,
-      admin: false,
-      createdAt: admin.firestore.FieldValue.serverTimestamp()
-    });
+  return db.collection('kasutajad').doc(uid).set({
+    uid,
+    email,
+    displayName,
+    photoURL,
+    admin: false,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+  });
 });

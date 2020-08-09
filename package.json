@@ -14,7 +14,9 @@
       "git add"
     ]
   },
-  "dependencies": {},
+  "dependencies": {
+    "rome": "^10.0.3-beta"
+  },
   "devDependencies": {
     "husky": "^4.2.5",
     "lint-staged": "^9.5.0",

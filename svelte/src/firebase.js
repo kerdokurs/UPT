@@ -9,11 +9,18 @@ const firebaseConfig = {
   projectId: 'kerdoupt',
   storageBucket: 'kerdoupt.appspot.com',
   messagingSenderId: '177350205015',
-  appId: '1:177350205015:web:254e691873ae6dcf230d12'
+  appId: '1:177350205015:web:254e691873ae6dcf230d12',
 };
 
 firebase.initializeApp(firebaseConfig);
 
-export const db = firebase.firestore();
+const firestore = firebase.firestore();
+
+firestore.settings({
+  host: 'localhost:8080',
+  ssl: false,
+});
+
+export const db = firestore;
 export const auth = firebase.auth();
 export const googleProvider = new firebase.auth.GoogleAuthProvider();

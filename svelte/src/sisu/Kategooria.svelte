@@ -7,27 +7,32 @@
   export let params = {};
 
   const { id } = currentRoute.namedParams;
-  if (!id) navigateTo('/');
+  /* if (!id) navigateTo('/'); */
+  console.log(currentRoute);
 
-  const teemad = db
-    .collection('teemad')
-    .where('category', '==', id)
+  const data = db
+    .collection('index')
+    .doc('index')
     .get()
-    .then(snap => snap.docs.map(doc => doc.data()));
+    .then(doc => doc.data().sisu[id]);
 </script>
 
 <section class="kategooria">
-  {#await teemad then teemad}
-    {#if teemad.length > 0}
+  {#await data then data}
+    {#if data}
+      <h2>{data.title}</h2>
       <ul>
-        {#each teemad as teema}
+        {#each Object.keys(data.teemad) as teemaId}
           <li>
-            <a href={`/teema/${teema.id}`}>{teema.title}</a>
+            <a href={`/teema/${id}/${teemaId}`}>{data.teemad[teemaId].title}</a>
           </li>
         {/each}
       </ul>
+      <pre>
+        <code>{JSON.stringify(data, null, 2)}</code>
+      </pre>
     {:else}
-      <p>Selle kategooria all pole ühtki teemat.</p>
+      <p>Kategooriat `{id}` pole.</p>
     {/if}
   {/await}
 </section>

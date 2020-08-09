@@ -1,14 +1,19 @@
 <script>
   import { db } from './firebase';
+  import { onMount } from 'svelte';
 
-  export let currentRoute;
-  export let params = {};
+  const indexRef = db.collection('index').doc('index');
 
-  const kategooriad = db
-    .collection('kategooriad')
-    .where('public', '==', true)
-    .get()
-    .then(snap => snap.docs.map(doc => doc.data()));
+  let sisu = [];
+
+  onMount(async () => {
+    const index = await indexRef.get().then(doc => doc.data());
+
+    for (let kategooriaId in index.sisu) {
+      const kategooria = index.sisu[kategooriaId];
+      sisu = [...sisu, kategooria];
+    }
+  });
 </script>
 
 <style>
@@ -20,21 +25,17 @@
 
 <section class="home">
   <div class="kategooriad">
-    {#await kategooriad}
-      <p>Laadimine...</p>
-    {:then kategooriad}
-      {#if kategooriad.length > 0}
-        <h4>Kategooriad</h4>
-        <ul>
-          {#each kategooriad as kategooria}
-            <li>
-              <a href={'/kategooria/' + kategooria.id}>{kategooria.title}</a>
-            </li>
-          {/each}
-        </ul>
-      {:else}
-        <p>Andmebaas ei sisalda teemasid.</p>
-      {/if}
-    {/await}
+    {#if sisu.length > 0}
+      <h4>Kategooriad</h4>
+      <ul>
+        {#each sisu as kategooria}
+          <li>
+            <a href={'/kategooria/' + kategooria.id}>{kategooria.title}</a>
+          </li>
+        {/each}
+      </ul>
+    {:else}
+      <p>Andmebaas ei sisalda teemasid.</p>
+    {/if}
   </div>
 </section>
